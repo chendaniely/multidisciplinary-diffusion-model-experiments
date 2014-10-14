@@ -114,7 +114,9 @@ def main():
 
     network_of_agents = network_agent.NetworkAgent()
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
-        n, my_network.G.edges_iter(), agent_type=('lens', 10))
+        n, my_network.G.edges_iter(), agent_type=('lens', 10),
+        weight_in_file=weight_in,
+        weight_dir=weight_dir)
 
     network_of_agents.write_network_agent_step_info(
         -1, '../output/network_of_agents.pout', 'w')

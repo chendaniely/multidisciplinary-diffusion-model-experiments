@@ -74,7 +74,9 @@ def step(time_tick, network_of_agents):
     logger1.debug('Begin random select and update network of agents')
     random_select_and_update(network_of_agents)
 
-    network_agent_step_time_dir = '../output/network_of_agents.pout'
+    here = os.path.abspath(os.path.dirname(__file__))
+    network_agent_step_time_dir = here + '/../output/network_of_agents.pout'
+
     network_of_agents.write_network_agent_step_info(
         time_tick, network_agent_step_time_dir, 'a')
     logger1.debug('Time ticks %s values appended to %s',

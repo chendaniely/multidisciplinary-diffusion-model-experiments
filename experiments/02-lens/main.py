@@ -59,7 +59,7 @@ def random_select_and_update(network_of_agents):
         lens_in_file_dir = here + '/' + './Test2.in'
 
         agent_ex_file_dir = here + '/' + './AgentState.ex'
-        infl_ex_file_dir = here + '/' + './infl.ex'
+        infl_ex_file_dir = here + '/' + './Infl.ex'
         agent_state_out_file_dir = here + '/' + './AgentState.out'
 
         selected_agent.update_agent_state('default',

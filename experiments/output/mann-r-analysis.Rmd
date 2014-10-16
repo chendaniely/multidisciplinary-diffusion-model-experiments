@@ -1,0 +1,75 @@
+---
+title: "mann-r-analysis"
+author: "Daniel Chen"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+---
+```{r, echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+library(ggthemes)
+```
+
+
+# networkx generated graph
+
+```{r, echo=FALSE, comment="", results='asis'}
+cat("![networkx generated network](/home/dchen/git/multidisciplinary-diffusion-models-experiments/experiments/output/mann-generated.png)")
+```
+
+# my copied graph
+
+```{r, echo=FALSE, comment="", results='asis'}
+cat("![networkx generated network](/home/dchen/git/multidisciplinary-diffusion-models-experiments/experiments/output/mann-copied.png)")
+```
+
+
+```{r, echo=FALSE}
+df <- read.csv("network_of_agents.pout", header=FALSE)
+
+df$V3 <- as.character(df$V3)
+df$V3 <- gsub(pattern = "\\[", "", df$V3)
+
+df$V12 <- as.character(df$V12)
+df$V12 <- gsub(pattern = "\\]", "", df$V12)
+
+df <- apply(df, MARGIN = 2, as.numeric)
+df <- as.data.frame(df)
+# head(df)
+
+# df$agent_avg_pos <- ((df$V3+ df$V4+ df$V5+ df$V6+ df$V7)/5)
+# df$agent_avg_neg <- ((df$V8 + df$V9 + df$V10 + df$V11 + df$V12)/5)
+
+df2 <- df %>%
+  group_by(V1) %>%
+  mutate(agent_avg_pos = (V3+ V4+ V5+ V6+ V7)/5,
+         agent_avg_neg = (V8 + V9 + V10 + V11 + V12)/5) %>%
+  summarize(pos = mean(agent_avg_pos),
+            neg = mean(agent_avg_neg))
+
+df3 <- df2
+df3 <- melt(data = df3, id="V1")
+
+# df2 <- df %>%
+#   group_by(V1) %>%
+#   mutate(agent_avg_pos = ((V3+ V4+ V5+ V6+ V7)/5),
+#          agent_avg_neg = ((V8 + V9 + V10 + V11 + V12)/5)) %>%
+```
+
+# Average valence bank activation
+
+```{r}
+ggplot(data = df3, aes(V1, value, color=variable, group=variable)) + geom_line() + 
+  theme_economist()
+```
+
+
+```{r, echo=FALSE}
+# ggplot(df2, aes(x=V1, y = "value", color=variable)) + geom_line()
+plot(1:length(df2$pos), df2$pos, col=1, pch=1, type='b')
+lines(1:length(df2$neg), df2$neg, col=2, pch=3, type='b')
+```
+

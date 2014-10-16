@@ -1,7 +1,14 @@
+# MDME output
+*.pout
+
 # LENS files
 *.wt
 *.ex
 *.out
+
+# R files
+*.html
+*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -56,7 +56,7 @@ def random_select_and_update(network_of_agents):
 
         here = os.path.abspath(os.path.dirname(__file__))
         # lens_in_file_dir = here + '/' + './MainM1PlautFix2.in'
-        lens_in_file_dir = here + '/' + './Test2.in'
+        lens_in_file_dir = here + '/' + './UpdateFromInfl.in'
 
         agent_ex_file_dir = here + '/' + './AgentState.ex'
         infl_ex_file_dir = here + '/' + './Infl.ex'

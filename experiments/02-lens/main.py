@@ -11,7 +11,7 @@ logging_format = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 logging.basicConfig(level=logging.DEBUG,
                     format=logging_format,
                     datefmt='%m-%d %H:%M',
-                    filename='../output/myapp.log',
+                    filename='./output/myapp.log',
                     filemode='w')
 
 # define a Handler which writes INFO messages or higher to the sys.stderr
@@ -55,9 +55,11 @@ def random_select_and_update(network_of_agents):
         print('pre-update binary_state', selected_agent.get_state())
 
         here = os.path.abspath(os.path.dirname(__file__))
-        lens_in_file_dir = here + '/' + './MainM1PlautFix2.in'
+        # lens_in_file_dir = here + '/' + './MainM1PlautFix2.in'
+        lens_in_file_dir = here + '/' + './UpdateFromInfl.in'
+
         agent_ex_file_dir = here + '/' + './AgentState.ex'
-        infl_ex_file_dir = here + '/' + './infl.ex'
+        infl_ex_file_dir = here + '/' + './Infl.ex'
         agent_state_out_file_dir = here + '/' + './AgentState.out'
 
         selected_agent.update_agent_state('default',
@@ -75,7 +77,7 @@ def step(time_tick, network_of_agents):
     random_select_and_update(network_of_agents)
 
     here = os.path.abspath(os.path.dirname(__file__))
-    network_agent_step_time_dir = here + '/../output/network_of_agents.pout'
+    network_agent_step_time_dir = here + '/output/network_of_agents.pout'
 
     network_of_agents.write_network_agent_step_info(
         time_tick, network_agent_step_time_dir, 'a')
@@ -104,9 +106,9 @@ def main():
 
     # print(my_network.G.edges_iter())
 
-    generated_graph_dir = '../output/mann-generated.png'
+    generated_graph_dir = './output/mann-generated.png'
     my_network.show_graph(generated_graph_dir)
-    logger1.info('Generated graph saved in %s', '../output/mann-generated.png')
+    logger1.info('Generated graph saved in %s', './output/mann-generated.png')
 
     here = os.path.abspath(os.path.dirname(__file__))
     weight_in = here + '/WgtMakeM1.in'
@@ -119,7 +121,7 @@ def main():
         weight_dir=weight_dir)
 
     network_of_agents.write_network_agent_step_info(
-        -1, '../output/network_of_agents.pout', 'w')
+        -1, './output/network_of_agents.pout', 'w')
 
     # make agents aware of predecessors
     # predecessors are agents who influence the current agent

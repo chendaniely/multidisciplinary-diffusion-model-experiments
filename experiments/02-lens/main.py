@@ -2,9 +2,11 @@
 
 import os
 import logging
+import configparser
 
 import mann.network as network
 import mann.network_agent as network_agent
+
 
 # set up logging to file - see previous section for more details
 logging_format = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
@@ -35,6 +37,10 @@ logging.info('Logger created in main()')
 
 logger1 = logging.getLogger('myapp.area1')
 logger2 = logging.getLogger('myapp.area2')
+
+# setting up the configparser
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 
 def random_select_and_update(network_of_agents):

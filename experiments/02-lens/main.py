@@ -112,7 +112,7 @@ def main():
     logger1.debug('Number of agents to create: %s', str(n))
 
     # probablity for edge creation [0, 1]
-    p = 0.1
+    p = config.getfloat('NetworkParameters', 'ProbEdgeCreation')
     logger1.debug('Probablity for edge creation: %s', str(p))
 
     # Create Erdos-Renyi graph

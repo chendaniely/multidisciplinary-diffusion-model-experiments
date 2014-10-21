@@ -134,7 +134,7 @@ def main():
     network_of_agents.set_predecessors_for_each_node()
 
     # randomly select nodes from network_of_agents to seed
-    num_seed = 5
+    num_seed = config.getint('ModelParameters', 'NumberOfAgentsToSeedOnInit')
     agents_to_seed = network_of_agents.sample_network(num_seed)
     # print("agents to seed: ", agents_to_seed)
     logger1.info('Agents seeded: %s', str(agents_to_seed))

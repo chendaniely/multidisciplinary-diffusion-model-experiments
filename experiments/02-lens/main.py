@@ -108,7 +108,7 @@ def main():
     logger1.info('Starting Mulit Agent Neural Network (MANN)')
 
     # creating n number of agents
-    n = 20
+    n = config.getint('NetworkParameters', 'NumberOfAgents')
     logger1.debug('Number of agents to create: %s', str(n))
 
     # probablity for edge creation [0, 1]

@@ -135,7 +135,12 @@ def main():
 
     network_of_agents = network_agent.NetworkAgent()
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
-        n, my_network.G.edges_iter(), agent_type=('lens', 10),
+        n, my_network.G.edges_iter(),
+        agent_type=(config.get('NetworkParameters', 'AgentType'),
+                    # TODO this interface should pass a kwarg so it is more
+                    # generalizable
+                    config.getint('LENSParameters',
+                                  'TotalNumberOfProcessingUnits')),
         weight_in_file=weight_in,
         weight_dir=weight_dir)
 

@@ -128,9 +128,10 @@ def main():
     logger1.info('Generated graph saved in %s', './output/mann-generated.png')
 
     here = os.path.abspath(os.path.dirname(__file__))
-    weight_dir = here + '/weights'
     # weight_in = here + '/WgtMakeM1.in'
     weight_in = here + config.get('LENSParameters', 'WeightInFile')
+    # weight_dir = here + '/weights'
+    weight_dir = here + config.get('LENSParameters', 'WeightsDirectory')
 
     network_of_agents = network_agent.NetworkAgent()
     network_of_agents.create_multidigraph_of_agents_from_edge_list(

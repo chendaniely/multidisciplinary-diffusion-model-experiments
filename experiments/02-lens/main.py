@@ -47,8 +47,9 @@ def random_select_and_update(network_of_agents):
     n = len(network_of_agents.G)
 
     # randomly select nodes from network_of_agents
-    # select 10% of the nodes for update, performs floor division
-    num_update = n // 10
+    # select num_update number of the nodes for update
+    num_update = config.getint('ModelParameters',
+                               'NumberOfAgentsToUpdatePerTimeTick')
     agents_for_update = network_of_agents.sample_network(num_update)
     print('agents for update: ', agents_for_update)
     print('key of agent for update')

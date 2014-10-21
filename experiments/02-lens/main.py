@@ -75,6 +75,9 @@ def random_select_and_update(network_of_agents):
         infl_ex_file_dir = here + '/' + config.get('LENSParameters',
                                                    'InflExFile')
 
+        # agent_state_out_file_dir = here + '/' + './AgentState.out'
+        agent_state_out_file_dir = here + '/' + config.get('LENSParameters',
+                                                           'NewAgentStateFile')
 
         selected_agent.update_agent_state('default',
                                           lens_in_file=lens_in_file_dir,

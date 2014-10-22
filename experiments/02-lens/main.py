@@ -140,7 +140,8 @@ def main():
                     # TODO this interface should pass a kwarg so it is more
                     # generalizable
                     config.getint('LENSParameters',
-                                  'TotalNumberOfProcessingUnits')),
+                                  'TotalNumberOfProcessingUnits'),
+                    config.get('LENSParameters', 'WeightBaseSituations')),
         weight_in_file=weight_in,
         weight_dir=weight_dir)
 

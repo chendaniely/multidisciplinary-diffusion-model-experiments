@@ -140,10 +140,15 @@ def main():
                     # TODO this interface should pass a kwarg so it is more
                     # generalizable
                     config.getint('LENSParameters',
-                                  'TotalNumberOfProcessingUnits'),
-                    config.get('LENSParameters', 'WeightBaseSituations')),
+                                  'TotalNumberOfProcessingUnits')),
         weight_in_file=weight_in,
-        weight_dir=weight_dir)
+        weight_dir=weight_dir,
+        base_example=config.get('LENSParameters', 'WeightBaseExample'),
+        num_train_examples=config.getint('LENSParameters',
+                                         'NumberOfWeightTrainExamples'),
+        num_train_mutations=config.getint('LENSParameters',
+                                          'NumberOfWeightTrainExampleMutations')
+    )
 
     network_of_agents.write_network_agent_step_info(
         -1, config.get('General', 'ModelOutput'), 'w')

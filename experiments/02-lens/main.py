@@ -59,7 +59,7 @@ def random_select_and_update(network_of_agents):
     for selected_agent in agents_for_update:
         print("updating: ",
               network_of_agents.G.nodes()[selected_agent.get_key()])
-        print('pre-update binary_state', selected_agent.get_state())
+        # print('pre-update state', selected_agent.get_state())
 
         here = os.path.abspath(os.path.dirname(__file__))
         # lens_in_file_dir = here + '/' + './MainM1PlautFix2.in'
@@ -84,7 +84,7 @@ def random_select_and_update(network_of_agents):
                                           agent_ex_file=agent_ex_file_dir,
                                           infl_ex_file=infl_ex_file_dir,
                                           agent_state_out_file=agent_state_out_file_dir)
-        print('post-update_agent_binary_state', selected_agent.get_state())
+        # print('post-update state', selected_agent.get_state())
 
 
 def step(time_tick, network_of_agents):

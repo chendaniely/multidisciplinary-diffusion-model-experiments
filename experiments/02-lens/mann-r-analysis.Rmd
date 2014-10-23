@@ -17,18 +17,18 @@ library(ggthemes)
 # networkx generated graph
 
 ```{r, echo=FALSE, comment="", results='asis'}
-cat("![networkx generated network](/home/dchen/git/multidisciplinary-diffusion-models-experiments/experiments/output/mann-generated.png)")
+cat("![networkx generated network](/home/dchen/git/multidisciplinary-diffusion-models-experiments/experiments/02-lens/output/mann-generated.png)")
 ```
 
 # my copied graph
 
 ```{r, echo=FALSE, comment="", results='asis'}
-cat("![networkx generated network](/home/dchen/git/multidisciplinary-diffusion-models-experiments/experiments/output/mann-copied.png)")
+cat("![networkx generated network](/home/dchen/git/multidisciplinary-diffusion-models-experiments/experiments/02-lens/output/mann-copied.png)")
 ```
 
 
 ```{r, echo=FALSE}
-df <- read.csv("network_of_agents.pout", header=FALSE)
+df <- read.csv("output/network_of_agents.pout", header=FALSE)
 
 df$V3 <- as.character(df$V3)
 df$V3 <- gsub(pattern = "\\[", "", df$V3)

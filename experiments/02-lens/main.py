@@ -163,6 +163,15 @@ def main():
     # print("agents to seed: ", agents_to_seed)
     logger1.info('Agents seeded: %s', str(agents_to_seed))
 
+    lens_in_file_dir = here + '/' + config.get('LENSParameters',
+                                               'UpdateFromInflInFile')
+
+    agent_self_ex_file = here + '/' + config.get('LENSParameters',
+                                                 'InflExFile')
+
+    agent_self_out_file = here + '/' + config.get('LENSParameters',
+                                                  'NewAgentStateFile')
+
     # seed agents who were select
     for selected_agent in agents_to_seed:
         # print("seeding: ",

@@ -151,7 +151,7 @@ def main():
     )
 
     network_of_agents.write_network_agent_step_info(
-        -1, config.get('General', 'ModelOutput'), 'w')
+        -2, config.get('General', 'ModelOutput'), 'w')
 
     # make agents aware of predecessors
     # predecessors are agents who influence the current agent

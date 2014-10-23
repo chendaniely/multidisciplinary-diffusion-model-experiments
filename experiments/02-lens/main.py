@@ -182,6 +182,9 @@ def main():
                       str(selected_agent.get_key()),
                       str(selected_agent.get_state()))
 
+    network_of_agents.write_network_agent_step_info(
+        -1, config.get('General', 'ModelOutput'), 'a')
+
     logger1.info('Begin steps')
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):
         print("STEP # ", i)

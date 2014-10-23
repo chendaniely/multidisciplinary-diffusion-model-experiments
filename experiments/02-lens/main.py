@@ -184,6 +184,11 @@ def main():
                       str(selected_agent.get_state()))
 
         selected_agent.seed_agent()
+        # TODO REALLY HACKY CODE
+        selected_agent.seed_agent_no_update(config.get('LENSParameters',
+                                                       'weightBaseExample'))
+        network_of_agents.write_network_agent_step_info(
+            -2, config.get('General', 'ModelOutput'), 'a')
         logger1.debug('Agent %s seeded', str(selected_agent.get_key()))
 
         # print('post-seed_agent_binary_state', selected_agent.binary_state)

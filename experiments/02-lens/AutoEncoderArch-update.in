@@ -37,7 +37,7 @@ setObj zeroErrorRadius 0.01
 resetNet
 
 #LOAD WEIGHTS -- UPDATING ONLY
-loadWeights wgt$a.wt
+loadWeights weights/wgt$a.wt
 
 #NO LEARNING ALLOWED -- UPDATING ONLY
 freezeWeights

@@ -47,10 +47,10 @@ df <- as.data.frame(df)
 ```{r, echo=FALSE}
 df2 <- df %>%
   group_by(V1) %>%
-  mutate(agent_avg_pos = (V3+ V4+ V5+ V6+ V7)/5,
-         agent_avg_neg = (V8 + V9 + V10 + V11 + V12)/5) %>%
   summarize(pos = mean(agent_avg_pos),
             neg = mean(agent_avg_neg))
+  #mutate(agent_avg_pos = (V3+ V4+ V5+ V6+ V7)/5,
+  #       agent_avg_neg = (V8 + V9 + V10 + V11 + V12)/5) %>%
 
 df3 <- df2
 df3 <- melt(data = df3, id="V1")

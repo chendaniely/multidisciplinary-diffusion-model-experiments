@@ -42,7 +42,9 @@ df <- as.data.frame(df)
 
 # df$agent_avg_pos <- ((df$V3+ df$V4+ df$V5+ df$V6+ df$V7)/5)
 # df$agent_avg_neg <- ((df$V8 + df$V9 + df$V10 + df$V11 + df$V12)/5)
+```
 
+```{r, echo=FALSE}
 df2 <- df %>%
   group_by(V1) %>%
   mutate(agent_avg_pos = (V3+ V4+ V5+ V6+ V7)/5,

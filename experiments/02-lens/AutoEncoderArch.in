@@ -15,7 +15,7 @@ deleteNets *
 #LOAD EXAMPLES -- UPDATING
 #loadExamples Infl.ex -s encoder
 #LOAD EXAMPLES -- TRAINING
-loadExamples AgentWgt$a.ex -s encoder
+loadExamples weights/AgentWgt$a.ex -s encoder
 #loadExamples examples/encoder.sparse.ex -s encoder
 
 #BUILD NETWORK STRUCTURE
@@ -56,7 +56,7 @@ train 1000
 #closeNetOutputFile
 
 #SAVE WEIGHTS -- TRAINING ONLY
-saveWeights wgt$a.wt
+saveWeights weights/wgt$a.wt
 
 
 exit

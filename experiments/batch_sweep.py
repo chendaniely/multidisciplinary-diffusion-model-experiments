@@ -28,7 +28,9 @@ def get_sweep_values(fr, to, by):
     values = np.arange(fr, to, by)
     # make the range inclusive on the right, since this is what
     # the usuer will most likely mean in the parameter file
-    values = np.append(values, values[-1] + by)
+    end_value = values[-1] + by
+    if end_value == to:
+        values = np.append(values, values[-1] + by)
     return values
 
 

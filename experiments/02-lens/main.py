@@ -62,7 +62,7 @@ def random_select_and_update(network_of_agents):
               network_of_agents.G.nodes()[selected_agent.get_key()])
         # print('pre-update state', selected_agent.get_state())
 
-        here = os.path.abspath(os.path.dirname(__file__))
+        # here = os.path.abspath(os.path.dirname(__file__))
         # lens_in_file_dir = here + '/' + './MainM1PlautFix2.in'
         # lens_in_file_dir = here + '/' + './UpdateFromInfl.in'
         lens_in_file_dir = here + '/' + config.get('LENSParameters',
@@ -94,7 +94,7 @@ def step(time_tick, network_of_agents):
     logger1.debug('Begin random select and update network of agents')
     random_select_and_update(network_of_agents)
 
-    here = os.path.abspath(os.path.dirname(__file__))
+    # here = os.path.abspath(os.path.dirname(__file__))
     network_agent_step_time_dir = here + '/output/network_of_agents.pout'
 
     network_of_agents.write_network_agent_step_info(
@@ -128,7 +128,7 @@ def main():
     my_network.show_graph(generated_graph_dir)
     logger1.info('Generated graph saved in %s', generated_graph_dir)
 
-    here = os.path.abspath(os.path.dirname(__file__))
+    # here = os.path.abspath(os.path.dirname(__file__))
     # weight_in = here + '/WgtMakeM1.in'
     weight_in = here + config.get('LENSParameters', 'WeightInFile')
     # weight_dir = here + '/weights'

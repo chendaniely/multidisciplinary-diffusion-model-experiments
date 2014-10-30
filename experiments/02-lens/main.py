@@ -135,8 +135,10 @@ def main():
     weight_dir = here + config.get('LENSParameters', 'WeightsDirectory')
 
     network_of_agents = network_agent.NetworkAgent()
+    fig_path = os.path.join(here, 'output', 'mann-generated.png')
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         n, my_network.G.edges_iter(),
+        fig_path,
         agent_type=(config.get('NetworkParameters', 'AgentType'),
                     # TODO this interface should pass a kwarg so it is more
                     # generalizable

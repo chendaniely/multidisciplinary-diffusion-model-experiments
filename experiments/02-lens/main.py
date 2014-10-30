@@ -95,7 +95,8 @@ def step(time_tick, network_of_agents):
     random_select_and_update(network_of_agents)
 
     # here = os.path.abspath(os.path.dirname(__file__))
-    network_agent_step_time_dir = here + '/output/network_of_agents.pout'
+    network_agent_step_time_dir = os.path.join(here, 'output',
+                                               'network_of_agents.pout')
 
     network_of_agents.write_network_agent_step_info(
         time_tick, network_agent_step_time_dir, 'a')
@@ -194,7 +195,7 @@ def main():
         selected_agent.seed_agent_no_update(config.get('LENSParameters',
                                                        'weightBaseExample'))
         network_of_agents.write_network_agent_step_info(
-            -2, config.get('General', 'ModelOutput'), 'a')
+            -2, model_output, 'a')
 
         selected_agent.seed_agent(config.get('LENSParameters',
                                              'WeightBaseExample'),
@@ -210,7 +211,7 @@ def main():
                       str(selected_agent.get_state()))
 
     network_of_agents.write_network_agent_step_info(
-        -1, config.get('General', 'ModelOutput'), 'a')
+        -1, model_output, 'a')
 
     logger1.info('Begin steps')
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):

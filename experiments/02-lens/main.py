@@ -14,7 +14,7 @@ logging_format = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 logging.basicConfig(level=logging.DEBUG,
                     format=logging_format,
                     datefmt='%m-%d %H:%M',
-                    filename='./output/myapp.log',
+                    filename=os.path.join(here, 'output', 'myapp.log'),
                     filemode='w')
 
 # define a Handler which writes INFO messages or higher to the sys.stderr
@@ -36,12 +36,12 @@ logging.info('Logger created in main()')
 # Now, define a couple of other loggers which might represent areas in your
 # application:
 
-logger1 = logging.getLogger('myapp.area1')
-logger2 = logging.getLogger('myapp.area2')
+logger1 = logging.getLogger(os.path.join(here, 'myapp.area1'))
+logger2 = logging.getLogger(os.path.join(here, 'myapp.area2'))
 
 # setting up the configparser
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(os.path.join(here, 'config.ini'))
 
 
 def random_select_and_update(network_of_agents):
@@ -124,9 +124,9 @@ def main():
 
     # print(my_network.G.edges_iter())
 
-    generated_graph_dir = './output/mann-generated.png'
+    generated_graph_dir = os.path.join(here, 'output', 'mann-generated.png')
     my_network.show_graph(generated_graph_dir)
-    logger1.info('Generated graph saved in %s', './output/mann-generated.png')
+    logger1.info('Generated graph saved in %s', generated_graph_dir)
 
     here = os.path.abspath(os.path.dirname(__file__))
     # weight_in = here + '/WgtMakeM1.in'
@@ -151,8 +151,10 @@ def main():
                                           'NumberOfWeightTrainExampleMutations')
     )
 
+    model_output = os.path.join(here, 'output',
+                                config.get('General', 'ModelOutput'))
     network_of_agents.write_network_agent_step_info(
-        -3, config.get('General', 'ModelOutput'), 'w')
+        -3, model_output, 'w')
 
     # make agents aware of predecessors
     # predecessors are agents who influence the current agent

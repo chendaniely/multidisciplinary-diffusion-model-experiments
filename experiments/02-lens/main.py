@@ -150,7 +150,9 @@ def main():
         num_train_examples=config.getint('LENSParameters',
                                          'NumberOfWeightTrainExamples'),
         num_train_mutations=config.getint('LENSParameters',
-                                          'NumberOfWeightTrainExampleMutations')
+                                          'NumberOfWeightTrainExampleMutations'),
+        training_criterion=config.getint('LENSParameters',
+                                         'Criterion')
     )
 
     model_output = os.path.join(here, 'output',

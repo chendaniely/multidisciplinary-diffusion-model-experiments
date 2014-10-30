@@ -95,7 +95,8 @@ def step(time_tick, network_of_agents):
     random_select_and_update(network_of_agents)
 
     # here = os.path.abspath(os.path.dirname(__file__))
-    network_agent_step_time_dir = here + '/output/network_of_agents.pout'
+    network_agent_step_time_dir = os.path.join(here, 'output',
+                                               'network_of_agents.pout')
 
     network_of_agents.write_network_agent_step_info(
         time_tick, network_agent_step_time_dir, 'a')
@@ -136,11 +137,14 @@ def main():
 
     network_of_agents = network_agent.NetworkAgent()
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
+    r_script_path = os.path.join(here,
+                                 'OrrAutoAssociatorTesting_PatternMaking.r')
+    print(r_script_path)
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         n, my_network.G.edges_iter(),
         fig_path,
         agent_type=(config.get('NetworkParameters', 'AgentType'),
-                    # TODO this interface should pass a kwarg so it is more
+                    # TODO this interface should pass kwarg so it is more
                     # generalizable
                     config.getint('LENSParameters',
                                   'TotalNumberOfProcessingUnits')),
@@ -149,10 +153,12 @@ def main():
         base_example=config.get('LENSParameters', 'WeightBaseExample'),
         num_train_examples=config.getint('LENSParameters',
                                          'NumberOfWeightTrainExamples'),
-        num_train_mutations=config.getint('LENSParameters',
-                                          'NumberOfWeightTrainExampleMutations'),
+        num_train_mutations=config.getint(
+            'LENSParameters', 'NumberOfWeightTrainExampleMutations'),
         training_criterion=config.getint('LENSParameters',
-                                         'Criterion')
+                                         'Criterion'),
+        r_status=config.getboolean('LENSParameters', 'Rstatus'),
+        r_script=r_script_path
     )
 
     model_output = os.path.join(here, 'output',
@@ -194,7 +200,7 @@ def main():
         selected_agent.seed_agent_no_update(config.get('LENSParameters',
                                                        'weightBaseExample'))
         network_of_agents.write_network_agent_step_info(
-            -2, config.get('General', 'ModelOutput'), 'a')
+            -2, model_output, 'a')
 
         selected_agent.seed_agent(config.get('LENSParameters',
                                              'WeightBaseExample'),
@@ -210,7 +216,7 @@ def main():
                       str(selected_agent.get_state()))
 
     network_of_agents.write_network_agent_step_info(
-        -1, config.get('General', 'ModelOutput'), 'a')
+        -1, model_output, 'a')
 
     logger1.info('Begin steps')
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):

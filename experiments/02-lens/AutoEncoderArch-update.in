@@ -20,11 +20,11 @@ loadExamples Infl.ex -s encoder
 
 #BUILD NETWORK STRUCTURE
 proc buildEncoder hidden {
-  addNet "8-${hidden}-8 Encoder" 10 $hidden 10
+  addNet "8-${hidden}-8 Encoder" 20 $hidden 20
   useTrainingSet encoder
 }
 
-buildEncoder 3
+buildEncoder 10
 
 changeGroupType "output" +WRITE_OUTPUTS +USE_OUTPUT_HIST +USE_TARGET_HIST
 

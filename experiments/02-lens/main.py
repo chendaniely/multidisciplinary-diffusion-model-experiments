@@ -144,7 +144,7 @@ def main():
         n, my_network.G.edges_iter(),
         fig_path,
         agent_type=(config.get('NetworkParameters', 'AgentType'),
-                    # TODO this interface should pass a kwarg so it is more
+                    # TODO this interface should pass kwarg so it is more
                     # generalizable
                     config.getint('LENSParameters',
                                   'TotalNumberOfProcessingUnits')),

@@ -7,13 +7,14 @@ import configparser
 import mann.network as network
 import mann.network_agent as network_agent
 
+here = os.path.abspath(os.path.dirname(__file__))
 
 # set up logging to file - see previous section for more details
 logging_format = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 logging.basicConfig(level=logging.DEBUG,
                     format=logging_format,
                     datefmt='%m-%d %H:%M',
-                    filename='./output/myapp.log',
+                    filename=os.path.join(here, 'output', 'myapp.log'),
                     filemode='w')
 
 # define a Handler which writes INFO messages or higher to the sys.stderr
@@ -35,12 +36,12 @@ logging.info('Logger created in main()')
 # Now, define a couple of other loggers which might represent areas in your
 # application:
 
-logger1 = logging.getLogger('myapp.area1')
-logger2 = logging.getLogger('myapp.area2')
+logger1 = logging.getLogger(os.path.join(here, 'myapp.area1'))
+logger2 = logging.getLogger(os.path.join(here, 'myapp.area2'))
 
 # setting up the configparser
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(os.path.join(here, 'config.ini'))
 
 
 def random_select_and_update(network_of_agents):
@@ -61,7 +62,7 @@ def random_select_and_update(network_of_agents):
               network_of_agents.G.nodes()[selected_agent.get_key()])
         # print('pre-update state', selected_agent.get_state())
 
-        here = os.path.abspath(os.path.dirname(__file__))
+        # here = os.path.abspath(os.path.dirname(__file__))
         # lens_in_file_dir = here + '/' + './MainM1PlautFix2.in'
         # lens_in_file_dir = here + '/' + './UpdateFromInfl.in'
         lens_in_file_dir = here + '/' + config.get('LENSParameters',
@@ -93,7 +94,7 @@ def step(time_tick, network_of_agents):
     logger1.debug('Begin random select and update network of agents')
     random_select_and_update(network_of_agents)
 
-    here = os.path.abspath(os.path.dirname(__file__))
+    # here = os.path.abspath(os.path.dirname(__file__))
     network_agent_step_time_dir = here + '/output/network_of_agents.pout'
 
     network_of_agents.write_network_agent_step_info(
@@ -123,19 +124,21 @@ def main():
 
     # print(my_network.G.edges_iter())
 
-    generated_graph_dir = './output/mann-generated.png'
+    generated_graph_dir = os.path.join(here, 'output', 'mann-generated.png')
     my_network.show_graph(generated_graph_dir)
-    logger1.info('Generated graph saved in %s', './output/mann-generated.png')
+    logger1.info('Generated graph saved in %s', generated_graph_dir)
 
-    here = os.path.abspath(os.path.dirname(__file__))
+    # here = os.path.abspath(os.path.dirname(__file__))
     # weight_in = here + '/WgtMakeM1.in'
     weight_in = here + config.get('LENSParameters', 'WeightInFile')
     # weight_dir = here + '/weights'
     weight_dir = here + config.get('LENSParameters', 'WeightsDirectory')
 
     network_of_agents = network_agent.NetworkAgent()
+    fig_path = os.path.join(here, 'output', 'mann-generated.png')
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         n, my_network.G.edges_iter(),
+        fig_path,
         agent_type=(config.get('NetworkParameters', 'AgentType'),
                     # TODO this interface should pass a kwarg so it is more
                     # generalizable
@@ -147,11 +150,15 @@ def main():
         num_train_examples=config.getint('LENSParameters',
                                          'NumberOfWeightTrainExamples'),
         num_train_mutations=config.getint('LENSParameters',
-                                          'NumberOfWeightTrainExampleMutations')
+                                          'NumberOfWeightTrainExampleMutations'),
+        training_criterion=config.getint('LENSParameters',
+                                         'Criterion')
     )
 
+    model_output = os.path.join(here, 'output',
+                                config.get('General', 'ModelOutput'))
     network_of_agents.write_network_agent_step_info(
-        -3, config.get('General', 'ModelOutput'), 'w')
+        -3, model_output, 'w')
 
     # make agents aware of predecessors
     # predecessors are agents who influence the current agent

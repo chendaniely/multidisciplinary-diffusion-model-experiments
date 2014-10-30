@@ -7,6 +7,7 @@ import configparser
 import mann.network as network
 import mann.network_agent as network_agent
 
+here = os.path.abspath(os.path.dirname(__file__))
 
 # set up logging to file - see previous section for more details
 logging_format = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'

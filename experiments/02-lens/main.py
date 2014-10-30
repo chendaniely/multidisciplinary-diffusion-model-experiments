@@ -137,6 +137,9 @@ def main():
 
     network_of_agents = network_agent.NetworkAgent()
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
+    r_script_path = os.path.join(here,
+                                 'OrrAutoAssociatorTesting_PatternMaking.r')
+    print(r_script_path)
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         n, my_network.G.edges_iter(),
         fig_path,

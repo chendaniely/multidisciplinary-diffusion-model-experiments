@@ -156,7 +156,9 @@ def main():
         num_train_mutations=config.getint('LENSParameters',
                                           'NumberOfWeightTrainExampleMutations'),
         training_criterion=config.getint('LENSParameters',
-                                         'Criterion')
+                                         'Criterion'),
+        r_status=config.getboolean('LENSParameters', 'Rstatus'),
+        r_script=r_script_path
     )
 
     model_output = os.path.join(here, 'output',

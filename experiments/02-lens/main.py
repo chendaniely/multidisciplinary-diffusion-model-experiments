@@ -141,6 +141,10 @@ def main():
     r_script_path = os.path.join(here,
                                  'OrrAutoAssociatorTesting_PatternMaking.r')
     print(r_script_path)
+
+    # TODO turn this into a function
+    agent.LensAgent.set_lens_agent_prototypes(1)
+
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         n, my_network.G.edges_iter(),
         fig_path,

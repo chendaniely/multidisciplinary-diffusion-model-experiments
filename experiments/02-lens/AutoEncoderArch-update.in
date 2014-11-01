@@ -6,9 +6,9 @@
 #########################
 
 #GRAB ENV VARS
-# a is the agent number 
+# a is the agent number
 set a $env(a)
-
+set c $env(c)
 
 deleteNets *
 
@@ -28,7 +28,7 @@ buildEncoder 10
 
 changeGroupType "output" +WRITE_OUTPUTS +USE_OUTPUT_HIST +USE_TARGET_HIST
 
-setObj criterion 3
+setObj criterion $c
 setObj learningRate    0.1
 setObj weightDecay     0.0001
 setObj zeroErrorRadius 0.01

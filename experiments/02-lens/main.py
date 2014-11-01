@@ -6,6 +6,7 @@ import configparser
 
 import mann.network as network
 import mann.network_agent as network_agent
+import mann.agent as agent
 
 here = os.path.abspath(os.path.dirname(__file__))
 

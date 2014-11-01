@@ -161,9 +161,9 @@ def main():
         prototype_mutation_prob=config.getfloat(
             'LENSParameters', 'WeightTrainExampleMutationsProb'),
         training_criterion=config.getint('LENSParameters',
-                                         'Criterion'),
-        r_status=config.getboolean('LENSParameters', 'Rstatus'),
-        r_script=r_script_path
+                                         'Criterion')
+        # r_status=config.getboolean('LENSParameters', 'Rstatus'),
+        # r_script=r_script_path
     )
 
     model_output = os.path.join(here, 'output',

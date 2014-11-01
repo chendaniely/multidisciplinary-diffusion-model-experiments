@@ -158,8 +158,8 @@ def main():
         base_example=config.get('LENSParameters', 'WeightBaseExample'),
         num_train_examples=config.getint('LENSParameters',
                                          'NumberOfWeightTrainExamples'),
-        num_train_mutations=config.getint(
-            'LENSParameters', 'NumberOfWeightTrainExampleMutations'),
+        prototype_mutation_prob=config.getfloat(
+            'LENSParameters', 'WeightTrainExampleMutationsProb'),
         training_criterion=config.getint('LENSParameters',
                                          'Criterion'),
         r_status=config.getboolean('LENSParameters', 'Rstatus'),

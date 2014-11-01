@@ -56,13 +56,13 @@ sweep_batch_config.read(sweep_batch_config_dir)
 
 # print(sweep_batch_config_dir)
 
-# print(sweep_batch_config.get('Sweep', 'NumberOfWeightTrainExampleMutations'))
+# print(sweep_batch_config.get('Sweep', 'WeightTrainExampleMutationsProb'))
 
 
 # TODO this is a ver inefficicent and unscalable way to get a list of sweep
 # parameters, need to generalize this
 mutations_ftb_str = sweep_batch_config.get('Sweep',
-                                           'NumberOfWeightTrainExampleMutations')
+                                           'WeightTrainExampleMutationsProb')
 criterion_ftb_str = sweep_batch_config.get('Sweep', 'Criterion')
 
 mutations_sweep_values = ftb_string_to_values(mutations_ftb_str)
@@ -76,7 +76,7 @@ def update_init_file(mi, ci, folder_name):
     sim_config = configparser.SafeConfigParser()
     sim_config_file_dir = os.path.join(folder_name, 'config.ini')
     sim_config.read(sim_config_file_dir)
-    sim_config.set('LENSParameters', 'NumberOfWeightTrainExampleMutations',
+    sim_config.set('LENSParameters', 'WeightTrainExampleMutationsProb',
                    str(int(mutations_sweep_values[mi])))
     sim_config.set('LENSParameters', 'Criterion',
                    str(int(criterions_sweep_values[ci])))
@@ -86,7 +86,7 @@ def update_init_file(mi, ci, folder_name):
 list_of_sim_names = []
 for mi, mutation in enumerate(mutations_sweep_values):
     for ci, criterion in enumerate(criterions_sweep_values):
-        mutation_str_int = "{0:02d}".format(int(mutation))
+        mutation_str_int = "{0:02f}".format(float(mutation))
         criterion_str_int = "{0:02d}".format(int(criterion))
         new_folder_name = '_'.join([base_directory_name,
                                     'd'+mutation_str_int,

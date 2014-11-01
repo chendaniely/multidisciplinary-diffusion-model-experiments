@@ -126,7 +126,7 @@ def main():
 
     # print(my_network.G.edges_iter())
 
-    generated_graph_dir = os.path.join(here, 'output', 'mann-generated.png')
+    generated_graph_dir = os.path.join(here, 'output', 'nx-generated.png')
     my_network.show_graph(generated_graph_dir)
     logger1.info('Generated graph saved in %s', generated_graph_dir)
 

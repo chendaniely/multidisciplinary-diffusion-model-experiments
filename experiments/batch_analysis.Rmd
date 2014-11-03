@@ -7,6 +7,7 @@ output:
     toc: yes
 ---
 ```{r, echo=FALSE, message=FALSE}
+library(lsa)
 library(dplyr)
 library(ggplot2)
 library(reshape2)
@@ -24,39 +25,55 @@ print(output)
 ```
 
 ```{r}
-baseData <- c(0, 1, 0, 0, 0, 0, 1, 1, 0, 0)
-
-sse <- function(activationValues){
-  difference <- activationValues - baseData
-  se <- difference * difference
+sse <- function(vector){
+  activationValues <- vector[c(6:25)]
+  prototype <- vector[c((length(vector) - 19) : length(vector))]
+  difference <- as.numeric(activationValues) - as.numeric(prototype)
+  se <- difference ** 2
   sse <- sum(se)
   return(sse)
 }
+
+cosineSim <- function(vector){
+  activationValues <- vector[c(6:25)]
+  prototype <- vector[c((length(vector) - 19) : length(vector))]
+  
+  v1 <- as.vector(as.matrix(as.numeric(activationValues) + 1))
+  v2 <- as.vector(as.matrix(as.numeric(prototype) + 1))
+
+  cosine <- lsa::cosine(v1, v2)
+  return(cosine)
+}
 ```
 
-
 ```{r}
+i <- 1
 # for each pout file, clean and plot it
-
 for(i in c(1:length(output))){
   data <- output[i]
   df <- read.csv(data, header = FALSE)
-  names(df)[1:3] <- c('time', 'agent', 'numUpdate')
-  # print(head(df))
-  
+  names(df)[1:5] <- c('time', 'agent', 'numUpdate', 'isUpdated', 'inflId')
+  prototype <- c((ncol(df) - 19) : ncol(df))
+  activationValues <- c(6:25)
+
   df2 <- df
-  
-  df2$sse <- apply(df2[, c(4:13)], 1, sse)
-  # head(df2)
-  
+
+  df2$sse <- apply(df2, MARGIN = 1, sse)
+  df2$cos <- apply(df2, 1, cosineSim)
+
   df3 <- df2 %>%
     group_by(time) %>%
-    summarize(avgSse = mean(sse))
-  
+    summarize(avgSse = mean(sse),
+              avgCos = mean(cos))
+
   df3 <- melt(data = df3, id='time')
-  
   g <- ggplot(data = df3, aes(time, value, color=variable, group=variable)) + 
-    geom_line()
+    geom_line() + facet_wrap(~variable, scales = "free")
+g  
+#   g <- ggplot(df3, aes(time)) + 
+#   geom_line(aes(y = avgSse, colour = "avgSse")) + 
+#   geom_line(aes(y = avgCos, colour = "avgCos")) +
+#     facet_grid(colour)
   print(data)
   print(g)
   }

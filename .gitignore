@@ -12,6 +12,7 @@
 
 # Model Runs
 experiments/??-*-??*/
+experiments/??-*_*/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

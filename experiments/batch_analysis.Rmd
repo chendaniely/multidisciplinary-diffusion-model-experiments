@@ -87,9 +87,9 @@ cosineSim <- function(vector){
 ```
 
 ```{r}
-i <- 1
+i <- 7
 # for each pout file, clean and plot it
-for(i in c(1:length(output))){
+# for(i in c(1:length(output))){
   data <- output[i]
   df <- read.csv(data, header = FALSE)
   names(df)[1:5] <- c('time', 'agent', 'numUpdate', 'isUpdated', 'inflId')
@@ -141,7 +141,7 @@ for(i in c(1:length(output))){
   
   print(data)
   multiplot(g.sse, g.cos, g.cos80, g.cos90, cols=2)
-  }
+#  }
 ```
 
 ```{r, echo=FALSE}

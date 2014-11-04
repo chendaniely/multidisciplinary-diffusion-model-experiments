@@ -8,6 +8,7 @@ output:
 ---
 ```{r, echo=FALSE, message=FALSE}
 library(lsa)
+library(stringr)
 library(dplyr)
 library(ggplot2)
 library(reshape2)
@@ -133,10 +134,13 @@ for(i in c(1:length(output))){
   g.sse
   g.cos <- ggplot(df3, aes(time)) + geom_line(aes(y = avgCos)) + ggtitle(folderName)
   g.cos
-
+  g.cos80 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos80)) + ggtitle(folderName)
+  g.cos80
+  g.cos90 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos90)) + ggtitle(folderName)
+  g.cos90
   
   print(data)
-  multiplot(g.sse, g.cos, cols=2)
+  multiplot(g.sse, g.cos, g.cos80, g.cos90, cols=2)
   }
 ```
 

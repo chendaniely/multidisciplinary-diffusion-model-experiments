@@ -1,0 +1,60 @@
+#AUTO ENCODER NETWORK
+#USED FOR TESTING ABSTRACTION OF PROTOTYPES AND CRITERION
+#CREATED OCT 27, 2014
+#UPDATED NONE
+#########################
+
+deleteNets *
+
+#LOAD EXAMPLES -- TRAINING
+loadExamples catch.abstractions.ex -s trainingset
+#exampleSetMode trainingset PERMUTED
+
+#LOAD EXAMPLES -- TESTING
+loadExamples prototype.ex -s prototype
+loadExamples allzeros.ex -s zeros
+loadExamples anti.ex -s anti
+loadExamples last2.ex -s last2
+loadExamples first2.ex -s first2
+
+
+#BUILD NETWORK STRUCTURE
+proc buildEncoder hidden {
+  addNet "20-${hidden}-20 Encoder" 20 $hidden 20
+  useTrainingSet trainingset
+  useTestingSet prototype
+}
+
+buildEncoder 12
+
+changeGroupType "output" +WRITE_OUTPUTS +USE_OUTPUT_HIST +USE_TARGET_HIST
+
+setObj criterion 3
+setObj learningRate    0.05
+setObj weightDecay     0.0001
+setObj zeroErrorRadius 0.01
+
+#PREPARE FOR PROCESSING
+resetNet
+
+#OUTPUT OPEN -- TRAINING
+# openNetOutputFile trainNet.out
+#TRAIN -- TRAINING
+train 1000000
+#OUTPUT CLOSE -- TRAINING
+#  closeNetOutputFile
+
+
+
+
+
+#OUTPUT OPEN -- TRAINING
+openNetOutputFile testNet.out
+#TRAIN -- TRAINING
+test
+#OUTPUT CLOSE -- TRAINING
+closeNetOutputFile
+
+
+
+#EOF

@@ -90,7 +90,7 @@ def update_init_file(mi, ci, run_number, folder_name):
                    str(int(mutations_sweep_values[mi])))
     sim_config.set('LENSParameters', 'Criterion',
                    str(int(criterions_sweep_values[ci])))
-    sim_config.set('General', 'RunNumber', )
+    sim_config.set('General', 'RunNumber', num_number)
     with open(sim_config_file_dir, 'w') as update_config:
         sim_config.write(update_config)
 

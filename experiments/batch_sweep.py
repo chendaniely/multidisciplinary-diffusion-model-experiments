@@ -87,11 +87,6 @@ sweep_batch_config = configparser.ConfigParser()
 sweep_batch_config_dir = os.path.join(here, 'batch_sweep.ini')
 sweep_batch_config.read(sweep_batch_config_dir)
 
-# print(sweep_batch_config_dir)
-
-# print(sweep_batch_config.get('Sweep', 'WeightTrainExampleMutationsProb'))
-
-
 # TODO this is a ver inefficicent and unscalable way to get a list of sweep
 # parameters, need to generalize this
 mutations_ftb_str = sweep_batch_config.get('Sweep',
@@ -131,9 +126,6 @@ for mi, mutation in enumerate(mutations_sweep_values):
         update_init_file(mi, ci, new_directory_name)
 
 
-# for folder in enumerate(list_of_sim_names):
-#     for i in range(len(mutations_sweep_values)):
-#         update_init_file(idx, folder)
 
 
 def run_simulation(folder_name):
@@ -146,11 +138,4 @@ import multiprocessing as mp
 num_cores = mp.cpu_count()
 pool = mp.Pool(processes=num_cores)
 
-# results = [pool.apply_async(cube, args=(x,)) for x in range(1,7)]
-# output = [p.get() for p in results]
-# print(output)
-
 pool.map(run_simulation, list_of_sim_names)
-
-# for folder in list_of_sim_names:
-#     run_simulation(folder)

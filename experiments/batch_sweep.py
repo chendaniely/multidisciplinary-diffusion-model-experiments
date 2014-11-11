@@ -8,9 +8,22 @@ import subprocess
 
 
 def parse_config_fr_to_by(config_string):
+    """Returns the value for the fr, to, and by, values in the config file.
+
+    Args:
+        config_string (string): a string of fr, to, by values
+                                separated by \n character
+
+    Returns:
+        tuple: float of number to the right of the fr, to, and by values in the
+               config file
+    """
     config_string = config_string.strip()
     fr_to_by_list = config_string.split('\n')
+
+    # for each fr, to, by value, take the value to the right of the equal sign
     fr_to_by_str = tuple(e.split("=")[1].strip() for e in fr_to_by_list)
+
     fr_to_by_float = map(float, fr_to_by_str)
     return fr_to_by_float
 

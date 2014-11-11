@@ -82,6 +82,19 @@ def ftb_string_to_values(ftb_string):
     return sweep_values
 
 
+def update_init_file(mi, ci, run_number, folder_name):
+    sim_config = configparser.SafeConfigParser()
+    sim_config_file_dir = os.path.join(folder_name, 'config.ini')
+    sim_config.read(sim_config_file_dir)
+    sim_config.set('LENSParameters', 'WeightTrainExampleMutationsProb',
+                   str(int(mutations_sweep_values[mi])))
+    sim_config.set('LENSParameters', 'Criterion',
+                   str(int(criterions_sweep_values[ci])))
+    sim_config.set('General', 'RunNumber', )
+    with open(sim_config_file_dir, 'w') as update_config:
+        sim_config.write(update_config)
+
+
 here = os.path.abspath(os.path.dirname(__file__))
 
 sweep_batch_config = configparser.ConfigParser()
@@ -100,17 +113,6 @@ criterions_sweep_values = ftb_string_to_values(criterion_ftb_str)
 base_directory = sweep_batch_config.get('General', 'BaseDirectory')
 base_directory_name = os.path.join(here, base_directory)
 
-
-def update_init_file(mi, ci, folder_name):
-    sim_config = configparser.SafeConfigParser()
-    sim_config_file_dir = os.path.join(folder_name, 'config.ini')
-    sim_config.read(sim_config_file_dir)
-    sim_config.set('LENSParameters', 'WeightTrainExampleMutationsProb',
-                   str(int(mutations_sweep_values[mi])))
-    sim_config.set('LENSParameters', 'Criterion',
-                   str(int(criterions_sweep_values[ci])))
-    with open(sim_config_file_dir, 'w') as update_config:
-        sim_config.write(update_config)
 
 list_of_sim_names = []
 for mi, mutation in enumerate(mutations_sweep_values):

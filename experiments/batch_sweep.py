@@ -101,8 +101,7 @@ sweep_batch_config = configparser.ConfigParser()
 sweep_batch_config_dir = os.path.join(here, 'batch_sweep.ini')
 sweep_batch_config.read(sweep_batch_config_dir)
 
-# TODO this is a ver inefficicent and unscalable way to get a list of sweep
-# parameters, need to generalize this
+# TODO can reading in sweep values be generalized?
 mutations_ftb_str = sweep_batch_config.get('Sweep',
                                            'WeightTrainExampleMutationsProb')
 criterion_ftb_str = sweep_batch_config.get('Sweep', 'Criterion')

@@ -5,6 +5,7 @@ import os
 import numpy as np
 import shutil
 import subprocess
+import multiprocessing as mp
 
 
 def parse_config_fr_to_by(config_string):
@@ -131,9 +132,6 @@ for mi, mutation in enumerate(mutations_sweep_values):
 def run_simulation(folder_name):
         ex_file = os.path.join(folder_name, 'main.py')
         subprocess.call(['python', ex_file])
-
-
-import multiprocessing as mp
 
 num_cores = mp.cpu_count()
 pool = mp.Pool(processes=num_cores)

@@ -41,7 +41,7 @@ def get_sweep_values(fr, to, by):
         by (float): values between fr and to by specified step
 
     Returns:
-        values (ndarray): of values for parameter sweep
+        values (ndarray): values for parameter sweep
 
     Examples:
         >>> print(get_sweep_values(0, 10, 2))

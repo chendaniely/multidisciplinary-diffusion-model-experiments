@@ -29,6 +29,26 @@ def parse_config_fr_to_by(config_string):
 
 
 def get_sweep_values(fr, to, by):
+    """Returns an ndarray values that will be used for the simulation run.
+
+    Will include the 'to' value if the 'by' step will does not exceed the
+    'to' value
+
+    Args:
+        fr (float): value of where the sweep will start
+        to (float): value of where the sweep will end
+        by (float): values between fr and to by specified step
+
+    Returns:
+        values (ndarray): of values for parameter sweep
+
+    Examples:
+        >>> print(get_sweep_values(0, 10, 2))
+        array([0, 2, 4, 6, 8, 10])
+
+        >>> print(get_sweep_values(1, 10, 2))
+        array([1, 3, 5, 7, 9])
+    """
     values = np.arange(fr, to, by)
     # make the range inclusive on the right, since this is what
     # the usuer will most likely mean in the parameter file

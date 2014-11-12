@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import multiprocessing as mp
 from time import gmtime, strftime
+import itertools
 
 
 def parse_config_fr_to_by(config_string):
@@ -124,6 +125,12 @@ current_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
 base_directory = sweep_batch_config.get('General', 'BaseDirectory')
 base_directory_name = os.path.join(here, base_directory)
 
+list_of_parameters = [mutations_sweep_values,
+                      criterions_sweep_values,
+                      range(num_sims_per_sweep_set)]
+combination_of_parameters = itertools.product(*list_of_parameters)
+# for combo in combination_of_parameters:
+#     print('c: ', combo)
 
 list_of_sim_names = []
 for mi, mutation in enumerate(mutations_sweep_values):

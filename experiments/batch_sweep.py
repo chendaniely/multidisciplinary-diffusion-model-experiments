@@ -110,6 +110,8 @@ sweep_batch_config_dir = os.path.join(here, 'batch_sweep.ini')
 sweep_batch_config.read(sweep_batch_config_dir)
 
 # TODO can reading in sweep values be generalized?
+num_sims_per_sweep_set = sweep_batch_config.getint(
+    'Batch', 'NumberOfSimulationsPerSweepSet')
 mutations_ftb_str = sweep_batch_config.get('Sweep',
                                            'WeightTrainExampleMutationsProb')
 criterion_ftb_str = sweep_batch_config.get('Sweep', 'Criterion')

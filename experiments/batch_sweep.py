@@ -113,7 +113,6 @@ def format_values(tuple_of_values):
     return mutation, criterion, run_number
 
 
-def update_init_file(mi, ci, run_number, folder_name):
 def create_folders(base_directory, mutation_str, criterion_str,
                    run_number_str):
     print('m: {}, c: {}, r: {}'.format(mutation_str, criterion_str,
@@ -124,21 +123,25 @@ def create_folders(base_directory, mutation_str, criterion_str,
     print(new_folder_name)
 
 
+def update_init_file(mutaion, criterion, run, folder_name):
     """Updates the config file for a particular set of parameters for sweep
 
     Args:
-        mi (int): index of the mutation value parameter for sweep
-        ci (int): index of the criterion value parameter for sweep
+        mutation (float): mutation value parameter for sweep
+        ci (int): criterion value parameter for sweep
         run_number (int): run number for a set of value parameters for sweep
     """
+    assert isinstance(mutation, float)
+    assert isinstance(criterion, int)
+    assert isinstance(run_number, int)
+
     sim_config = configparser.SafeConfigParser()
     sim_config_file_dir = os.path.join(folder_name, 'config.ini')
     sim_config.read(sim_config_file_dir)
     sim_config.set('LENSParameters', 'WeightTrainExampleMutationsProb',
-                   str(int(mutations_sweep_values[mi])))
-    sim_config.set('LENSParameters', 'Criterion',
-                   str(int(criterions_sweep_values[ci])))
-    sim_config.set('General', 'RunNumber', rum_number)
+                   str(mutation))
+    sim_config.set('LENSParameters', 'Criterion', str(criterion))
+    sim_config.set('General', 'RunNumber', run_number)
     with open(sim_config_file_dir, 'w') as update_config:
         sim_config.write(update_config)
 

@@ -104,6 +104,7 @@ def update_init_file(mi, ci, run_number, folder_name):
 
 here = os.path.abspath(os.path.dirname(__file__))
 
+# read in the parameter file
 sweep_batch_config = configparser.ConfigParser()
 sweep_batch_config_dir = os.path.join(here, 'batch_sweep.ini')
 sweep_batch_config.read(sweep_batch_config_dir)

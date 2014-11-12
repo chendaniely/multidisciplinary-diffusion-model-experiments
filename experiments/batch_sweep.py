@@ -83,6 +83,13 @@ def ftb_string_to_values(ftb_string):
 
 
 def update_init_file(mi, ci, run_number, folder_name):
+    """Updates the config file for a particular set of parameters for sweep
+
+    Args:
+        mi (int): index of the mutation value parameter for sweep
+        ci (int): index of the criterion value parameter for sweep
+        run_number (int): run number for a set of value parameters for sweep
+    """
     sim_config = configparser.SafeConfigParser()
     sim_config_file_dir = os.path.join(folder_name, 'config.ini')
     sim_config.read(sim_config_file_dir)

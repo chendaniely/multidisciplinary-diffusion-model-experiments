@@ -156,4 +156,4 @@ def run_simulation(folder_name):
 num_cores = mp.cpu_count()
 pool = mp.Pool(processes=num_cores)
 
-pool.map(run_simulation, list_of_sim_names)
+# pool.map(run_simulation, list_of_sim_names)

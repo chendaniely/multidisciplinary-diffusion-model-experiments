@@ -104,6 +104,14 @@ def update_init_file(mi, ci, run_number, folder_name):
         sim_config.write(update_config)
 
 
+def num_cores():
+    cores = mp.cpu_count()
+    print("Number of cores on this computer: ", cores)
+    if cores <= 4:
+        return cores
+    else:
+        return int(cores * (2/3.0))
+
 def run_simulation(folder_name):
         ex_file = os.path.join(folder_name, 'main.py')
         subprocess.call(['python', ex_file])
@@ -152,7 +160,8 @@ for mi, mutation in enumerate(mutations_sweep_values):
         update_init_file(mi, ci, new_directory_name)
 
 
-num_cores = mp.cpu_count()
+num_cores = num_cores()
+print("Number of cores for batch sweep simulation: ", num_cores)
 pool = mp.Pool(processes=num_cores)
 
 # pool.map(run_simulation, list_of_sim_names)

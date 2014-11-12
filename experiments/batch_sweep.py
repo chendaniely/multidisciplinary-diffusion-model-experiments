@@ -84,6 +84,20 @@ def ftb_string_to_values(ftb_string):
     return sweep_values
 
 
+def format_values(tuple_of_values):
+    mutation, criterion, run_number = tuple_of_values
+
+    mutation = float("{0:.2f}".format(mutation))
+    criterion = int(criterion)
+    run_number = int(run_number)
+
+    assert isinstance(mutation, float)
+    assert isinstance(criterion, int)
+    assert isinstance(run_number, int)
+
+    return mutation, criterion, run_number
+
+
 def update_init_file(mi, ci, run_number, folder_name):
     """Updates the config file for a particular set of parameters for sweep
 

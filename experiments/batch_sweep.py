@@ -104,6 +104,11 @@ def update_init_file(mi, ci, run_number, folder_name):
         sim_config.write(update_config)
 
 
+def run_simulation(folder_name):
+        ex_file = os.path.join(folder_name, 'main.py')
+        subprocess.call(['python', ex_file])
+
+
 here = os.path.abspath(os.path.dirname(__file__))
 
 # read in the parameter file
@@ -146,12 +151,6 @@ for mi, mutation in enumerate(mutations_sweep_values):
         copy_directory(base_directory_name, new_directory_name)
         update_init_file(mi, ci, new_directory_name)
 
-
-
-
-def run_simulation(folder_name):
-        ex_file = os.path.join(folder_name, 'main.py')
-        subprocess.call(['python', ex_file])
 
 num_cores = mp.cpu_count()
 pool = mp.Pool(processes=num_cores)

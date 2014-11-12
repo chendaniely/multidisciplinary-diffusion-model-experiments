@@ -6,6 +6,7 @@ import numpy as np
 import shutil
 import subprocess
 import multiprocessing as mp
+from time import gmtime, strftime
 
 
 def parse_config_fr_to_by(config_string):
@@ -119,6 +120,7 @@ criterion_ftb_str = sweep_batch_config.get('Sweep', 'Criterion')
 mutations_sweep_values = ftb_string_to_values(mutations_ftb_str)
 criterions_sweep_values = ftb_string_to_values(criterion_ftb_str)
 
+current_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
 base_directory = sweep_batch_config.get('General', 'BaseDirectory')
 base_directory_name = os.path.join(here, base_directory)
 

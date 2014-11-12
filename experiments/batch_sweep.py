@@ -163,7 +163,7 @@ criterion_ftb_str = sweep_batch_config.get('Sweep', 'Criterion')
 mutations_sweep_values = ftb_string_to_values(mutations_ftb_str)
 criterions_sweep_values = ftb_string_to_values(criterion_ftb_str)
 
-current_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+current_gmt_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
 base_directory = sweep_batch_config.get('General', 'BaseDirectory')
 base_directory_name = os.path.join(here, base_directory)
 

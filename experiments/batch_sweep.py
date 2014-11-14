@@ -160,9 +160,10 @@ def update_init_file(mutation, criterion, run, folder_name):
     sim_config.set('LENSParameters', 'WeightTrainExampleMutationsProb',
                    str(mutation))
     sim_config.set('LENSParameters', 'Criterion', str(criterion))
-    sim_config.set('General', 'RunNumber', run_number)
+    sim_config.set('General', 'RunNumber', str(run_number))
     with open(sim_config_file_dir, 'w') as update_config:
         sim_config.write(update_config)
+        # print('config file updated: ', sim_config_file_dir)
 
 
 def num_cores():

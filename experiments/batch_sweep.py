@@ -218,6 +218,8 @@ for combo in combination_of_parameters:
     folder_created = create_folder(base_directory, mutation_str,
                                    criterion_str, run_number_str)
     list_of_sim_names.append(folder_created)
+    update_init_file(mutation, criterion, run_number, folder_created)
+
 
 # for mi, mutation in enumerate(mutations_sweep_values):
 #     for ci, criterion in enumerate(criterions_sweep_values):

@@ -113,14 +113,33 @@ def format_values(tuple_of_values):
     return mutation, criterion, run_number
 
 
-    print('m: {}, c: {}, r: {}'.format(mutation_str, criterion_str,
-                                       run_number_str))
-    new_folder_name = '_'.join(['d'+mutation_str,
-                                'c'+criterion_str,
-                                'r'+run_number_str])
-    print(new_folder_name)
 def create_folder(base_directory, mutation_str, criterion_str,
                   run_number_str):
+    # print('m: {}, c: {}, r: {}'.format(mutation_str, criterion_str,
+    #                                    run_number_str))
+    new_sim_folder_name = '_'.join(['d'+mutation_str,
+                                    'c'+criterion_str,
+                                    'r'+run_number_str])
+    # print(new_sim_folder_name)
+
+    batch_folder_name = '_'.join([base_directory, 'batch', current_gmt_time])
+    # print('batch folder name: ', batch_folder_name)
+
+    dir_to_copy_from = os.path.join(here, base_directory)
+    # print('from: ', dir_to_copy_from)
+
+    batch_folder_full_path = os.path.join(here, batch_folder_name)
+
+    if not os.path.exists(batch_folder_full_path):
+        # print('created: ', batch_folder_full_path)
+        os.makedirs(batch_folder_full_path)
+
+    dir_to_copy_to = os.path.join(batch_folder_full_path,
+                                  new_sim_folder_name)
+    # print('to : ', dir_to_copy_to)
+
+    copy_directory(dir_to_copy_from, dir_to_copy_to)
+    return dir_to_copy_to
 
 
 def update_init_file(mutation, criterion, run, folder_name):

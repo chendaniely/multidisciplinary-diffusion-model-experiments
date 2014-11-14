@@ -113,14 +113,14 @@ def format_values(tuple_of_values):
     return mutation, criterion, run_number
 
 
-def create_folders(base_directory, mutation_str, criterion_str,
-                   run_number_str):
     print('m: {}, c: {}, r: {}'.format(mutation_str, criterion_str,
                                        run_number_str))
     new_folder_name = '_'.join(['d'+mutation_str,
                                 'c'+criterion_str,
                                 'r'+run_number_str])
     print(new_folder_name)
+def create_folder(base_directory, mutation_str, criterion_str,
+                  run_number_str):
 
 
 def update_init_file(mutaion, criterion, run, folder_name):
@@ -192,8 +192,8 @@ for combo in combination_of_parameters:
     mutation_str = "{0:03}".format(int(mutation * 100))
     criterion_str = "{0:02d}".format(int(criterion))
     run_number_str = "{0:02d}".format(int(run_number))
-    create_folders(base_directory, mutation_str, criterion_str,
-                   run_number_str)
+    folder_created = create_folder(base_directory, mutation_str,
+                                   criterion_str, run_number_str)
 
 list_of_sim_names = []
 # for mi, mutation in enumerate(mutations_sweep_values):

@@ -209,7 +209,7 @@ for combo in combination_of_parameters:
     mutation, criterion, run_number = format_values(combo)
 
     # print('m: {}, c: {}, r: {}'.format(mutation, criterion, run_number))
-    mutation_str = "{0:03}".format(int(mutation * 100))
+    mutation_str = "{0:03d}".format(int(mutation * 100))
     criterion_str = "{0:02d}".format(int(criterion))
     run_number_str = "{0:02d}".format(int(run_number))
     folder_created = create_folder(base_directory, mutation_str,

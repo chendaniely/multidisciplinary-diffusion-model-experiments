@@ -214,6 +214,7 @@ for combo in combination_of_parameters:
     run_number_str = "{0:02d}".format(int(run_number))
     folder_created = create_folder(base_directory, mutation_str,
                                    criterion_str, run_number_str)
+    list_of_sim_names.append(folder_created)
 
 list_of_sim_names = []
 # for mi, mutation in enumerate(mutations_sweep_values):

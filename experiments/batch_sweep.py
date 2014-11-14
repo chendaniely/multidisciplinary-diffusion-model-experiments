@@ -239,4 +239,4 @@ num_cores = num_cores()
 print("Number of cores for batch sweep simulation: ", num_cores)
 pool = mp.Pool(processes=num_cores)
 
-# pool.map(run_simulation, list_of_sim_names)
+pool.map(run_simulation, list_of_sim_names)

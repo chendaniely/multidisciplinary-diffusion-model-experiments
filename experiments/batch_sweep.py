@@ -205,6 +205,9 @@ list_of_parameters = [mutations_sweep_values,
                       criterions_sweep_values,
                       range(num_sims_per_sweep_set)]
 combination_of_parameters = itertools.product(*list_of_parameters)
+
+list_of_sim_names = []
+
 for combo in combination_of_parameters:
     mutation, criterion, run_number = format_values(combo)
 
@@ -216,7 +219,6 @@ for combo in combination_of_parameters:
                                    criterion_str, run_number_str)
     list_of_sim_names.append(folder_created)
 
-list_of_sim_names = []
 # for mi, mutation in enumerate(mutations_sweep_values):
 #     for ci, criterion in enumerate(criterions_sweep_values):
 #         mutation_str_int = "{0:02f}".format(float(mutation))

@@ -123,7 +123,7 @@ def create_folder(base_directory, mutation_str, criterion_str,
                   run_number_str):
 
 
-def update_init_file(mutaion, criterion, run, folder_name):
+def update_init_file(mutation, criterion, run, folder_name):
     """Updates the config file for a particular set of parameters for sweep
 
     Args:

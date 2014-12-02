@@ -56,12 +56,20 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 ```{r}
 # get list of .pout files
-folders <- list.files(pattern = "02-lens_d*")
-output <- c()
-for(folder in folders){
-  output <- c(output, paste(folder, 'output', 'network_of_agents.pout', sep = '/'))
-  }
-print(output)
+batch_folder <- '02-lens_batch_2014-11-18_21:41:09'
+batch_folder <- '02-lens_batch_2014-11-14_20:46:22'
+batch_experiments <- list.files(batch_folder)
+batch_experiment <- 'd000_c03_r00'
+
+pout_files <- c()
+for(batch_experiment in batch_experiments){
+    pout_path <- paste(batch_folder, batch_experiment, 'output', sep = '/')
+    pout_path_file <- paste(pout_path, 'network_of_agents.pout', sep = '/')
+    pout_files <- c(pout_files, pout_path_file)
+    # df <- read.csv(file = paste(pout_path, 'network_of_agents.pout', sep = '/'), header = FALSE)
+    # assign(batch_experiment, df)
+}
+print(pout_files)
 ```
 
 ```{r}
@@ -87,10 +95,10 @@ cosineSim <- function(vector){
 ```
 
 ```{r}
-i <- 7
+i <- 1
 # for each pout file, clean and plot it
-# for(i in c(1:length(output))){
-  data <- output[i]
+# for(i in c(1:length(pout_files))){
+  data <- pout_files[i]
   df <- read.csv(data, header = FALSE)
   names(df)[1:5] <- c('time', 'agent', 'numUpdate', 'isUpdated', 'inflId')
   prototype <- c((ncol(df) - 19) : ncol(df))
@@ -140,7 +148,7 @@ i <- 7
 #     geom_line() + facet_wrap(~variable, scales = "free")
 # g
   
-  folderName <- str_split(string = output[i], "/")[[1]][1]
+  folderName <- str_split(string = pout_files[i], "/")[[1]][2]
 
   g.sse <- ggplot(df3, aes(time)) + geom_line(aes(y = avgSse)) + ggtitle(folderName)
   g.sse
@@ -161,23 +169,23 @@ i <- 7
 ```
 
 ```{r}
-  folderName <- str_split(string = output[i], "/")[[1]][1]
-
-  g.sse <- ggplot(df4, aes(time)) + geom_line(aes(y = avgSse)) + facet_grid(~ ifEverUpdated) +  ggtitle(folderName)
-  g.sse
-  g.cos <- ggplot(df4, aes(time)) + geom_line(aes(y = avgCos)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
-  g.cos
-
-  g.cumAgentUpdate <- ggplot(df4, aes(time)) + geom_line(aes(y = cumAgentUpdate)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
-  g.cumAgentUpdate
-
-  g.cos80 <- ggplot(df4, aes(time)) + geom_line(aes(y = propCos80)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
-  g.cos80
-  g.cos90 <- ggplot(df4, aes(time)) + geom_line(aes(y = propCos90)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
-  g.cos90
-  
-  print(data)
-  multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
+# folderName <- str_split(string = output[i], "/")[[1]][1]
+# 
+# g.sse <- ggplot(df4, aes(time)) + geom_line(aes(y = avgSse)) + facet_grid(~ ifEverUpdated) +  ggtitle(folderName)
+# g.sse
+# g.cos <- ggplot(df4, aes(time)) + geom_line(aes(y = avgCos)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
+# g.cos
+# 
+# g.cumAgentUpdate <- ggplot(df4, aes(time)) + geom_line(aes(y = cumAgentUpdate)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
+# g.cumAgentUpdate
+# 
+# g.cos80 <- ggplot(df4, aes(time)) + geom_line(aes(y = propCos80)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
+# g.cos80
+# g.cos90 <- ggplot(df4, aes(time)) + geom_line(aes(y = propCos90)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
+# g.cos90
+# 
+# print(data)
+# multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
 ```
 
 

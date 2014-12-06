@@ -22,9 +22,7 @@ opts_chunk$set(echo=FALSE)
 ```{r}
 # parameters to run script
 # get list of .pout files
-# batch_folder <- '02-lens_batch_2014-11-18_21:41:09'
 batch_folder <- '02-lens_batch_2014-11-14_20:46:22'
-# batch_experiment <- 'd000_c03_r00'
 
 num_processing_units <- 20
 activation_value_columns <- c(6:25)
@@ -207,22 +205,8 @@ for(pout_file in pout_files){
     
     plots <- create_plots(df3, foldername)
     
-#     g.sse <- ggplot(df3, aes(time)) + geom_line(aes(y = avgSse)) + ggtitle(foldername)
-#     g.sse
-#     g.cos <- ggplot(df3, aes(time)) + geom_line(aes(y = avgCos)) + ggtitle(foldername)
-#     g.cos
-#     
-#     g.cumAgentUpdate <- ggplot(df3, aes(time)) + geom_line(aes(y = cumAgentUpdate)) + ggtitle(foldername)
-#     g.cumAgentUpdate
-#     
-#     g.cos80 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos80)) + ggtitle(foldername)
-#     g.cos80
-#     g.cos90 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos90)) + ggtitle(foldername)
-#     g.cos90
-    
     # multiplot
     print(pout_file)
-    # multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
     multiplot(plots, cols = 2)
 }
 ```

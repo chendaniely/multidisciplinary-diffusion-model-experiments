@@ -115,10 +115,10 @@ cosineSim <- function(vector){
 ```
 
 ```{r}
-i <- 1
 pout_files <- get_batch_pout_files(batch_folder)
 
 # for each pout file, clean and plot it
+    # get data
 
   df2 <- df
 
@@ -168,5 +168,5 @@ pout_files <- get_batch_pout_files(batch_folder)
   
   print(data)
   multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
-#  }
+}
 ```

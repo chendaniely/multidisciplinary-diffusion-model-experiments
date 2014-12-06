@@ -31,11 +31,12 @@ activation_value_columns <- c(6:25)
 
 
 ```{r, echo=FALSE}
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+multiplot <- function(list_of_plots, plotlist=NULL, file, cols=1, layout=NULL) {
   require(grid)
 
   # Make a list from the ... arguments and plotlist
-  plots <- c(list(...), plotlist)
+  # plots <- c(list(...), plotlist)
+  plots <- c(list_of_plots, plotlist)
 
   numPlots = length(plots)
 

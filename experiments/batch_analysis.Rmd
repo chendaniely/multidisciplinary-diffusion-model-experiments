@@ -23,6 +23,10 @@ opts_chunk$set(echo=FALSE)
 # batch_folder <- '02-lens_batch_2014-11-18_21:41:09'
 batch_folder <- '02-lens_batch_2014-11-14_20:46:22'
 # batch_experiment <- 'd000_c03_r00'
+
+num_processing_units <- 20
+activation_value_columns <- c(6:25)
+
 ```
 
 

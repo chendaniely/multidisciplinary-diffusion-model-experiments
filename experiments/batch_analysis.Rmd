@@ -66,16 +66,21 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 
 ```{r, echo=FALSE}
-```{r}
-pout_files <- c()
-for(batch_experiment in batch_experiments){
-    pout_path <- paste(batch_folder, batch_experiment, 'output', sep = '/')
-    pout_path_file <- paste(pout_path, 'network_of_agents.pout', sep = '/')
-    pout_files <- c(pout_files, pout_path_file)
-    # df <- read.csv(file = paste(pout_path, 'network_of_agents.pout', sep = '/'), header = FALSE)
-    # assign(batch_experiment, df)
+get_batch_pout_files <- function(batch_folder){
+    batch_experiments <- list.files(batch_folder)
+    pout_files <- c()
+    for(batch_experiment in batch_experiments){
+        pout_path <- paste(batch_folder, batch_experiment, 'output', sep = '/')
+        pout_path_file <- paste(pout_path, 'network_of_agents.pout', sep = '/')
+        pout_files <- c(pout_files, pout_path_file)
+    }
+    print(pout_files)
+    return(pout_files)
 }
-print(pout_files)
+```
+
+```{r}
+}
 ```
 
 

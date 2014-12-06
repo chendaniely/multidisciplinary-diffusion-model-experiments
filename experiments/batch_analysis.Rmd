@@ -143,19 +143,6 @@ i <- 1
               propCos90 = sum(cos90) / n()
               ) %>%
     mutate(freq = cumAgentUpdate / n)
-
-######################
-#   g <- ggplot(df3, aes(time)) + 
-#   geom_line(aes(y = avgSse, colour = "avgSse")) + 
-#   geom_line(aes(y = avgCos, colour = "avgCos")) +
-#     facet_grid(colour)
-# g
-######################
-  
-#   df3 <- melt(data = df3, id='time')
-#   g <- ggplot(data = df3, aes(time, value, color=variable, group=variable)) + 
-#     geom_line() + facet_wrap(~variable, scales = "free")
-# g
   
   folderName <- str_split(string = pout_files[i], "/")[[1]][2]
 
@@ -176,31 +163,3 @@ i <- 1
   multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
 #  }
 ```
-
-```{r}
-# folderName <- str_split(string = output[i], "/")[[1]][1]
-# 
-# g.sse <- ggplot(df4, aes(time)) + geom_line(aes(y = avgSse)) + facet_grid(~ ifEverUpdated) +  ggtitle(folderName)
-# g.sse
-# g.cos <- ggplot(df4, aes(time)) + geom_line(aes(y = avgCos)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
-# g.cos
-# 
-# g.cumAgentUpdate <- ggplot(df4, aes(time)) + geom_line(aes(y = cumAgentUpdate)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
-# g.cumAgentUpdate
-# 
-# g.cos80 <- ggplot(df4, aes(time)) + geom_line(aes(y = propCos80)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
-# g.cos80
-# g.cos90 <- ggplot(df4, aes(time)) + geom_line(aes(y = propCos90)) + facet_grid(~ ifEverUpdated)  + ggtitle(folderName)
-# g.cos90
-# 
-# print(data)
-# multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
-```
-
-
-```{r, echo=FALSE}
-# # ggplot(df2, aes(x=V1, y = "value", color=variable)) + geom_line()
-# plot(1:length(df2$pos), df2$pos, col=1, pch=1, type='b')
-# lines(1:length(df2$neg), df2$neg, col=2, pch=3, type='b')
-```
-

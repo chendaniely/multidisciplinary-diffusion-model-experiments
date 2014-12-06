@@ -80,6 +80,12 @@ get_batch_pout_files <- function(batch_folder){
 ```
 
 ```{r}
+get_data <- function(pout_file){
+    df <- read.csv(pout_file, header = FALSE)
+    names(df)[1:5] <- c('time', 'agent', 'numUpdate', 'isUpdated', 'inflId')
+    prototype <- c((ncol(df) - 19) : ncol(df))
+    activationValues <- c(6:25)
+    return(df)
 }
 ```
 
@@ -111,12 +117,6 @@ cosineSim <- function(vector){
 ```{r}
 i <- 1
 # for each pout file, clean and plot it
-# for(i in c(1:length(pout_files))){
-  data <- pout_files[i]
-  df <- read.csv(data, header = FALSE)
-  names(df)[1:5] <- c('time', 'agent', 'numUpdate', 'isUpdated', 'inflId')
-  prototype <- c((ncol(df) - 19) : ncol(df))
-  activationValues <- c(6:25)
 
   df2 <- df
 

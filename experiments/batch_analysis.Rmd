@@ -149,8 +149,9 @@ create_plots <- function(dataframe, foldername){
 ```
 
 
+```{r}
 pout_files <- get_batch_pout_files(batch_folder)
-
+pout_file <- pout_files[1]
 # for each pout file, clean and plot it
 for(pout_file in pout_files){
     # get data

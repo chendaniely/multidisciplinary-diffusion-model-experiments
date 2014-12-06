@@ -126,11 +126,13 @@ pout_files <- get_batch_pout_files(batch_folder)
 for(pout_file in pout_files){
     # get data
     df <- get_data(pout_file)
-    # assign sum square error values
+    
+    # calculate sum square error values
     df2 <- df
-    df2$sse <- apply(df2, MARGIN = 1, sse)
-    # assign cosine values
-    df2$cos <- apply(df2, 1, cosineSim)
+    df2$sse <- apply(df2, MARGIN = 1, calculate_sse)
+
+    # calculate cosine values
+    df2$cos <- apply(df2, 1, calculate_cosine_sim)
     
     df2$cos80 <- ifelse(df2$cos >= .8, 1, 0)
     df2$cos90 <- ifelse(df2$cos >= .9, 1, 0)

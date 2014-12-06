@@ -78,6 +78,7 @@ for(batch_experiment in batch_experiments){
 print(pout_files)
 ```
 
+
 ```{r}
 sse <- function(vector){
   activationValues <- vector[c(6:25)]
@@ -87,7 +88,9 @@ sse <- function(vector){
   sse <- sum(se)
   return(sse)
 }
+```
 
+```{r}
 cosineSim <- function(vector){
   activationValues <- vector[c(6:25)]
   prototype <- vector[c((length(vector) - 19) : length(vector))]

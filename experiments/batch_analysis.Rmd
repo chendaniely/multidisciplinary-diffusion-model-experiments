@@ -96,7 +96,7 @@ get_data <- function(pout_file){
 
 
 ```{r}
-sse <- function(vector){
+calculate_sse <- function(vector){
   activationValues <- vector[c(6:25)]
   prototype <- vector[c((length(vector) - 19) : length(vector))]
   difference <- as.numeric(activationValues) - as.numeric(prototype)
@@ -107,7 +107,7 @@ sse <- function(vector){
 ```
 
 ```{r}
-cosineSim <- function(vector){
+calculate_cosine_sim <- function(vector){
   activationValues <- vector[c(6:25)]
   prototype <- vector[c((length(vector) - 19) : length(vector))]
   

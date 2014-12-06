@@ -116,6 +116,8 @@ cosineSim <- function(vector){
 
 ```{r}
 i <- 1
+pout_files <- get_batch_pout_files(batch_folder)
+
 # for each pout file, clean and plot it
 
   df2 <- df

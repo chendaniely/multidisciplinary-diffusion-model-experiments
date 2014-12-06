@@ -122,62 +122,61 @@ for(pout_file in pout_files){
     # get data
     df <- get_data(pout_file)
     # assign sum square error values
-    
+    df2 <- df
+    df2$sse <- apply(df2, MARGIN = 1, sse)
     # assign cosine values
+    df2$cos <- apply(df2, 1, cosineSim)
+    
+    df2$cos80 <- ifelse(df2$cos >= .8, 1, 0)
+    df2$cos90 <- ifelse(df2$cos >= .9, 1, 0)
+    
+    # assign update status
+    df2$ifEverUpdated <- ifelse(df2$numUpdate >= 1, 1, 0)
     
     # assign time to 90% saturation
     
+    # calculate cosine similiary proportions
+    df3 <- df2 %>%
+        group_by(time) %>%
+        summarize(avgSse = mean(sse),
+                  avgCos = mean(cos),
+                  cumAgentUpdate = sum(ifEverUpdated),
+                  n = n(),
+                  propCos80 = sum(cos80) / n(),
+                  propCos90 = sum(cos90) / n()
+                  ) %>%
+        mutate(freq = cumAgentUpdate / n)
+    
+    # calculate cosine similiary proportions given update status
+    df4 <- df2 %>%
+        group_by(time, ifEverUpdated) %>%
+        summarize(avgSse = mean(sse),
+                  avgCos = mean(cos),
+                  cumAgentUpdate = sum(ifEverUpdated),
+                  n = n(),
+                  propCos80 = sum(cos80) / n(),
+                  propCos90 = sum(cos90) / n()
+                  ) %>%
+        mutate(freq = cumAgentUpdate / n)
+    
     # create each plot
+    folderName <- str_split(string = pout_file, "/")[[1]][2]
+    
+    g.sse <- ggplot(df3, aes(time)) + geom_line(aes(y = avgSse)) + ggtitle(folderName)
+    g.sse
+    g.cos <- ggplot(df3, aes(time)) + geom_line(aes(y = avgCos)) + ggtitle(folderName)
+    g.cos
+    
+    g.cumAgentUpdate <- ggplot(df3, aes(time)) + geom_line(aes(y = cumAgentUpdate)) + ggtitle(folderName)
+    g.cumAgentUpdate
+    
+    g.cos80 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos80)) + ggtitle(folderName)
+    g.cos80
+    g.cos90 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos90)) + ggtitle(folderName)
+    g.cos90
     
     # multiplot
-
-  df2 <- df
-
-  df2$sse <- apply(df2, MARGIN = 1, sse)
-  df2$cos <- apply(df2, 1, cosineSim)
-
-  df2$cos80 <- ifelse(df2$cos >= .8, 1, 0)
-  df2$cos90 <- ifelse(df2$cos >= .9, 1, 0)
-  df2$ifEverUpdated <- ifelse(df2$numUpdate >= 1, 1, 0)
-
-  df3 <- df2 %>%
-    group_by(time) %>%
-    summarize(avgSse = mean(sse),
-              avgCos = mean(cos),
-              cumAgentUpdate = sum(ifEverUpdated),
-              n = n(),
-              propCos80 = sum(cos80) / n(),
-              propCos90 = sum(cos90) / n()
-              ) %>%
-    mutate(freq = cumAgentUpdate / n)
-
-  df4 <- df2 %>%
-    group_by(time, ifEverUpdated) %>%
-    summarize(avgSse = mean(sse),
-              avgCos = mean(cos),
-              cumAgentUpdate = sum(ifEverUpdated),
-              n = n(),
-              propCos80 = sum(cos80) / n(),
-              propCos90 = sum(cos90) / n()
-              ) %>%
-    mutate(freq = cumAgentUpdate / n)
-  
-  folderName <- str_split(string = pout_file, "/")[[1]][2]
-
-  g.sse <- ggplot(df3, aes(time)) + geom_line(aes(y = avgSse)) + ggtitle(folderName)
-  g.sse
-  g.cos <- ggplot(df3, aes(time)) + geom_line(aes(y = avgCos)) + ggtitle(folderName)
-  g.cos
-
-  g.cumAgentUpdate <- ggplot(df3, aes(time)) + geom_line(aes(y = cumAgentUpdate)) + ggtitle(folderName)
-  g.cumAgentUpdate
-
-  g.cos80 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos80)) + ggtitle(folderName)
-  g.cos80
-  g.cos90 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos90)) + ggtitle(folderName)
-  g.cos90
-  
-  print(data)
-  multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
-}
+    print(pout_file)
+    multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
+    }
 ```

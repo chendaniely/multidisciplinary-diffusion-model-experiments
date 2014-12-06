@@ -14,6 +14,8 @@ library(ggplot2)
 library(reshape2)
 library(ggthemes)
 library(knitr)
+library(foreach)
+library(doMC)
 opts_chunk$set(echo=FALSE)
 ```
 
@@ -224,3 +226,16 @@ for(pout_file in pout_files){
     multiplot(plots, cols = 2)
 }
 ```
+
+
+```{r}
+# registerDoMC(4)
+# par_list <- foreach(i=1:10) %dopar% {
+# 
+#  print(i)
+#  empty <- c()
+#  empty <- c(empty, i)
+# }
+# par_list
+```
+

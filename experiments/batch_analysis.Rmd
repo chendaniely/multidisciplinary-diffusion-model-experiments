@@ -18,6 +18,14 @@ opts_chunk$set(echo=FALSE)
 ```
 
 ```{r}
+# parameters to run script
+# get list of .pout files
+# batch_folder <- '02-lens_batch_2014-11-18_21:41:09'
+batch_folder <- '02-lens_batch_2014-11-14_20:46:22'
+# batch_experiment <- 'd000_c03_r00'
+```
+
+
 ```{r, echo=FALSE}
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   require(grid)
@@ -59,12 +67,6 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 ```{r, echo=FALSE}
 ```{r}
-# get list of .pout files
-batch_folder <- '02-lens_batch_2014-11-18_21:41:09'
-batch_folder <- '02-lens_batch_2014-11-14_20:46:22'
-batch_experiments <- list.files(batch_folder)
-batch_experiment <- 'd000_c03_r00'
-
 pout_files <- c()
 for(batch_experiment in batch_experiments){
     pout_path <- paste(batch_folder, batch_experiment, 'output', sep = '/')

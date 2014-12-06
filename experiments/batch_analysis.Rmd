@@ -120,6 +120,35 @@ calculate_cosine_sim <- function(vector){
 ```
 
 ```{r}
+create_plots <- function(dataframe, foldername){
+    g <- ggplot(dataframe, aes(time))
+    
+    g.sse <- g + geom_line(aes(y = avgSse)) + ggtitle(foldername)
+    g.sse
+    
+    g.cos <- g + geom_line(aes(y = avgCos)) + ggtitle(foldername)
+    g.cos
+    
+    g.cumAgentUpdate <-g + geom_line(aes(y = cumAgentUpdate)) + ggtitle(foldername)
+    g.cumAgentUpdate
+    
+    g.cos80 <- g + geom_line(aes(y = propCos80)) + ggtitle(foldername)
+    g.cos80
+
+    g.cos85 <- g + geom_line(aes(y = propCos85)) + ggtitle(foldername)
+    g.cos85
+    
+    g.cos90 <- g + geom_line(aes(y = propCos90)) + ggtitle(foldername)
+    g.cos90
+
+    # g.cos80.updated <- c()
+    # g.cos90.updated <- c()
+    
+    return(list(g.sse, g.cos, g.cumAgentUpdate, g.cos80, g.cos85, g.cos90))
+}
+```
+
+
 pout_files <- get_batch_pout_files(batch_folder)
 
 # for each pout file, clean and plot it
@@ -171,23 +200,26 @@ for(pout_file in pout_files){
         mutate(freq = cumAgentUpdate / n)
     
     # create each plot
-    folderName <- str_split(string = pout_file, "/")[[1]][2]
+    foldername <- str_split(string = pout_file, "/")[[1]][2]
     
-    g.sse <- ggplot(df3, aes(time)) + geom_line(aes(y = avgSse)) + ggtitle(folderName)
-    g.sse
-    g.cos <- ggplot(df3, aes(time)) + geom_line(aes(y = avgCos)) + ggtitle(folderName)
-    g.cos
+    plots <- create_plots(df3, foldername)
     
-    g.cumAgentUpdate <- ggplot(df3, aes(time)) + geom_line(aes(y = cumAgentUpdate)) + ggtitle(folderName)
-    g.cumAgentUpdate
-    
-    g.cos80 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos80)) + ggtitle(folderName)
-    g.cos80
-    g.cos90 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos90)) + ggtitle(folderName)
-    g.cos90
+#     g.sse <- ggplot(df3, aes(time)) + geom_line(aes(y = avgSse)) + ggtitle(foldername)
+#     g.sse
+#     g.cos <- ggplot(df3, aes(time)) + geom_line(aes(y = avgCos)) + ggtitle(foldername)
+#     g.cos
+#     
+#     g.cumAgentUpdate <- ggplot(df3, aes(time)) + geom_line(aes(y = cumAgentUpdate)) + ggtitle(foldername)
+#     g.cumAgentUpdate
+#     
+#     g.cos80 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos80)) + ggtitle(foldername)
+#     g.cos80
+#     g.cos90 <- ggplot(df3, aes(time)) + geom_line(aes(y = propCos90)) + ggtitle(foldername)
+#     g.cos90
     
     # multiplot
     print(pout_file)
-    multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
-    }
+    # multiplot(g.cumAgentUpdate, g.sse, g.cos, g.cos80, g.cos90, cols=2)
+    multiplot(plots, cols = 2)
+}
 ```

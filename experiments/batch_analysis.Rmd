@@ -152,6 +152,7 @@ for(pout_file in pout_files){
                   cumAgentUpdate = sum(ifEverUpdated),
                   n = n(),
                   propCos80 = sum(cos80) / n(),
+                  propCos85 = sum(cos85) / n(),
                   propCos90 = sum(cos90) / n()
                   ) %>%
         mutate(freq = cumAgentUpdate / n)

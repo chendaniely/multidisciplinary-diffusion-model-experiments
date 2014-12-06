@@ -13,9 +13,12 @@ library(dplyr)
 library(ggplot2)
 library(reshape2)
 library(ggthemes)
+library(knitr)
+opts_chunk$set(echo=FALSE)
 ```
 
 ```{r}
+```{r, echo=FALSE}
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   require(grid)
 
@@ -54,6 +57,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 ```
 
 
+```{r, echo=FALSE}
 ```{r}
 # get list of .pout files
 batch_folder <- '02-lens_batch_2014-11-18_21:41:09'

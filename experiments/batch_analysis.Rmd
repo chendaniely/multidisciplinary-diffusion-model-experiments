@@ -151,7 +151,7 @@ pout_files <- get_batch_pout_files(batch_folder)
               ) %>%
     mutate(freq = cumAgentUpdate / n)
   
-  folderName <- str_split(string = pout_files[i], "/")[[1]][2]
+  folderName <- str_split(string = pout_file, "/")[[1]][2]
 
   g.sse <- ggplot(df3, aes(time)) + geom_line(aes(y = avgSse)) + ggtitle(folderName)
   g.sse

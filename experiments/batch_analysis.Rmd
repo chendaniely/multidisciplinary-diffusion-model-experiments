@@ -118,7 +118,18 @@ cosineSim <- function(vector){
 pout_files <- get_batch_pout_files(batch_folder)
 
 # for each pout file, clean and plot it
+for(pout_file in pout_files){
     # get data
+    df <- get_data(pout_file)
+    # assign sum square error values
+    
+    # assign cosine values
+    
+    # assign time to 90% saturation
+    
+    # create each plot
+    
+    # multiplot
 
   df2 <- df
 

@@ -215,6 +215,21 @@ for(pout_file in pout_files){
                   propCos90 = sum(cos90) / n()
                   )
     
+    per_time <- mutate(per_ever_updated_status,
+                       avgSse = sum(avgSse * n) / sum(n),
+                       avgCos = sum(avgCos * n) / sum(n),
+                       cumAgentUpdate = sum(cumAgentUpdate),
+                       n = sum(n),
+                       numCos80 = sum(numCos80),
+                       numCos85 = sum(numCos85),
+                       numCos90 = sum(numCos90),
+                       propCos80 = numCos80 / n,
+                       propCos85 = numCos85 / n,
+                       propCos90 = numCos90 / n
+                       ) %>%
+        filter(ifEverUpdated == 0) %>%
+        select(-(ifEverUpdated))
+
     # create each plot
     foldername <- str_split(string = pout_file, "/")[[1]][2]
     

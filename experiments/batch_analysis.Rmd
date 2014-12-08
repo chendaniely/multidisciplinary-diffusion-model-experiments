@@ -232,9 +232,9 @@ for(pout_file in pout_files){
     # create each plot
     foldername <- str_split(string = pout_file, "/")[[1]][2]
     
-    plots_2 <- create_plots(per_time, foldername)
     plots <- create_plots(per_ever_updated_status[per_ever_updated_status$ifEverUpdated == 1, ], 
                           paste(foldername, 'updated_only', sep = '_'))
+    plots_2 <- create_plots(per_time, paste(foldername, 'all', sep = '_'))
     
     # multiplot
     print(pout_file)

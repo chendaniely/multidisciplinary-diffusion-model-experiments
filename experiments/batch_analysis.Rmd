@@ -175,22 +175,30 @@ for(pout_file in pout_files){
     # assign time to 90% saturation
     
     # calculate cosine similiary proportions
-    df3 <- df2 %>%
-        group_by(time) %>%
-        summarize(avgSse = mean(sse),
-                  avgCos = mean(cos),
-                  cumAgentUpdate = sum(ifEverUpdated),
-                  n = n(),
-                  propCos80 = sum(cos80) / n(),
-                  propCos85 = sum(cos85) / n(),
-                  propCos90 = sum(cos90) / n()
-                  ) %>%
-        mutate(freq = cumAgentUpdate / n)
+    #     df3 <- df2 %>%
+    #         group_by(time) %>%
+    #         summarize(avgSse = mean(sse),
+    #                   avgCos = mean(cos),
+    #                   cumAgentUpdate = sum(ifEverUpdated),
+    #                   n = n(),
+    #                   propCos80 = sum(cos80) / n(),
+    #                   propCos85 = sum(cos85) / n(),
+    #                   propCos90 = sum(cos90) / n()
+    #                   ) %>%
+    #         mutate(freq = cumAgentUpdate / n)
     
     # calculate cosine similiary proportions given update status
-    df4 <- df2 %>%
-        group_by(time, ifEverUpdated) %>%
-        summarize(avgSse = mean(sse),
+    #     df4 <- df2 %>%
+    #         group_by(time, ifEverUpdated) %>%
+    #         summarise(avgSse = mean(sse),
+    #                   avgCos = mean(cos),
+    #                   cumAgentUpdate = sum(ifEverUpdated),
+    #                   n = n(),
+    #                   propCos80 = sum(cos80) / n(),
+    #                   propCos85 = sum(cos85) / n(),
+    #                   propCos90 = sum(cos90) / n()
+    #                   )
+    
                   avgCos = mean(cos),
                   cumAgentUpdate = sum(ifEverUpdated),
                   n = n(),

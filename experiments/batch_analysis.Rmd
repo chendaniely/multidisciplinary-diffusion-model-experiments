@@ -233,7 +233,8 @@ for(pout_file in pout_files){
     # create each plot
     foldername <- str_split(string = pout_file, "/")[[1]][2]
     
-    plots <- create_plots(df3, foldername)
+    plots <- create_plots(per_ever_updated_status, paste(foldername, 'updated_only', sep = '_'))
+    plots_2 <- create_plots(per_time, foldername)
     
     # multiplot
     print(pout_file)

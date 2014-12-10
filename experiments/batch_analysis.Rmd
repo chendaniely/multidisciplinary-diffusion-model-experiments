@@ -26,7 +26,7 @@ batch_folder <- '02-lens_batch_2014-11-14_20:46:22'
 
 num_processing_units <- 20
 activation_value_columns <- c(6:25)
-
+prototype_value_columns <- c(66:85)
 ```
 
 

@@ -146,11 +146,18 @@ create_plots <- function(dataframe, foldername){
     
     g.cos97 <- g + geom_line(aes(y = propCos97)) + ggtitle(foldername)
     g.cos97
+    
+    g.cos99 <- g + geom_line(aes(y = propCos99)) + ggtitle(foldername)
+    g.cos99
+    
+    g.cos999 <- g + geom_line(aes(y = propCos999)) + ggtitle(foldername)
+    g.cos999
 
     # g.cos80.updated <- c()
     # g.cos90.updated <- c()
     
-    return(list(g.sse, g.cos, g.cumAgentUpdate, g.cos80, g.cos85, g.cos90, g.cos95, g.cos97))
+    return(list(g.sse, g.cos, g.cumAgentUpdate, g.cos80, g.cos85, g.cos90,
+                g.cos95, g.cos97, g.cos99, g.cos999))
 }
 ```
 
@@ -169,14 +176,15 @@ for(pout_file in pout_files){
 
     # calculate cosine values
     df2$cos <- apply(df2, 1, calculate_cosine_sim)
-    
+
     # recode cosine values
     df2$cos80 <- ifelse(df2$cos >= .80, yes = 1, no = 0)
     df2$cos85 <- ifelse(df2$cos >= .85, yes = 1, no = 0)
     df2$cos90 <- ifelse(df2$cos >= .90, yes = 1, no = 0)
     df2$cos95 <- ifelse(df2$cos >= .95, yes = 1, no = 0)
     df2$cos97 <- ifelse(df2$cos >= .97, yes = 1, no = 0)
-    df2$cos97 <- ifelse(df2$cos >= .97, yes = 1, no = 0)
+    df2$cos99 <- ifelse(df2$cos >= .99, yes = 1, no = 0)
+    df2$cos999 <- ifelse(df2$cos >= .999, yes = 1, no = 0)
     
     # assign update status
     df2$ifEverUpdated <- ifelse(df2$numUpdate >= 1, 1, 0)
@@ -220,13 +228,16 @@ for(pout_file in pout_files){
                   numCos90 = sum(cos90),
                   numCos95 = sum(cos95),
                   numCos97 = sum(cos97),
-                  
-                  
+                  numCos99 = sum(cos99),
+                  numCos999 = sum(cos999),
+
                   propCos80 = sum(cos80) / n(),
                   propCos85 = sum(cos85) / n(),
                   propCos90 = sum(cos90) / n(),
                   propCos95 = sum(cos95) / n(),
-                  propCos97 = sum(cos97) / n()
+                  propCos97 = sum(cos97) / n(),
+                  propCos99 = sum(cos99) / n(),
+                  propCos999 = sum(cos999) / n()
                   )
     
     per_time <- mutate(per_ever_updated_status,
@@ -239,24 +250,27 @@ for(pout_file in pout_files){
                        numCos90 = sum(numCos90),
                        numCos95 = sum(numCos95),
                        numCos97 = sum(numCos97),
-                       
-                       
+                       numCos99 = sum(numCos99),
+                       numCos999 = sum(numCos999),
+
                        propCos80 = numCos80 / n,
                        propCos85 = numCos85 / n,
                        propCos90 = numCos90 / n,
                        propCos95 = numCos95 / n,
-                       propCos97 = numCos97 / n
+                       propCos97 = numCos97 / n,
+                       propCos99 = numCos99 / n,
+                       propCos999 = numCos999 / n
                        ) %>%
         filter(ifEverUpdated == 0) %>%
         select(-(ifEverUpdated))
 
     # create each plot
     foldername <- str_split(string = pout_file, "/")[[1]][2]
-    
+
     plots <- create_plots(per_ever_updated_status[per_ever_updated_status$ifEverUpdated == 1, ], 
                           paste(foldername, 'updated_only', sep = '_'))
     plots_2 <- create_plots(per_time, paste(foldername, 'all', sep = '_'))
-    
+
     # multiplot
     print(pout_file)
     multiplot(c(plots, plots_2), cols = 4) 

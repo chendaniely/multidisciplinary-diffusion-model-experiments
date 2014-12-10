@@ -166,8 +166,11 @@ create_plots <- function(dataframe, foldername){
 pout_files <- get_batch_pout_files(batch_folder)
 pout_file <- pout_files[1]
 # for each pout file, clean and plot it
-for(pout_file in pout_files){
+
+registerDoMC(4)
+par_list <- foreach(i=1:length(pout_files)) %dopar% {
     # get data
+    pout_file <- pout_files[i]
     df <- get_data(pout_file)
     
     # calculate sum square error values

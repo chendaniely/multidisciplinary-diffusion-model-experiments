@@ -140,11 +140,17 @@ create_plots <- function(dataframe, foldername){
     
     g.cos90 <- g + geom_line(aes(y = propCos90)) + ggtitle(foldername)
     g.cos90
+    
+    g.cos95 <- g + geom_line(aes(y = propCos95)) + ggtitle(foldername)
+    g.cos95
+    
+    g.cos97 <- g + geom_line(aes(y = propCos97)) + ggtitle(foldername)
+    g.cos97
 
     # g.cos80.updated <- c()
     # g.cos90.updated <- c()
     
-    return(list(g.sse, g.cos, g.cumAgentUpdate, g.cos80, g.cos85, g.cos90))
+    return(list(g.sse, g.cos, g.cumAgentUpdate, g.cos80, g.cos85, g.cos90, g.cos95, g.cos97))
 }
 ```
 
@@ -168,6 +174,9 @@ for(pout_file in pout_files){
     df2$cos80 <- ifelse(df2$cos >= .80, yes = 1, no = 0)
     df2$cos85 <- ifelse(df2$cos >= .85, yes = 1, no = 0)
     df2$cos90 <- ifelse(df2$cos >= .90, yes = 1, no = 0)
+    df2$cos95 <- ifelse(df2$cos >= .95, yes = 1, no = 0)
+    df2$cos97 <- ifelse(df2$cos >= .97, yes = 1, no = 0)
+    df2$cos97 <- ifelse(df2$cos >= .97, yes = 1, no = 0)
     
     # assign update status
     df2$ifEverUpdated <- ifelse(df2$numUpdate >= 1, 1, 0)
@@ -209,9 +218,15 @@ for(pout_file in pout_files){
                   numCos80 = sum(cos80),
                   numCos85 = sum(cos85),
                   numCos90 = sum(cos90),
+                  numCos95 = sum(cos95),
+                  numCos97 = sum(cos97),
+                  
+                  
                   propCos80 = sum(cos80) / n(),
                   propCos85 = sum(cos85) / n(),
-                  propCos90 = sum(cos90) / n()
+                  propCos90 = sum(cos90) / n(),
+                  propCos95 = sum(cos95) / n(),
+                  propCos97 = sum(cos97) / n()
                   )
     
     per_time <- mutate(per_ever_updated_status,
@@ -222,9 +237,15 @@ for(pout_file in pout_files){
                        numCos80 = sum(numCos80),
                        numCos85 = sum(numCos85),
                        numCos90 = sum(numCos90),
+                       numCos95 = sum(numCos95),
+                       numCos97 = sum(numCos97),
+                       
+                       
                        propCos80 = numCos80 / n,
                        propCos85 = numCos85 / n,
-                       propCos90 = numCos90 / n
+                       propCos90 = numCos90 / n,
+                       propCos95 = numCos95 / n,
+                       propCos97 = numCos97 / n
                        ) %>%
         filter(ifEverUpdated == 0) %>%
         select(-(ifEverUpdated))
@@ -238,7 +259,7 @@ for(pout_file in pout_files){
     
     # multiplot
     print(pout_file)
-    multiplot(c(plots, plots_2), cols = 4)
+    multiplot(c(plots, plots_2), cols = 4) 
     # multiplot(plots_2, cols = 2)
 }
 ```

@@ -3,6 +3,8 @@ title: "mann-r-analysis"
 author: "Daniel Chen"
 output:
   html_document:
+    fig_height: 11
+    fig_width: 11
     number_sections: yes
     toc: yes
 ---

@@ -97,8 +97,8 @@ get_data <- function(pout_file){
 
 ```{r}
 calculate_sse <- function(vector){
-  activationValues <- vector[c(6:25)]
-  prototype <- vector[c((length(vector) - 19) : length(vector))]
+  activationValues <- vector[activation_value_columns]
+  prototype <- vector[prototype_value_columns]
   difference <- as.numeric(activationValues) - as.numeric(prototype)
   se <- difference ** 2
   sse <- sum(se)
@@ -108,8 +108,8 @@ calculate_sse <- function(vector){
 
 ```{r}
 calculate_cosine_sim <- function(vector){
-  activationValues <- vector[c(6:25)]
-  prototype <- vector[c((length(vector) - 19) : length(vector))]
+  activationValues <- vector[activation_value_columns]
+  prototype <- vector[prototype_value_columns]
   
   v1 <- as.vector(as.matrix(as.numeric(activationValues) + 1))
   v2 <- as.vector(as.matrix(as.numeric(prototype) + 1))

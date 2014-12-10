@@ -274,7 +274,6 @@ for(pout_file in pout_files){
     # multiplot
     print(pout_file)
     multiplot(c(plots, plots_2), cols = 4) 
-    # multiplot(plots_2, cols = 2)
 }
 ```
 

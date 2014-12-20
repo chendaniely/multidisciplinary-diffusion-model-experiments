@@ -138,9 +138,6 @@ def main():
 
     network_of_agents = network_agent.NetworkAgent()
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
-    r_script_path = os.path.join(here,
-                                 'OrrAutoAssociatorTesting_PatternMaking.r')
-    print(r_script_path)
 
     # TODO turn this into a function
     agent.LensAgent.set_lens_agent_prototypes(1)
@@ -162,8 +159,6 @@ def main():
             'LENSParameters', 'WeightTrainExampleMutationsProb'),
         training_criterion=config.getint('LENSParameters',
                                          'Criterion')
-        # r_status=config.getboolean('LENSParameters', 'Rstatus'),
-        # r_script=r_script_path
     )
 
     model_output = os.path.join(here, 'output',

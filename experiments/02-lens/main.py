@@ -143,6 +143,27 @@ def main():
     # TODO turn this into a function
     number_of_prototypes = config.getint('LENSParameters',
                                          'NumberOfPrototypes')
+    prototype_generation = config.get('LENSParameters',
+                                      'PrototypeGeneration')
+    # if the prototype generation is the user, we will use the prototype
+    # from the config file
+    # else we will have the LensAgent Generate a random one
+    if prototype_generation == 'user':
+        prototypes_str = config.get('LENSParameters',
+                                    'WeightBaseExample').split(';')
+        prototypes = list(agent.LensAgent._str_to_int_list(s)
+                          for s in prototypes_str)
+        assert(isinstance(prototypes, list))
+        assert(isinstance(prototypes[0], list))
+        agent.LensAgent.prototypes = prototypes
+        assert(isinstance(agent.LensAgent.prototypes, list))
+    elif prototype_generation == 'random':
+        agent.LensAgent.set_lens_agent_prototypes(number_of_prototypes)
+        assert(isinstance(agent.LensAgent.prototypes, list))
+        assert(isinstance(agent.LensAgent.prototypes[0], list))
+        print('LensAgent prototype(s): ', str(agent.LensAgent.prototypes))
+    else:
+        raise ValueError("Unknown prototype generation algorithm")
 
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         n, my_network.G.edges_iter(),

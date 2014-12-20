@@ -141,7 +141,8 @@ def main():
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
 
     # TODO turn this into a function
-    agent.LensAgent.set_lens_agent_prototypes(1)
+    number_of_prototypes = config.getint('LENSParameters',
+                                         'NumberOfPrototypes')
 
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         n, my_network.G.edges_iter(),

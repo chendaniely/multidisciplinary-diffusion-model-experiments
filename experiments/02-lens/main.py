@@ -186,6 +186,7 @@ def main():
 
     model_output = os.path.join(here, 'output',
                                 config.get('General', 'ModelOutput'))
+    # write all agent's init state (0's and None)
     network_of_agents.write_network_agent_step_info(
         -3, model_output, 'w')
 

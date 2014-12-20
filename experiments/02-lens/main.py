@@ -46,7 +46,8 @@ config.read(os.path.join(here, 'config.ini'))
 
 
 def random_select_and_update(network_of_agents):
-    n = len(network_of_agents.G)
+    # not needed bc num update per step is in config
+    # n = len(network_of_agents.G)
 
     # randomly select nodes from network_of_agents
     # select num_update number of the nodes for update

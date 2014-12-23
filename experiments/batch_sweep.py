@@ -219,7 +219,12 @@ def create_folder(base_directory,
     return dir_to_copy_to
 
 
-def update_init_file(mutation, criterion, run, folder_name):
+def update_init_file(folder_name,
+                     agents,
+                     delta,
+                     epsilon,
+                     criterion,
+                     run):
     """Updates the config file for a particular set of parameters for sweep
 
     Args:
@@ -227,17 +232,42 @@ def update_init_file(mutation, criterion, run, folder_name):
         ci (int): criterion value parameter for sweep
         run_number (int): run number for a set of value parameters for sweep
     """
-    assert isinstance(mutation, float)
+    assert isinstance(agents, int)
+    assert isinstance(delta, float)
+    assert isinstance(epsilon, float)
     assert isinstance(criterion, int)
-    assert isinstance(run_number, int)
+    assert isinstance(run, int)
 
+    #
+    # Read in config file
+    #
     sim_config = configparser.SafeConfigParser()
     sim_config_file_dir = os.path.join(folder_name, 'config.ini')
     sim_config.read(sim_config_file_dir)
+
+    #
+    # Get new config file values
+    #
+
+    # set agents
+    sim_config.set('LENSParameters', 'TotalNumberOfProcessingUnits',
+                   str(agents))
+
+    # set delta
     sim_config.set('LENSParameters', 'WeightTrainExampleMutationsProb',
-                   str(mutation))
+                   str(delta))
+    # set epsilon
+    sim_config.set('LENSParameters', 'Epsilon', str(epsilon))
+
+    # set criterion
     sim_config.set('LENSParameters', 'Criterion', str(criterion))
-    sim_config.set('General', 'RunNumber', str(run_number))
+
+    # set run
+    sim_config.set('General', 'RunNumber', str(run))
+
+    #
+    # Write new config file
+    #
     with open(sim_config_file_dir, 'w') as update_config:
         sim_config.write(update_config)
         # print('config file updated: ', sim_config_file_dir)

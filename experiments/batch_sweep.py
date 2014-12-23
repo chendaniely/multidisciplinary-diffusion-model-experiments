@@ -378,16 +378,31 @@ print("Total number of simulations: ", len(combination_of_parameters))
 # print(str(combination_of_parameters))
 
 list_of_sim_names = []
+# fmt = '{0:15} ${1:>6}'
 
 for combo in combination_of_parameters:
-    mutation, criterion, run_number = format_values(combo)
+    assert(len(combo) == 5)
+    agents, delta, epsilon, criterion, run = format_values(combo)
 
-    # print('m: {}, c: {}, r: {}'.format(mutation, criterion, run_number))
-    mutation_str = "{0:03d}".format(int(mutation * 100))
-    criterion_str = "{0:02d}".format(int(criterion))
-    run_number_str = "{0:02d}".format(int(run_number))
-    folder_created = create_folder(base_directory, mutation_str,
-                                   criterion_str, run_number_str)
+    # print('agents: {}, delta: {}, epsilon: {}, criterion: {}, run: {}'.
+    #       format(agents, delta, epsilon, criterion, run))
+
+    agents_str = "{0:06d}".format(int(agents))
+    delta_str = "{0:03d}".format(int(delta * 100))
+    epsilon_str = "{0:03d}".format(int(epsilon * 100))
+    criterion_str = "{0:04d}".format(int(criterion))
+    run_str = "{0:02d}".format(int(run))
+
+    # print('agents: {}, delta: {}, epsilon: {}, criterion: {}, run: {}'.
+    #       format(agents_str, delta_str, epsilon_str, criterion_str, run_str))
+
+    folder_created = create_folder(base_directory,
+                                   agents_str,
+                                   delta_str,
+                                   epsilon_str,
+                                   criterion_str,
+                                   run_str)
+
     list_of_sim_names.append(folder_created)
     update_init_file(mutation, criterion, run_number, folder_created)
 

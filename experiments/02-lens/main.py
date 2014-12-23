@@ -231,11 +231,14 @@ def main():
         network_of_agents.write_network_agent_step_info(
             -2, model_output, 'a')
 
-        selected_agent.seed_agent(config.get('LENSParameters',
-                                             'WeightBaseExample'),
-                                  lens_in_file_dir,
-                                  agent_self_ex_file,
-                                  agent_self_out_file)
+        # since the prototypes are already set, we seed the agent with
+        # using a prototype
+
+        selected_agent.seed_agent_update(seed_list,
+                                         lens_in_file_dir,
+                                         agent_self_ex_file,
+                                         agent_self_out_file,
+                                         criterion, epsilon)
 
         logger1.debug('Agent %s seeded', str(selected_agent.get_key()))
 

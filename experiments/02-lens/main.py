@@ -224,8 +224,10 @@ def main():
                       str(selected_agent.get_state()))
 
         # TODO REALLY HACKY CODE, the update/no_update function
-        selected_agent.seed_agent_no_update(config.get('LENSParameters',
-                                                       'weightBaseExample'))
+        # since the prototypes are already set, we seed the agent with
+        # using a prototype
+        seed_list = selected_agent.prototype
+        selected_agent.seed_agent_no_update(seed_list, epsilon)
         network_of_agents.write_network_agent_step_info(
             -2, model_output, 'a')
 

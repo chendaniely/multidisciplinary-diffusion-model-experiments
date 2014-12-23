@@ -175,6 +175,7 @@ pout_file <- pout_files[1]
 for(i in 1:length(pout_files)){
 # get data
     pout_file <- pout_files[i]
+    pout_file
     df <- get_data(pout_file)
     
     # calculate sum square error values

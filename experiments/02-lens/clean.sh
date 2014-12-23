@@ -3,6 +3,10 @@ rm *.wt
 rm *.ex
 rm *.out
 rm ./weights/*
-# rm ./output/*
-find . -type f -not -name './output/README.md' | xargs rm
+rm ./output/*
 rm ./lens_output/*
+
+mkdir ./output
+echo "Output folder for model runs.  Nothing in here should be tracked.
+This README is mostly here so the 'output' folder exists when git cloned
+" > ./output/README.md

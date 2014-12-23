@@ -185,16 +185,21 @@ def format_values(tuple_of_values):
     return tuple((agents, delta, epsilon, criterion, run))
 
 
-def create_folder(base_directory, mutation_str, criterion_str,
-                  run_number_str):
-    # print('m: {}, c: {}, r: {}'.format(mutation_str, criterion_str,
-    #                                    run_number_str))
-    new_sim_folder_name = '_'.join(['d'+mutation_str,
-                                    'c'+criterion_str,
-                                    'r'+run_number_str])
-    # print(new_sim_folder_name)
+def create_folder(base_directory,
+                  agents_str,
+                  delta_str,
+                  epsilon_str,
+                  criterion_str,
+                  run_str):
 
-    batch_folder_name = '_'.join([base_directory, 'batch', current_gmt_time])
+    new_sim_folder_name = '_'.join(['a'+agents_str,
+                                    'd'+delta_str,
+                                    'e'+epsilon_str,
+                                    'c'+criterion_str,
+                                    'r'+run_str])
+    print(new_sim_folder_name, " created")
+
+    batch_folder_name = '_'.join([base_directory, 'batch', current_time])
     # print('batch folder name: ', batch_folder_name)
 
     dir_to_copy_from = os.path.join(here, base_directory)

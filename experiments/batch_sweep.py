@@ -308,14 +308,24 @@ sweep_batch_config.read(sweep_batch_config_dir)
 
 num_sims_per_sweep_set = sweep_batch_config.getint(
     'Batch', 'NumberOfSimulationsPerSweepSet')
-mutations_ftb_str = sweep_batch_config.get('Sweep',
-                                           'WeightTrainExampleMutationsProb')
-criterion_ftb_str = sweep_batch_config.get('Sweep', 'Criterion')
 
-mutations_sweep_values = ftb_string_to_values(mutations_ftb_str)
-criterions_sweep_values = ftb_string_to_values(criterion_ftb_str)
+# Read in number of agents in the simulation
+agents_str = sweep_batch_config.get('Sweep', 'NumberOfAgents')
+agents_sweep_type_str = sweep_batch_config.get('Sweep',
+                                               'NumberOfAgentsSweepType')
 
-current_gmt_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+# Read in delta, the prototype mutation used for the training situations
+delta_str = sweep_batch_config.get('Sweep', 'WeightTrainExampleMutationsProb')
+delta_sweep_type_str = sweep_batch_config.get('Sweep', 'DeltaSweepType')
+
+# Read in epsilon, the prototype mutation used for the seed
+epsilon_str = sweep_batch_config.get('Sweep', 'Epsilon')
+epsilon_sweep_type_str = sweep_batch_config.get('Sweep', 'EpsilonSweepType')
+
+# Read in criterion, the error to stop training
+criterion_str = sweep_batch_config.get('Sweep', 'Criterion')
+criterion_sweep_type_str = sweep_batch_config.get('Sweep',
+                                                  'CriterionSweepType')
 
 ###############################################################################
 #

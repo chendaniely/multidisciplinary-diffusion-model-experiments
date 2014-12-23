@@ -221,18 +221,6 @@ for combo in combination_of_parameters:
     update_init_file(mutation, criterion, run_number, folder_created)
 
 
-# for mi, mutation in enumerate(mutations_sweep_values):
-#     for ci, criterion in enumerate(criterions_sweep_values):
-#         mutation_str_int = "{0:02f}".format(float(mutation))
-#         criterion_str_int = "{0:02d}".format(int(criterion))
-#         new_folder_name = '_'.join([base_directory_name,
-#                                     'd'+mutation_str_int,
-#                                     'c'+criterion_str_int])
-#         list_of_sim_names.append(new_folder_name)
-#         new_directory_name = os.path.join(here, base_directory+'_batch',
-#                                           new_folder_name)
-#         copy_directory(base_directory_name, new_directory_name)
-#         update_init_file(mi, ci, new_directory_name)
 
 
 num_cores = num_cores()

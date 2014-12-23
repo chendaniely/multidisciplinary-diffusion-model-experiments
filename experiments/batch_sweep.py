@@ -112,6 +112,34 @@ def _get_sweep_values_list(config_string):
         list(float(x.strip()) for x in (config_string.split(','))))
 
 
+def get_sweep_values(config_string, sweep_type):
+    """Returns an ndarray of values that will be used for the simulation run
+
+    Takes a config string form the config file, and the sweep type.  The sweep
+    type can be a range (the fr, to, by syntax) or a list of values.  This
+    function will either call the
+    _get_sweep_values_ftb or
+    _get_sweep_values_list
+    depending on the sweep_type
+
+    Args:
+        config_string (string): string from the config file
+        sweep_type (string): type of config string, either range or list
+
+    Returns:
+        values (ndarray): values for parameter sweep
+    """
+    if (sweep_type == "range"):
+        values_range = _ftb_string_to_values(config_string)
+        return(values_range)
+    elif (sweep_type == "list"):
+        values_list = _get_sweep_values_list(config_string)
+        return(values_list)
+    else:
+        raise ValueError(str("Unknown sweep type, can be range or list " +
+                             str(sweep_type) + " passed"))
+
+
 def copy_directory(src, dest):
     try:
         shutil.copytree(src, dest)

@@ -404,8 +404,13 @@ for combo in combination_of_parameters:
                                    run_str)
 
     list_of_sim_names.append(folder_created)
-    update_init_file(mutation, criterion, run_number, folder_created)
 
+    update_init_file(folder_created,
+                     agents,
+                     delta,
+                     epsilon,
+                     criterion,
+                     run)
 
 
 ###############################################################################

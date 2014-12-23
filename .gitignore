@@ -16,6 +16,7 @@
 # Model Runs
 experiments/??-*-??*/
 experiments/??-*_*/
+experiments/bkup_*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

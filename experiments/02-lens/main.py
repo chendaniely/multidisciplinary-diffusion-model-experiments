@@ -46,7 +46,8 @@ config.read(os.path.join(here, 'config.ini'))
 
 
 def random_select_and_update(network_of_agents):
-    n = len(network_of_agents.G)
+    # not needed bc num update per step is in config
+    # n = len(network_of_agents.G)
 
     # randomly select nodes from network_of_agents
     # select num_update number of the nodes for update
@@ -138,12 +139,31 @@ def main():
 
     network_of_agents = network_agent.NetworkAgent()
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
-    r_script_path = os.path.join(here,
-                                 'OrrAutoAssociatorTesting_PatternMaking.r')
-    print(r_script_path)
 
     # TODO turn this into a function
-    agent.LensAgent.set_lens_agent_prototypes(1)
+    number_of_prototypes = config.getint('LENSParameters',
+                                         'NumberOfPrototypes')
+    prototype_generation = config.get('LENSParameters',
+                                      'PrototypeGeneration')
+    # if the prototype generation is the user, we will use the prototype
+    # from the config file
+    # else we will have the LensAgent Generate a random one
+    if prototype_generation == 'user':
+        prototypes_str = config.get('LENSParameters',
+                                    'WeightBaseExample').split(';')
+        prototypes = list(agent.LensAgent._str_to_int_list(s)
+                          for s in prototypes_str)
+        assert(isinstance(prototypes, list))
+        assert(isinstance(prototypes[0], list))
+        agent.LensAgent.prototypes = prototypes
+        assert(isinstance(agent.LensAgent.prototypes, list))
+    elif prototype_generation == 'random':
+        agent.LensAgent.set_lens_agent_prototypes(number_of_prototypes)
+        assert(isinstance(agent.LensAgent.prototypes, list))
+        assert(isinstance(agent.LensAgent.prototypes[0], list))
+        print('LensAgent prototype(s): ', str(agent.LensAgent.prototypes))
+    else:
+        raise ValueError("Unknown prototype generation algorithm")
 
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         n, my_network.G.edges_iter(),
@@ -162,12 +182,11 @@ def main():
             'LENSParameters', 'WeightTrainExampleMutationsProb'),
         training_criterion=config.getint('LENSParameters',
                                          'Criterion')
-        # r_status=config.getboolean('LENSParameters', 'Rstatus'),
-        # r_script=r_script_path
     )
 
     model_output = os.path.join(here, 'output',
                                 config.get('General', 'ModelOutput'))
+    # write all agent's init state (0's and None)
     network_of_agents.write_network_agent_step_info(
         -3, model_output, 'w')
 
@@ -190,6 +209,9 @@ def main():
     agent_self_out_file = here + '/' + config.get('LENSParameters',
                                                   'NewAgentStateFile')
 
+    # prototype_string = config.get('LENSParameters', 'weightBaseExample')
+    criterion = config.getint('LENSParameters', 'Criterion')
+    epsilon = config.getfloat('LENSParameters', 'Epsilon')
     # seed agents who were select
     for selected_agent in agents_to_seed:
         # print("seeding: ",
@@ -202,16 +224,22 @@ def main():
                       str(selected_agent.get_state()))
 
         # TODO REALLY HACKY CODE, the update/no_update function
-        selected_agent.seed_agent_no_update(config.get('LENSParameters',
-                                                       'weightBaseExample'))
+        # since the prototypes are already set, we seed the agent with
+        # using a prototype
+        seed_list = selected_agent.prototype
+        selected_agent.seed_agent_no_update(seed_list, epsilon)
+        # write agent states to get the seeded value (without updating)
         network_of_agents.write_network_agent_step_info(
             -2, model_output, 'a')
 
-        selected_agent.seed_agent(config.get('LENSParameters',
-                                             'WeightBaseExample'),
-                                  lens_in_file_dir,
-                                  agent_self_ex_file,
-                                  agent_self_out_file)
+        # since the prototypes are already set, we seed the agent with
+        # using a prototype
+
+        selected_agent.seed_agent_update(seed_list,
+                                         lens_in_file_dir,
+                                         agent_self_ex_file,
+                                         agent_self_out_file,
+                                         criterion, epsilon)
 
         logger1.debug('Agent %s seeded', str(selected_agent.get_key()))
 
@@ -220,6 +248,7 @@ def main():
                       str(selected_agent.get_key()),
                       str(selected_agent.get_state()))
 
+    # agent states after seed get updated
     network_of_agents.write_network_agent_step_info(
         -1, model_output, 'a')
 

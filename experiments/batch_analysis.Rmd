@@ -87,7 +87,7 @@ get_batch_pout_files <- function(batch_folder){
 
 ```{r}
 get_data <- function(pout_file){
-    df <- read.csv(pout_file, header = FALSE)
+    df <- read.csv(pout_file, header = FALSE, nrow = 10030)
     names(df)[1:5] <- c('time', 'agent', 'numUpdate', 'isUpdated', 'inflId')
     prototype <- c((ncol(df) - 19) : ncol(df))
     activationValues <- c(6:25)
@@ -176,7 +176,7 @@ for(i in 1:length(pout_files)){
     df <- get_data(pout_file)
     
     # calculate sum square error values
-    df2 <- df[1:10030, ]
+    df2 <- df
     df2$sse <- apply(df2, MARGIN = 1, calculate_sse)
 
     # calculate cosine values

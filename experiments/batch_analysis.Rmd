@@ -122,36 +122,36 @@ calculate_cosine_sim <- function(vector){
 
 ```{r}
 create_plots <- function(dataframe, foldername){
-    g <- ggplot(dataframe, aes(time))
+    g <- ggplot(dataframe, aes(time)) + ggtitle(foldername) + theme(plot.title = element_text(size = rel(0.9)))
     
-    g.sse <- g + geom_line(aes(y = avgSse)) + ggtitle(foldername)
+    g.sse <- g + geom_line(aes(y = avgSse)) 
     g.sse
     
-    g.cos <- g + geom_line(aes(y = avgCos)) + ggtitle(foldername)
+    g.cos <- g + geom_line(aes(y = avgCos))
     g.cos
     
-    g.cumAgentUpdate <-g + geom_line(aes(y = cumAgentUpdate)) + ggtitle(foldername)
+    g.cumAgentUpdate <-g + geom_line(aes(y = cumAgentUpdate))
     g.cumAgentUpdate
     
-    g.cos80 <- g + geom_line(aes(y = propCos80)) + ggtitle(foldername)
+    g.cos80 <- g + geom_line(aes(y = propCos80))
     g.cos80
 
-    g.cos85 <- g + geom_line(aes(y = propCos85)) + ggtitle(foldername)
+    g.cos85 <- g + geom_line(aes(y = propCos85))
     g.cos85
     
-    g.cos90 <- g + geom_line(aes(y = propCos90)) + ggtitle(foldername)
+    g.cos90 <- g + geom_line(aes(y = propCos90))
     g.cos90
     
-    g.cos95 <- g + geom_line(aes(y = propCos95)) + ggtitle(foldername)
+    g.cos95 <- g + geom_line(aes(y = propCos95))
     g.cos95
     
-    g.cos97 <- g + geom_line(aes(y = propCos97)) + ggtitle(foldername)
+    g.cos97 <- g + geom_line(aes(y = propCos97))
     g.cos97
     
-    g.cos99 <- g + geom_line(aes(y = propCos99)) + ggtitle(foldername)
+    g.cos99 <- g + geom_line(aes(y = propCos99))
     g.cos99
     
-    g.cos999 <- g + geom_line(aes(y = propCos999)) + ggtitle(foldername)
+    g.cos999 <- g + geom_line(aes(y = propCos999))
     g.cos999
 
     # g.cos80.updated <- c()

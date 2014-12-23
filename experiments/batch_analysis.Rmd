@@ -18,8 +18,8 @@ library(knitr)
 library(foreach)
 library(doMC)
 library(grid)
-opts_chunk$set(echo=FALSE)
 library(dplyr)
+opts_chunk$set(echo=FALSE, fig.path='Figs-batch_analysis/')
 ```
 
 ```{r}

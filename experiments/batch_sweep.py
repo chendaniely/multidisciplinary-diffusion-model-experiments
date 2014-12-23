@@ -362,10 +362,20 @@ print("current time: ", current_time)
 base_directory = sweep_batch_config.get('General', 'BaseDirectory')
 base_directory_name = os.path.join(here, base_directory)
 
-list_of_parameters = [mutations_sweep_values,
-                      criterions_sweep_values,
-                      range(num_sims_per_sweep_set)]
-combination_of_parameters = itertools.product(*list_of_parameters)
+tuple_of_parameters = tuple((agents_sweep_values,
+                             delta_sweep_values,
+                             epsilon_sweep_values,
+                             criterion_sweep_values,
+                             range(num_sims_per_sweep_set)))
+
+print("Parameters: ", str(tuple_of_parameters))
+
+combination_of_parameters = tuple(itertools.product(*tuple_of_parameters))
+
+# print("Cartesian product of parameters: ", str(combination_of_parameters))
+
+print("Total number of simulations: ", len(combination_of_parameters))
+# print(str(combination_of_parameters))
 
 list_of_sim_names = []
 

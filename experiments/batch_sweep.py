@@ -99,6 +99,19 @@ def _get_sweep_values_range(fr, to, by):
     return values
 
 
+def _get_sweep_values_list(config_string):
+    """Returns an ndarray values that will be used for the simulation run
+
+    Args:
+        config_string (string): config string read form config file
+
+    Returns:
+        ndarray of values
+    """
+    return np.asarray(
+        list(float(x.strip()) for x in (config_string.split(','))))
+
+
 def copy_directory(src, dest):
     try:
         shutil.copytree(src, dest)

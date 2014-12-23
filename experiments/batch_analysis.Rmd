@@ -25,7 +25,7 @@ opts_chunk$set(echo=FALSE)
 ```{r}
 # parameters to run script
 # get list of .pout files
-batch_folder <- '02-lens_batch_2014-11-14_20:46:22'
+batch_folder <- '02-lens_batch_2014-12-23_03:41:22_sm_partial'
 
 num_processing_units <- 20
 activation_value_columns <- c(6:25)
@@ -168,14 +168,15 @@ pout_files <- get_batch_pout_files(batch_folder)
 pout_file <- pout_files[1]
 # for each pout file, clean and plot it
 
-registerDoMC(4)
-par_list <- foreach(i=1:length(pout_files)) %dopar% {
-    # get data
+# registerDoMC(4)
+# par_list <- foreach(i=1:length(pout_files)) %dopar% {
+for(i in 1:length(pout_files)){
+# get data
     pout_file <- pout_files[i]
     df <- get_data(pout_file)
     
     # calculate sum square error values
-    df2 <- df
+    df2 <- df[1:10030, ]
     df2$sse <- apply(df2, MARGIN = 1, calculate_sse)
 
     # calculate cosine values
@@ -196,84 +197,91 @@ par_list <- foreach(i=1:length(pout_files)) %dopar% {
     # assign time to 90% saturation
     
     # calculate cosine similiary proportions
-    #     df3 <- df2 %>%
-    #         group_by(time) %>%
-    #         summarize(avgSse = mean(sse),
-    #                   avgCos = mean(cos),
-    #                   cumAgentUpdate = sum(ifEverUpdated),
-    #                   n = n(),
-    #                   propCos80 = sum(cos80) / n(),
-    #                   propCos85 = sum(cos85) / n(),
-    #                   propCos90 = sum(cos90) / n()
-    #                   ) %>%
-    #         mutate(freq = cumAgentUpdate / n)
+        df3 <- df2 %>%
+            group_by(time) %>%
+            summarize(avgSse = mean(sse),
+                      avgCos = mean(cos),
+                      cumAgentUpdate = sum(ifEverUpdated),
+                      n = n(),
+                      propCos80 = sum(cos80) / n(),
+                      propCos85 = sum(cos85) / n(),
+                      propCos90 = sum(cos90) / n(),
+                      propCos95 = sum(cos95) / n(),
+                      propCos97 = sum(cos97) / n(),
+                      propCos99 = sum(cos99) / n(),
+                      propCos999 = sum(cos999) / n()
+                      ) %>%
+            mutate(freq = cumAgentUpdate / n)
     
     # calculate cosine similiary proportions given update status
-    #     df4 <- df2 %>%
-    #         group_by(time, ifEverUpdated) %>%
-    #         summarise(avgSse = mean(sse),
-    #                   avgCos = mean(cos),
-    #                   cumAgentUpdate = sum(ifEverUpdated),
-    #                   n = n(),
-    #                   propCos80 = sum(cos80) / n(),
-    #                   propCos85 = sum(cos85) / n(),
-    #                   propCos90 = sum(cos90) / n()
-    #                   )
+        df4 <- df2 %>%
+            group_by(time, ifEverUpdated) %>%
+            summarise(avgSse = mean(sse),
+                      avgCos = mean(cos),
+                      cumAgentUpdate = sum(ifEverUpdated),
+                      n = n(),
+                      propCos80 = sum(cos80) / n(),
+                      propCos85 = sum(cos85) / n(),
+                      propCos90 = sum(cos90) / n(),
+                      propCos95 = sum(cos95) / n(),
+                      propCos97 = sum(cos97) / n(),
+                      propCos99 = sum(cos99) / n(),
+                      propCos999 = sum(cos999) / n()
+                      )
     
-    ever_updated_status <- group_by(df2, time, ifEverUpdated)
-
-    per_ever_updated_status <- ever_updated_status %>%
-        summarise(avgSse = mean(sse),
-                  avgCos = mean(cos),
-                  cumAgentUpdate = sum(ifEverUpdated),
-                  n = n(),
-                  numCos80 = sum(cos80),
-                  numCos85 = sum(cos85),
-                  numCos90 = sum(cos90),
-                  numCos95 = sum(cos95),
-                  numCos97 = sum(cos97),
-                  numCos99 = sum(cos99),
-                  numCos999 = sum(cos999),
-
-                  propCos80 = sum(cos80) / n(),
-                  propCos85 = sum(cos85) / n(),
-                  propCos90 = sum(cos90) / n(),
-                  propCos95 = sum(cos95) / n(),
-                  propCos97 = sum(cos97) / n(),
-                  propCos99 = sum(cos99) / n(),
-                  propCos999 = sum(cos999) / n()
-                  )
-    
-    per_time <- mutate(per_ever_updated_status,
-                       avgSse = sum(avgSse * n) / sum(n),
-                       avgCos = sum(avgCos * n) / sum(n),
-                       cumAgentUpdate = sum(cumAgentUpdate),
-                       n = sum(n),
-                       numCos80 = sum(numCos80),
-                       numCos85 = sum(numCos85),
-                       numCos90 = sum(numCos90),
-                       numCos95 = sum(numCos95),
-                       numCos97 = sum(numCos97),
-                       numCos99 = sum(numCos99),
-                       numCos999 = sum(numCos999),
-
-                       propCos80 = numCos80 / n,
-                       propCos85 = numCos85 / n,
-                       propCos90 = numCos90 / n,
-                       propCos95 = numCos95 / n,
-                       propCos97 = numCos97 / n,
-                       propCos99 = numCos99 / n,
-                       propCos999 = numCos999 / n
-                       ) %>%
-        filter(ifEverUpdated == 0) %>%
-        select(-(ifEverUpdated))
+#     ever_updated_status <- group_by(df2, time, ifEverUpdated)
+# 
+#     per_ever_updated_status <- ever_updated_status %>%
+#         summarise(avgSse = mean(sse),
+#                   avgCos = mean(cos),
+#                   cumAgentUpdate = sum(ifEverUpdated),
+#                   n = n(),
+#                   numCos80 = sum(cos80),
+#                   numCos85 = sum(cos85),
+#                   numCos90 = sum(cos90),
+#                   numCos95 = sum(cos95),
+#                   numCos97 = sum(cos97),
+#                   numCos99 = sum(cos99),
+#                   numCos999 = sum(cos999),
+# 
+#                   propCos80 = sum(cos80) / n(),
+#                   propCos85 = sum(cos85) / n(),
+#                   propCos90 = sum(cos90) / n(),
+#                   propCos95 = sum(cos95) / n(),
+#                   propCos97 = sum(cos97) / n(),
+#                   propCos99 = sum(cos99) / n(),
+#                   propCos999 = sum(cos999) / n()
+#                   )
+#     
+#     per_time <- mutate(per_ever_updated_status,
+#                        avgSse = sum(avgSse * n) / sum(n),
+#                        avgCos = sum(avgCos * n) / sum(n),
+#                        cumAgentUpdate = sum(cumAgentUpdate),
+#                        n = sum(n),
+#                        numCos80 = sum(numCos80),
+#                        numCos85 = sum(numCos85),
+#                        numCos90 = sum(numCos90),
+#                        numCos95 = sum(numCos95),
+#                        numCos97 = sum(numCos97),
+#                        numCos99 = sum(numCos99),
+#                        numCos999 = sum(numCos999),
+# 
+#                        propCos80 = numCos80 / n,
+#                        propCos85 = numCos85 / n,
+#                        propCos90 = numCos90 / n,
+#                        propCos95 = numCos95 / n,
+#                        propCos97 = numCos97 / n,
+#                        propCos99 = numCos99 / n,
+#                        propCos999 = numCos999 / n
+#                        ) %>%
+#         filter(ifEverUpdated == 0) %>%
+#         select(-(ifEverUpdated))
 
     # create each plot
     foldername <- str_split(string = pout_file, "/")[[1]][2]
 
-    plots <- create_plots(per_ever_updated_status[per_ever_updated_status$ifEverUpdated == 1, ], 
-                          paste(foldername, 'updated_only', sep = '_'))
-    plots_2 <- create_plots(per_time, paste(foldername, 'all', sep = '_'))
+    plots <- create_plots(df3, paste(foldername, 'all', sep = '_'))
+    plots_2 <- create_plots(df4[df4$ifEverUpdated == 0, ], paste(foldername, 'updated_only', sep = '_'))
 
     # multiplot
     print(pout_file)

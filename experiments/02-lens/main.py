@@ -228,6 +228,7 @@ def main():
         # using a prototype
         seed_list = selected_agent.prototype
         selected_agent.seed_agent_no_update(seed_list, epsilon)
+        # write agent states to get the seeded value (without updating)
         network_of_agents.write_network_agent_step_info(
             -2, model_output, 'a')
 
@@ -247,6 +248,7 @@ def main():
                       str(selected_agent.get_key()),
                       str(selected_agent.get_state()))
 
+    # agent states after seed get updated
     network_of_agents.write_network_agent_step_info(
         -1, model_output, 'a')
 

@@ -62,6 +62,7 @@ def parse_config_list(config_string, sep=','):
     return tuple(config_string.split(','))
 
 
+def _get_sweep_values_range(fr, to, by):
     """Returns an ndarray values that will be used for the simulation run.
 
     Will include the 'to' value if the 'by' step will does not exceed the
@@ -82,12 +83,19 @@ def parse_config_list(config_string, sep=','):
         >>> print(get_sweep_values(1, 10, 2))
         array([1, 3, 5, 7, 9])
     """
+    assert(isinstance(fr, float))
+    assert(isinstance(to, float))
+    assert(isinstance(by, float))
+
     values = np.arange(fr, to, by)
+    # print('values in _get_sweep_values_range(): ', str(values))
     # make the range inclusive on the right, since this is what
     # the usuer will most likely mean in the parameter file
     end_value = values[-1] + by
     if end_value == to:
         values = np.append(values, values[-1] + by)
+
+    # print('return values in _get_sweep_values_range(): ', str(values))
     return values
 
 

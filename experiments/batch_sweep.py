@@ -167,17 +167,22 @@ def _ftb_string_to_values(ftb_string):
 
 
 def format_values(tuple_of_values):
-    mutation, criterion, run_number = tuple_of_values
+    assert(len(tuple_of_values) == 5)
+    agents, delta, epsilon, criterion, run = tuple_of_values
 
-    mutation = float("{0:.2f}".format(mutation))
+    agents = int(agents)
+    delta = float("{0:.2f}".format(delta))
+    epsilon = float("{0:.2f}".format(epsilon))
     criterion = int(criterion)
-    run_number = int(run_number)
+    run = int(run)
 
-    assert isinstance(mutation, float)
+    assert isinstance(agents, int)
+    assert isinstance(delta, float)
+    assert isinstance(epsilon, float)
     assert isinstance(criterion, int)
-    assert isinstance(run_number, int)
+    assert isinstance(run, int)
 
-    return mutation, criterion, run_number
+    return tuple((agents, delta, epsilon, criterion, run))
 
 
 def create_folder(base_directory, mutation_str, criterion_str,

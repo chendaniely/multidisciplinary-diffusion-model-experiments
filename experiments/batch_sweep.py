@@ -49,7 +49,19 @@ def _parse_config_fr_to_by(config_string):
     return fr_to_by_float
 
 
-def get_sweep_values(fr, to, by):
+def parse_config_list(config_string, sep=','):
+    """Returns a python tuple of a delimited string from the config file
+
+    Args:
+        config_string (string): a delimited string separated by the sep param
+        sep (string): delimited for config_string, default is ','
+
+    Returns:
+        tuple: of string split by the sep
+    """
+    return tuple(config_string.split(','))
+
+
     """Returns an ndarray values that will be used for the simulation run.
 
     Will include the 'to' value if the 'by' step will does not exceed the

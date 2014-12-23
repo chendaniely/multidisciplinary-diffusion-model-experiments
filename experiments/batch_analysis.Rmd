@@ -128,7 +128,7 @@ calculate_cosine_sim <- function(vector){
 
 ```{r}
 create_plots <- function(dataframe, foldername){
-    g <- ggplot(dataframe, aes(time)) + ggtitle(foldername) + theme(plot.title = element_text(size = rel(0.9)))
+    g <- ggplot(dataframe, aes(time)) + ggtitle(foldername) + theme(plot.title = element_text(size = rel(0.75)))
     
     g.sse <- g + geom_line(aes(y = avgSse)) 
     g.sse

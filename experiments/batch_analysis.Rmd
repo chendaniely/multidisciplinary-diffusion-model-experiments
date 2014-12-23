@@ -20,6 +20,7 @@ library(doMC)
 library(grid)
 library(dplyr)
 opts_chunk$set(echo=FALSE, fig.path='Figs-batch_analysis/')
+rm(list=ls())
 ```
 
 ```{r}

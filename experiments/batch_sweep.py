@@ -180,6 +180,11 @@ def run_simulation(folder_name):
         subprocess.call(['python', ex_file])
 
 
+###############################################################################
+#
+# BEGIN SCRIPT
+#
+###############################################################################
 here = os.path.abspath(os.path.dirname(__file__))
 
 # read in the parameter file
@@ -187,7 +192,13 @@ sweep_batch_config = configparser.ConfigParser()
 sweep_batch_config_dir = os.path.join(here, 'batch_sweep.ini')
 sweep_batch_config.read(sweep_batch_config_dir)
 
+###############################################################################
+#
+# READ IN PARAMETER FILE VALUES
+#
 # TODO can reading in sweep values be generalized?
+###############################################################################
+
 num_sims_per_sweep_set = sweep_batch_config.getint(
     'Batch', 'NumberOfSimulationsPerSweepSet')
 mutations_ftb_str = sweep_batch_config.get('Sweep',
@@ -198,6 +209,19 @@ mutations_sweep_values = ftb_string_to_values(mutations_ftb_str)
 criterions_sweep_values = ftb_string_to_values(criterion_ftb_str)
 
 current_gmt_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+
+###############################################################################
+#
+# CONVERT PARAMETER STRINGS TO PYTHON ARRAY VALUES (GET SWEEP VALUES)
+#
+###############################################################################
+
+
+###############################################################################
+#
+# Cartesian product of parameters to create simulation folder with timestamp
+#
+###############################################################################
 base_directory = sweep_batch_config.get('General', 'BaseDirectory')
 base_directory_name = os.path.join(here, base_directory)
 
@@ -222,6 +246,11 @@ for combo in combination_of_parameters:
 
 
 
+###############################################################################
+#
+# RUN PARALLEL SIMULATIONS, FTW!
+#
+###############################################################################
 
 num_cores = num_cores()
 print("Number of cores for batch sweep simulation: ", num_cores)

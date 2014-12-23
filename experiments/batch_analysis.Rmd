@@ -164,6 +164,7 @@ create_plots <- function(dataframe, foldername){
 
 
 ```{r}
+strt <- Sys.time()
 pout_files <- get_batch_pout_files(batch_folder)
 pout_file <- pout_files[1]
 # for each pout file, clean and plot it
@@ -287,6 +288,8 @@ for(i in 1:length(pout_files)){
     print(pout_file)
     multiplot(c(plots, plots_2), cols = 4) 
 }
+print("total time:")
+print(Sys.time() - strt)
 ```
 
 ```{r}

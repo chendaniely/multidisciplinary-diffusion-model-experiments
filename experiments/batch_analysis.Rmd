@@ -18,6 +18,7 @@ library(ggthemes)
 library(knitr)
 library(foreach)
 library(doMC)
+library(grid)
 opts_chunk$set(echo=FALSE)
 ```
 
@@ -34,8 +35,6 @@ prototype_value_columns <- c(66:85)
 
 ```{r, echo=FALSE}
 multiplot <- function(list_of_plots, plotlist=NULL, file, cols=1, layout=NULL) {
-  require(grid)
-
   # Make a list from the ... arguments and plotlist
   # plots <- c(list(...), plotlist)
   plots <- c(list_of_plots, plotlist)
@@ -281,7 +280,6 @@ par_list <- foreach(i=1:length(pout_files)) %dopar% {
     multiplot(c(plots, plots_2), cols = 4) 
 }
 ```
-
 
 ```{r}
 # registerDoMC(4)

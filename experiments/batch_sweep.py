@@ -250,7 +250,7 @@ def update_init_file(folder_name,
     #
 
     # set agents
-    sim_config.set('LENSParameters', 'TotalNumberOfProcessingUnits',
+    sim_config.set('LENSParameters', 'NumberOfAgents',
                    str(agents))
 
     # set delta

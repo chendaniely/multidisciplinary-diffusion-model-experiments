@@ -11,7 +11,6 @@ output:
 ```{r, echo=FALSE, message=FALSE}
 library(lsa)
 library(stringr)
-library(dplyr)
 library(ggplot2)
 library(reshape2)
 library(ggthemes)
@@ -20,6 +19,7 @@ library(foreach)
 library(doMC)
 library(grid)
 opts_chunk$set(echo=FALSE)
+library(dplyr)
 ```
 
 ```{r}

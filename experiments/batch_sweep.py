@@ -25,8 +25,8 @@ from time import gmtime, strftime
 import itertools
 
 
-def parse_config_fr_to_by(config_string):
-    """Returns the value for the fr, to, and by, values in the config file.
+def _parse_config_fr_to_by(config_string):
+    """Returns the value for the fr, to, and by, range in the config file.
 
     Args:
         config_string (string): a string of fr, to, by values
@@ -35,13 +35,16 @@ def parse_config_fr_to_by(config_string):
     Returns:
         tuple: float of number to the right of the fr, to, and by values in the
                config file
+
+    Examples: # TODO test this
+        >>> print(_parse_config_fr_to_by("fr = 0\nto = 1\nby = .2")
+        (0.0, 1.0, 0.2)
     """
     config_string = config_string.strip()
     fr_to_by_list = config_string.split('\n')
 
     # for each fr, to, by value, take the value to the right of the equal sign
     fr_to_by_str = tuple(e.split("=")[1].strip() for e in fr_to_by_list)
-
     fr_to_by_float = map(float, fr_to_by_str)
     return fr_to_by_float
 

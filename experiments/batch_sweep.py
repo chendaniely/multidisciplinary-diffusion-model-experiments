@@ -21,7 +21,7 @@ import numpy as np
 import shutil
 import subprocess
 import multiprocessing as mp
-from time import gmtime, strftime
+import datetime
 import itertools
 
 
@@ -289,6 +289,10 @@ current_gmt_time = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
 # Cartesian product of parameters to create simulation folder with timestamp
 #
 ###############################################################################
+now = datetime.datetime.now()
+current_time = now.strftime("%Y-%m-%d_%H:%M:%S")
+
+print("current time: ", current_time)
 base_directory = sweep_batch_config.get('General', 'BaseDirectory')
 base_directory_name = os.path.join(here, base_directory)
 

@@ -209,6 +209,7 @@ def main():
     agent_self_out_file = here + '/' + config.get('LENSParameters',
                                                   'NewAgentStateFile')
 
+    # prototype_string = config.get('LENSParameters', 'weightBaseExample')
     # seed agents who were select
     for selected_agent in agents_to_seed:
         # print("seeding: ",

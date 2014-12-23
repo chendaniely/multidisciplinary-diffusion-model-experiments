@@ -333,6 +333,22 @@ criterion_sweep_type_str = sweep_batch_config.get('Sweep',
 #
 ###############################################################################
 
+# Convert number of agents in sim to a list of ints
+agents_sweep_values = get_sweep_values(agents_str, agents_sweep_type_str)
+print("Agents sweep values: ", agents_sweep_values)
+
+# Convert delta into a list of floats
+delta_sweep_values = get_sweep_values(delta_str, delta_sweep_type_str)
+print("Delta sweep values: ", str(delta_sweep_values))
+
+# Convert epsilon into a list of floats
+epsilon_sweep_values = get_sweep_values(epsilon_str, epsilon_sweep_type_str)
+print("Epsilon sweep values: ", str(epsilon_sweep_values))
+
+# Convert criterion into a list of ints
+criterion_sweep_values = get_sweep_values(criterion_str,
+                                          criterion_sweep_type_str)
+print("Criterion sweep values: ", str(criterion_sweep_values))
 
 ###############################################################################
 #

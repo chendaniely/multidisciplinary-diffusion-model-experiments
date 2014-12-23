@@ -210,6 +210,8 @@ def main():
                                                   'NewAgentStateFile')
 
     # prototype_string = config.get('LENSParameters', 'weightBaseExample')
+    criterion = config.getint('LENSParameters', 'Criterion')
+    epsilon = config.getfloat('LENSParameters', 'Epsilon')
     # seed agents who were select
     for selected_agent in agents_to_seed:
         # print("seeding: ",

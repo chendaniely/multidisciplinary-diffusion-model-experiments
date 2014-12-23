@@ -151,15 +151,18 @@ def copy_directory(src, dest):
         print('Directory not copied. Error: %s' % e)
 
 
-def ftb_string_to_values(ftb_string):
-    f, t, b = parse_config_fr_to_by(ftb_string)
+def _ftb_string_to_values(ftb_string):
+    """
+    """
+    f, t, b = _parse_config_fr_to_by(ftb_string)
     # print(f, t, b)
 
-    sweep_values = np.arange(f, t, b)
+    # sweep_values = np.arange(f, t, b)
     # print(str(sweep_values))
 
     # print(get_sweep_values(f, t, b))
-    sweep_values = get_sweep_values(f, t, b)
+    sweep_values = _get_sweep_values_range(f, t, b)
+    # print("return sweep_values in _ftb_string_to_values(): ", sweep_values)
     return sweep_values
 
 

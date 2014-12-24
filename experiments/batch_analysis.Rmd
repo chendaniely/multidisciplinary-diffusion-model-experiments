@@ -289,7 +289,7 @@ for(i in 1:length(pout_files)){
     foldername <- str_split(string = pout_file, "/")[[1]][2]
 
     plots <- create_plots(df3, paste(foldername, 'all', sep = '_'))
-    plots_2 <- create_plots(df4[df4$ifEverUpdated == 0, ], paste(foldername, 'updated_only', sep = '_'))
+    plots_2 <- create_plots(df4[df4$ifEverUpdated == 1, ], paste(foldername, 'updated_only', sep = '_'))
 
     # multiplot
     print(pout_file)

@@ -21,7 +21,7 @@ library(grid)
 library(dplyr)
 opts_chunk$set(echo=FALSE,
                fig.path='Figs-batch_analysis/',
-               dpi=300,
+               # dpi=300,
                fig.width=11,
                fig.height=11)
 rm(list=ls())

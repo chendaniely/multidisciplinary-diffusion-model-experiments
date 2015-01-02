@@ -1,0 +1,219 @@
+---
+title: "analysis"
+author: "Daniel Chen"
+date: "12/23/2014"
+output:
+  html_document:
+    fig_height: 8
+    fig_width: 11
+---
+
+```{r, echo=FALSE, message=FALSE}
+library(lsa)
+library(stringr)
+library(ggplot2)
+library(reshape2)
+library(ggthemes)
+library(knitr)
+library(foreach)
+library(doParallel)
+library(doMC)
+library(grid)
+library(dplyr)
+library(testthat)
+opts_chunk$set(echo=FALSE,
+               fig.path='Figs-batch_analysis_stacked/',
+               # dpi=300,
+               fig.width=8,
+               fig.height=11
+               )
+rm(list=ls())
+```
+
+```{r}
+# parameters to run script
+# get list of .pout files
+batch_folder <- '02-lens_batch_2014-12-23_03:41:22_sm_partial'
+# batch_folder <- 'bkup_02-lens_batch_2014-12-23_03:41:22'
+
+num_processing_units <- 20
+activation_value_columns <- c(6:25)
+prototype_value_columns <- c(66:85)
+num_sims_per_sim_set <- 5
+```
+
+
+```{r, echo=FALSE}
+multiplot <- function(list_of_plots, plotlist=NULL, file, cols=1, layout=NULL) {
+  # Make a list from the ... arguments and plotlist
+  # plots <- c(list(...), plotlist)
+  plots <- c(list_of_plots, plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+```
+
+
+```{r, echo=FALSE}
+get_batch_pout_files <- function(batch_folder){
+    batch_experiments <- list.files(batch_folder)
+    pout_files <- c()
+    for(batch_experiment in batch_experiments){
+        pout_path <- paste(batch_folder, batch_experiment, 'output', sep = '/')
+        pout_path_file <- paste(pout_path, 'network_of_agents.pout', sep = '/')
+        pout_files <- c(pout_files, pout_path_file)
+    }
+    # print(pout_files)
+    return(pout_files)
+}
+```
+
+```{r}
+get_data <- function(pout_file){
+    df <- read.csv(pout_file, header = FALSE, nrow = 10030, na.strings = c("None", " None"), stringsAsFactors=FALSE)
+    names(df)[1:5] <- c('time', 'agent', 'numUpdate', 'isUpdated', 'inflId')
+    prototype <- c((ncol(df) - 19) : ncol(df))
+    activationValues <- c(6:25)
+    return(df)
+}
+```
+
+```{r}
+calculate_sse <- function(vector){
+  activationValues <- vector[activation_value_columns]
+  prototype <- vector[prototype_value_columns]
+  difference <- as.numeric(activationValues) - as.numeric(prototype)
+  se <- difference ** 2
+  sse <- sum(se)
+  return(sse)
+}
+```
+
+```{r}
+calculate_cosine_sim <- function(vector){
+  activationValues <- vector[activation_value_columns]
+  prototype <- vector[prototype_value_columns]
+  
+  v1 <- as.vector(as.matrix(as.numeric(activationValues) + 1))
+  v2 <- as.vector(as.matrix(as.numeric(prototype) + 1))
+
+  cosine <- lsa::cosine(v1, v2)
+  return(cosine)
+}
+```
+
+```{r}
+pout_files <- get_batch_pout_files(batch_folder)
+```
+
+```{r}
+reshape_files <- matrix(data = pout_files, nrow = num_sims_per_sim_set)
+# reshape_files
+dim(reshape_files)
+```
+
+```{r}
+get_model_simulation_df <- function(col_in_sim_set){
+    # preallocate data structure
+    # time    ever_updated	avg_sse	avg_cos	run_number
+    max_obs <- 1050 * num_sims_per_sim_set
+    df <- data.frame(time = rep(NA, max_obs), ever_updated = rep(NA, max_obs),
+                     avg_sse = rep(NA, max_obs), avg_cos = rep(NA, max_obs), 
+                     run_number = rep(NA, max_obs))
+    start <- 1
+    for(j in 1:num_sims_per_sim_set){
+        df_value <-get_data(reshape_files[j, col_in_sim_set])
+        df_name <- letters[j]
+        df_value$ever_updated <- ifelse(test = df_value$numUpdate > 0, 1, 0)
+        df_value$sse <- apply(df_value, 1, calculate_sse)
+        df_value$cos <- apply(df_value, 1, calculate_cosine_sim)
+        
+        df_by_time_update <- df_value %>% 
+            group_by(time, ever_updated) %>% 
+            summarize(avg_sse = mean(sse), avg_cos = mean(cos)) %>%
+            mutate(run_number = j)
+        
+        end <- start + nrow(df_by_time_update) - 1
+        
+        df[start:end, ] <- df_by_time_update
+        
+        start <- end + 1
+        # assign(x = df_name, value = df_by_time_update)
+        }
+    return(na.omit(df))
+    }
+```
+
+
+```{r}
+cl <- makeCluster(4)
+registerDoParallel(cl)
+strt <- Sys.time()
+
+plots <- foreach(i = 1:ncol(reshape_files), 
+                 .packages=c('ggplot2', 'dplyr', 'stringr')) %dopar% {
+    # read in each set of parameter sweeps into separate dataframe
+    # this doesnt work yet
+    # strt <- Sys.time()
+    df <- get_model_simulation_df(i) # Time difference of 5.335534 secs
+    # print(Sys.time() - strt)
+    
+    plot_name <- str_split(string = reshape_files[1, i], pattern = '/')[[1]][2]
+    g <- ggplot(df[df$ever_updated == 1, ], 
+                aes(time, color = as.factor(run_number))) + 
+        ggtitle(plot_name) + 
+        theme(plot.title = element_text(size = rel(0.75))) +
+        scale_color_discrete(name="Run")
+
+    s <- g + geom_line(aes(y = avg_sse))
+    # s
+    c <- g + geom_line(aes(y = avg_cos))
+    # c
+    plots <- list(s, c)
+    }
+
+print("loop time")
+print(Sys.time() - strt)
+stopCluster(cl)
+registerDoSEQ()
+```
+
+```{r}
+strt <- Sys.time()
+# create multiplots
+for(plot in plots){
+    multiplot(plot)
+    print("========================================")
+}
+
+print("plot time")
+print(Sys.time() - strt)
+```
+

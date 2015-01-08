@@ -47,10 +47,10 @@ num_parameter_sets_no_a <- 30
 
 
 ```{r, echo=FALSE}
-multiplot <- function(list_of_plots, plotlist=NULL, file, cols=1, layout=NULL) {
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   # Make a list from the ... arguments and plotlist
   # plots <- c(list(...), plotlist)
-  plots <- c(list_of_plots, plotlist)
+  plots <- c(..., plotlist)
 
   numPlots = length(plots)
 

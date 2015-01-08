@@ -278,8 +278,8 @@ registerDoSEQ()
 strt <- Sys.time()
 # create multiplots
 for(plot in plots){
-    print("========================================")
     multiplot(plotlist = plot)
+    print("================================================================================")
 }
 
 print("plot time")

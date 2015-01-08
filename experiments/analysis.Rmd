@@ -23,7 +23,7 @@ library(dplyr)
 library(testthat)
 opts_chunk$set(echo=FALSE,
                fig.path='Figs-batch_analysis_stacked/',
-               # dpi=300,
+               dpi=120,
                fig.width=8,
                fig.height=11
                )

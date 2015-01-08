@@ -276,8 +276,10 @@ registerDoSEQ()
 
 ```{r}
 strt <- Sys.time()
+# unlisted <- c()
 # create multiplots
 for(plot in plots){
+    # unlisted <- c(unlisted, plot)
     multiplot(plotlist = plot)
     print("================================================================================")
 }
@@ -285,4 +287,3 @@ for(plot in plots){
 print("plot time")
 print(Sys.time() - strt)
 ```
-

@@ -19,6 +19,7 @@ library(foreach)
 library(doParallel)
 library(doMC)
 library(grid)
+library(plyr)
 library(dplyr)
 library(testthat)
 opts_chunk$set(echo=FALSE,

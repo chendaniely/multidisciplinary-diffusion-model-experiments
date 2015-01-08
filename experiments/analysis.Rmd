@@ -188,6 +188,9 @@ get_model_simulation_df <- function(col_in_sim_set){
 ```{r}
 cl <- makeCluster(4)
 registerDoParallel(cl)
+```
+
+```{r}
 strt <- Sys.time()
 
 plots <- foreach(i = 1:ncol(reshape_files), 

@@ -268,6 +268,7 @@ print(Sys.time() - strt)
 plots_facet
 ```
 
+```{r}
 stopCluster(cl)
 registerDoSEQ()
 ```

@@ -150,6 +150,9 @@ dim(reshape_files)
 
 ```{r}
 get_model_simulation_df <- function(col_in_sim_set){
+    # return a df that contains all the simulations for a given parameter set
+    # that is all the runs for a given simulation set
+    
     # preallocate data structure
     # time    ever_updated	avg_sse	avg_cos	run_number
     max_obs <- 1050 * num_sims_per_sim_set

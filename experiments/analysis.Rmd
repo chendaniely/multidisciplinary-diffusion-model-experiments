@@ -133,15 +133,20 @@ calculate_cosine_sim <- function(vector){
 }
 ```
 
-```{r}
+```{r, include=FALSE}
 pout_files <- get_batch_pout_files(batch_folder)
+pout_files
+```
+
+```{r, include=FALSE}
+reshape_files <- matrix(data = pout_files, nrow = num_sims_per_sim_set)
+reshape_files
 ```
 
 ```{r}
-reshape_files <- matrix(data = pout_files, nrow = num_sims_per_sim_set)
-# reshape_files
 dim(reshape_files)
 ```
+
 
 ```{r}
 get_model_simulation_df <- function(col_in_sim_set){

@@ -219,21 +219,30 @@ print('time to get dfs in parallel:')
 print(Sys.time() - strt)
 ```
 
+```{r}
+strt <- Sys.time()
+plots <- foreach(i = 1:length(dfs), .packages=c('ggplot2')) %dopar% {
+    df <- as.data.frame(dfs[i])
+    plot_name <- str_split(string = reshape_files[1, i], pattern = '/')[[1]][2]
+    
     g <- ggplot(df[df$ever_updated == 1, ], 
                 aes(time, color = as.factor(run_number))) + 
         ggtitle(plot_name) + 
-        theme(plot.title = element_text(size = rel(0.75))) +
-        scale_color_discrete(name="Run")
-
+        # theme(plot.title = element_text(size = rel(0.75))) +
+        scale_color_discrete(name="Run") +
+        theme(legend.position="none")
+    
     s <- g + geom_line(aes(y = avg_sse))
-    # s
+    s
     c <- g + geom_line(aes(y = avg_cos))
-    # c
+    c
     plots <- list(s, c)
-    }
+}
 
-print("loop time")
+print("ltime to generate plots")
 print(Sys.time() - strt)
+```
+
 stopCluster(cl)
 registerDoSEQ()
 ```

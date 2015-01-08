@@ -158,7 +158,8 @@ get_model_simulation_df <- function(col_in_sim_set){
     max_obs <- 1050 * num_sims_per_sim_set
     df <- data.frame(time = rep(NA, max_obs), ever_updated = rep(NA, max_obs),
                      avg_sse = rep(NA, max_obs), avg_cos = rep(NA, max_obs), 
-                     run_number = rep(NA, max_obs))
+                     run_number = rep(NA, max_obs),
+                     delta_value = rep(NA, max_obs), epsilon_value = rep(NA, max_obs))
     start <- 1
     for(j in 1:num_sims_per_sim_set){
         df_value <-get_data(reshape_files[j, col_in_sim_set])

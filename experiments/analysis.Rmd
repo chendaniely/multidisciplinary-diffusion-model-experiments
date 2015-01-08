@@ -40,6 +40,9 @@ num_processing_units <- 20
 activation_value_columns <- c(6:25)
 prototype_value_columns <- c(66:85)
 num_sims_per_sim_set <- 5
+
+# number of parameter sets without accounting for num agents
+num_parameter_sets_no_a <- 30
 ```
 
 

@@ -243,6 +243,31 @@ print("ltime to generate plots")
 print(Sys.time() - strt)
 ```
 
+```{r}
+# facet plots
+starts <- seq(from = 1, to = ncol(reshape_files), by = num_parameter_sets_no_a)
+strt <- Sys.time()
+plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2')) %dopar% {
+    start <- starts[i]
+    end <- start + 29
+    df_all_n <- plyr::ldply(dfs[start:end], data.frame)
+    g <- ggplot(df_all_n[df_all_n$ever_updated == 1, ], 
+                aes(time, color = as.factor(run_number))) + 
+        theme(legend.position="none") +
+        geom_line(aes(y = avg_sse)) + scale_y_continuous(limits=c(0, 20)) +
+        theme(axis.text.x=element_text(angle = -90, hjust = 0)) +
+        facet_grid(delta_value~epsilon_value)
+    g
+}
+
+print("time to generate faceted plots")
+print(Sys.time() - strt)
+```
+
+```{r}
+plots_facet
+```
+
 stopCluster(cl)
 registerDoSEQ()
 ```

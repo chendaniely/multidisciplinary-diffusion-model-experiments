@@ -193,15 +193,21 @@ registerDoParallel(cl)
 ```{r}
 strt <- Sys.time()
 
-plots <- foreach(i = 1:ncol(reshape_files), 
-                 .packages=c('ggplot2', 'dplyr', 'stringr')) %dopar% {
+dfs <- foreach(i = 1:ncol(reshape_files), 
+                 .packages=c('dplyr', 'stringr')) %dopar% {
     # read in each set of parameter sweeps into separate dataframe
-    # this doesnt work yet
     # strt <- Sys.time()
     df <- get_model_simulation_df(i) # Time difference of 5.335534 secs
     # print(Sys.time() - strt)
     
     plot_name <- str_split(string = reshape_files[1, i], pattern = '/')[[1]][2]
+    
+    dfs <- list(df)
+}
+print('time to get dfs in parallel:')
+print(Sys.time() - strt)
+```
+
     g <- ggplot(df[df$ever_updated == 1, ], 
                 aes(time, color = as.factor(run_number))) + 
         ggtitle(plot_name) + 

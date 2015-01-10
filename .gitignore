@@ -15,6 +15,7 @@
 
 # Model Runs
 results/simulations/*
+# experiemts/ lines below can be deleted
 experiments/??-*-??*/
 experiments/??-*_*/
 experiments/bkup_*

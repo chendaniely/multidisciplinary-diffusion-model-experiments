@@ -14,6 +14,7 @@
 *.png
 
 # Model Runs
+results/simulations/*
 experiments/??-*-??*/
 experiments/??-*_*/
 experiments/bkup_*

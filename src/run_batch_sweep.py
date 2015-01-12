@@ -206,7 +206,8 @@ def create_folder(base_directory,
     dir_to_copy_from = os.path.join(here, base_directory)
     # print('from: ', dir_to_copy_from)
 
-    batch_folder_full_path = os.path.join(here, batch_folder_name)
+    batch_folder_full_path = os.path.join(here, '..', 'results',
+                                          batch_folder_name)
 
     if not os.path.exists(batch_folder_full_path):
         # print('created: ', batch_folder_full_path)

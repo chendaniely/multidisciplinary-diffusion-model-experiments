@@ -288,7 +288,6 @@ def run_simulation(folder_name):
         ex_file = os.path.join(folder_name, 'main.py')
         subprocess.call(['python', ex_file])
 
-
 ###############################################################################
 #
 # BEGIN SCRIPT

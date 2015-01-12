@@ -20,6 +20,9 @@ experiments/??-*-??*/
 experiments/??-*_*/
 experiments/bkup_*
 
+# Model config files
+config_batch_sweep.ini
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

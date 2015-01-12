@@ -1,1 +1,5 @@
 src for source code
+
+before runnint the simulation, you need to 
+`mv example_config_batch_sweep.ini config_batch_sweep.ini` and edit 
+`config_batch_sweep.ini` for the simulation parameters

@@ -186,6 +186,7 @@ def format_values(tuple_of_values):
 
 
 def create_folder(base_directory,
+                  current_time,
                   agents_str,
                   delta_str,
                   epsilon_str,
@@ -397,6 +398,7 @@ for combo in combination_of_parameters:
     #       format(agents_str, delta_str, epsilon_str, criterion_str, run_str))
 
     folder_created = create_folder(base_directory,
+                                   current_time,
                                    agents_str,
                                    delta_str,
                                    epsilon_str,

@@ -31,7 +31,7 @@ rm(list=ls())
 # parameters to run script
 # get list of .pout files
 batch_folder <- '02-lens_batch_2014-12-23_03:41:22_sm_partial'
-batch_folder <- 'bkup_02-lens_batch_2014-12-23_03:41:22'
+# batch_folder <- 'bkup_02-lens_batch_2014-12-23_03:41:22'
 
 num_processing_units <- 20
 activation_value_columns <- c(6:25)

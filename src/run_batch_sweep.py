@@ -186,6 +186,7 @@ def format_values(tuple_of_values):
 
 
 def create_folder(base_directory,
+                  current_time,
                   agents_str,
                   delta_str,
                   epsilon_str,
@@ -205,7 +206,8 @@ def create_folder(base_directory,
     dir_to_copy_from = os.path.join(here, base_directory)
     # print('from: ', dir_to_copy_from)
 
-    batch_folder_full_path = os.path.join(here, batch_folder_name)
+    batch_folder_full_path = os.path.join(here, '..', 'results', 'simulations',
+                                          batch_folder_name)
 
     if not os.path.exists(batch_folder_full_path):
         # print('created: ', batch_folder_full_path)
@@ -286,7 +288,6 @@ def run_simulation(folder_name):
         ex_file = os.path.join(folder_name, 'main.py')
         subprocess.call(['python', ex_file])
 
-
 ###############################################################################
 #
 # BEGIN SCRIPT
@@ -296,7 +297,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 # read in the parameter file
 sweep_batch_config = configparser.ConfigParser()
-sweep_batch_config_dir = os.path.join(here, 'batch_sweep.ini')
+sweep_batch_config_dir = os.path.join(here, 'config_batch_sweep.ini')
 sweep_batch_config.read(sweep_batch_config_dir)
 
 ###############################################################################
@@ -397,6 +398,7 @@ for combo in combination_of_parameters:
     #       format(agents_str, delta_str, epsilon_str, criterion_str, run_str))
 
     folder_created = create_folder(base_directory,
+                                   current_time,
                                    agents_str,
                                    delta_str,
                                    epsilon_str,

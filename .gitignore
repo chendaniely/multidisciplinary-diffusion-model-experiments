@@ -14,9 +14,14 @@
 *.png
 
 # Model Runs
+results/simulations/*
+# experiemts/ lines below can be deleted
 experiments/??-*-??*/
 experiments/??-*_*/
 experiments/bkup_*
+
+# Model config files
+config_batch_sweep.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

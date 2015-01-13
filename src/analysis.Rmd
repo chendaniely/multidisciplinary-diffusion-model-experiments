@@ -7,7 +7,7 @@ output:
     fig_height: 8
     fig_width: 11
 ---
-```{r, echo=FALSE, message=FALSE}
+```{r load_packages_and_config, echo=FALSE, message=FALSE}
 rm(list=ls())
 library(lsa)
 library(stringr)
@@ -33,26 +33,26 @@ source(file = 'R/helper_analysis.R')
 ```
 
 
-```{r, include=FALSE}
+```{r get_batch_pout_files, include=FALSE}
 pout_files <- get_batch_pout_files(batch_folder)
 pout_files
 ```
 
-```{r, include=FALSE}
+```{r reshape_pout_files_by_runs, include=FALSE}
 reshape_files <- matrix(data = pout_files, nrow = num_sims_per_sim_set)
 reshape_files
 ```
 
-```{r}
+```{r view_shape_of_pout_files}
 dim(reshape_files)
 ```
 
-```{r}
+```{r create_clusters}
 cl <- makeCluster(num_cores)
 registerDoParallel(cl)
 ```
 
-```{r}
+```{r get_pout_data_frames}
 strt <- Sys.time()
 
 dfs <- foreach(i = 1:ncol(reshape_files), 
@@ -105,7 +105,7 @@ print(Sys.time() - strt)
 # print(Sys.time() - strt)
 ```
 
-```{r}
+```{r create_faceted_plots}
 # facet plots
 starts <- seq(from = 1, to = ncol(reshape_files), by = num_parameter_sets_no_a)
 strt <- Sys.time()
@@ -127,17 +127,17 @@ print(Sys.time() - strt)
 ```
 
 
-```{r}
+```{r stop_clusters}
 stopCluster(cl)
 registerDoSEQ()
 ```
 
-# Faceted Plots
-```{r}
+# Plots
+```{r print_faceted_plots}
 plots_facet
 ```
 
-# Plots
+
 ```{r}
 # strt <- Sys.time()
 # # unlisted <- c()

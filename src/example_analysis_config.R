@@ -1,4 +1,3 @@
-rm(list = ls())
 source(file = 'R/helper.R')
 
 simulation_results_folder <- '../results/simulations/'

@@ -9,6 +9,7 @@ output:
 ---
 
 ```{r, echo=FALSE, message=FALSE}
+rm(list=ls())
 library(lsa)
 library(stringr)
 library(ggplot2)
@@ -28,24 +29,8 @@ opts_chunk$set(echo=FALSE,
                fig.width=8,
                fig.height=11
                )
-rm(list=ls())
+source(file = 'example_analysis_config.R')
 ```
-
-```{r}
-# parameters to run script
-# get list of .pout files
-batch_folder <- '02-lens_batch_2014-12-23_03:41:22_sm_partial'
-# batch_folder <- 'bkup_02-lens_batch_2014-12-23_03:41:22'
-
-num_processing_units <- 20
-activation_value_columns <- c(6:25)
-prototype_value_columns <- c(66:85)
-num_sims_per_sim_set <- 5
-
-# number of parameter sets without accounting for num agents
-num_parameter_sets_no_a <- 30
-```
-
 
 ```{r, echo=FALSE}
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {

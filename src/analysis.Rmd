@@ -29,7 +29,7 @@ opts_chunk$set(echo=FALSE,
                fig.width=8,
                fig.height=8
                )
-source(file = 'example_analysis_config.R')
+source(file = 'analysis_config.R')
 source(file = 'R/helper_analysis.R')
 ```
 

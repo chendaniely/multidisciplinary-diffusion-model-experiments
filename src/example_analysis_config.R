@@ -1,12 +1,22 @@
 source(file = 'R/helper.R')
 
+###############################################################################
+# USER CONFIGURATIONS
+###############################################################################
+name_batch_simulation_output_folder <-
+    '02-lens_batch_2014-12-23_03:41:22_sm_partial'
+#     'bkup_02-lens_batch_2014-12-23_03:41:22
+
+
+
+
+
 simulation_results_folder <- '../results/simulations/'
 ###############################################################################
 # READ CONFIG FILE
 ###############################################################################
 batch_folder <- paste(simulation_results_folder,
-                      '02-lens_batch_2014-12-23_03:41:22_sm_partial',
-                      # 'bkup_02-lens_batch_2014-12-23_03:41:22,
+                      name_batch_simulation_output_folder,
                       sep='')
 
 num_processing_units <- 20

@@ -7,7 +7,7 @@ output:
     fig_height: 8
     fig_width: 11
 ---
-
+# Analysis
 ```{r, echo=FALSE, message=FALSE}
 rm(list=ls())
 library(lsa)
@@ -127,15 +127,18 @@ print("time to generate faceted plots")
 print(Sys.time() - strt)
 ```
 
-```{r}
-plots_facet
-```
 
 ```{r}
 stopCluster(cl)
 registerDoSEQ()
 ```
 
+# Faceted Plots
+```{r}
+plots_facet
+```
+
+# Plots
 ```{r}
 strt <- Sys.time()
 # unlisted <- c()

@@ -49,7 +49,7 @@ dim(reshape_files)
 ```
 
 ```{r}
-cl <- makeCluster(4)
+cl <- makeCluster(num_cores)
 registerDoParallel(cl)
 ```
 

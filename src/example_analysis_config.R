@@ -26,6 +26,10 @@ batch_folder <- paste(simulation_results_folder,
                       name_batch_simulation_output_folder,
                       sep='')
 
+
+###############################################################################
+# Parameters from config file
+###############################################################################
 num_processing_units <- 20
 num_sims_per_sim_set <- 5
 

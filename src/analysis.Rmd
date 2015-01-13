@@ -27,7 +27,7 @@ opts_chunk$set(echo=FALSE,
                # fig.path='Figs-batch_analysis_stacked/',
                dpi=120,
                fig.width=8,
-               fig.height=11
+               fig.height=8
                )
 source(file = 'example_analysis_config.R')
 source(file = 'R/helper_analysis.R')

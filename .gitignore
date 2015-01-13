@@ -22,6 +22,7 @@ experiments/bkup_*
 
 # Model config files
 config_batch_sweep.ini
+analysis_config.R
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

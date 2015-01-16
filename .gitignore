@@ -12,6 +12,7 @@
 # R files
 *.html
 *.png
+*.Rproj
 
 # Model Runs
 results/simulations/*
@@ -79,3 +80,4 @@ docs/_build/
 # PyBuilder
 target/
 /experiments/.ipynb_checkpoints/batch_analysis-checkpoint.ipynb
+.Rproj.user

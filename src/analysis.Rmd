@@ -114,7 +114,7 @@ starts <- seq(from = 1, to = ncol(reshape_files), by = num_parameter_sets_no_a)
 strt <- Sys.time()
 plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2')) %dopar% {
     start <- starts[i]
-    end <- start + 29
+    end <- start + num_parameter_sets_no_a - 1
     df_all_n <- plyr::ldply(dfs[start:end], data.frame)
     g <- ggplot(df_all_n[df_all_n$ever_updated == 1, ], 
                 aes(time, color = as.factor(run_number))) + 

@@ -32,6 +32,8 @@ batch_folder <- paste(simulation_results_folder,
 ###############################################################################
 num_processing_units <- 20
 num_sims_per_sim_set <- 5
+num_agents <- 10
+num_ticks <- 10000
 
 num_parameter_sets_no_a <- 30 # number of parameter sets w/out num agents
 

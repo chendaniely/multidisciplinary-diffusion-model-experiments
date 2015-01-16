@@ -30,6 +30,9 @@ opts_chunk$set(echo=FALSE,
                )
 source(file = 'analysis_config.R')
 source(file = 'R/helper_analysis.R')
+# to render document:
+# rmarkdown::render('analysis.Rmd', output_file=paste(name_batch_simulation_output_folder, 'html', sep = '.'), output_dir='../results/simulations/')
+
 ```
 
 

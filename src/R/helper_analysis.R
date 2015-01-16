@@ -47,7 +47,7 @@ get_batch_pout_files <- function(batch_folder){
 
 
 get_data <- function(pout_file){
-    df <- read.csv(pout_file, header = FALSE, nrow = 10030,
+    df <- read.csv(pout_file, header = FALSE,
                    na.strings = c("None", " None"), stringsAsFactors=FALSE)
     names(df)[1:5] <- c('time', 'agent', 'numUpdate', 'isUpdated', 'inflId')
     prototype <- c((ncol(df) - 19) : ncol(df))

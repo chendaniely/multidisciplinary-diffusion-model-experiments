@@ -78,13 +78,13 @@ calculate_cosine_sim <- function(row_vector){
 }
 
 
-get_model_simulation_df <- function(col_in_sim_set){
+get_model_simulation_df <- function(col_in_sim_set, num_agents, num_ticks){
     # return a df that contains all the simulations for a given parameter set
     # that is all the runs for a given simulation set
 
     # preallocate data structure
     # time    ever_updated    avg_sse	avg_cos	run_number
-    max_obs <- 1050 * num_sims_per_sim_set
+    max_obs <- ((num_agents * num_ticks) + (num_agents * 4)) * num_sims_per_sim_set
     df <- data.frame(time = rep(NA, max_obs), ever_updated = rep(NA, max_obs),
                      avg_sse = rep(NA, max_obs), avg_cos = rep(NA, max_obs),
                      run_number = rep(NA, max_obs),

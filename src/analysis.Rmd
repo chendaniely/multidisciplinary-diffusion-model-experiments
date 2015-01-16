@@ -62,7 +62,7 @@ dfs <- foreach(i = 1:ncol(reshape_files),
                  .packages=c('dplyr', 'stringr')) %dopar% {
     # read in each set of parameter sweeps into separate dataframe
     # strt <- Sys.time()
-    df <- get_model_simulation_df(i) # Time difference of 5.335534 secs
+    df <- get_model_simulation_df(i, num_agents, num_ticks) # Time difference of 5.335534 secs
     # print(Sys.time() - strt)
     
     plot_name <- str_split(string = reshape_files[1, i], pattern = '/')[[1]][5]

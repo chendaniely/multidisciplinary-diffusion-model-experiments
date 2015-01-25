@@ -1,0 +1,94 @@
+---
+title: "Untitled"
+author: "Daniel Chen"
+date: "01/24/2015"
+output: html_document
+runtime: shiny
+---
+
+```{r, echo=FALSE}
+library(ggplot2)
+library(scales)
+
+source(file = '/home/dchen/git/multidisciplinary-diffusion-model-experiments/src/R/helper.R')
+```
+
+## Batch sweep experiment
+### Average SSE of agents who have been updated
+```{r, echo=FALSE, cache=TRUE}
+strt <- Sys.time()
+load('/home/dchen/git/multidisciplinary-diffusion-model-experiments/results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_grouped_runs_list.RData')
+print_difftime_prompt('load grouped data', diff_time = Sys.time() - strt)
+```
+
+```{r, echo=FALSE}
+test_df_melt <- list_stacked_df_grouped[[1]]
+```
+
+```{r, echo=FALSE}
+inputPanel(
+  selectInput("n_breaks", label = "Number of bins:",
+              choices = c(10, 20, 35, 50), selected = 20),
+  
+  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+              min = 0.2, max = 2, value = 1, step = 0.2)
+)
+
+renderPlot({
+  hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
+       xlab = "Duration (minutes)", main = "Geyser eruption duration")
+  
+  dens <- density(faithful$eruptions, adjust = input$bw_adjust)
+  lines(dens, col = "blue")
+})
+```
+
+## Processing unit activation values (only those updated)
+```{r, echo=FALSE, cache=TRUE}
+strt <- Sys.time()
+load('/home/dchen/git/multidisciplinary-diffusion-model-experiments/results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
+print_difftime_prompt('load stacked updated only long data', diff_time = Sys.time() - strt)
+```
+
+```{r, echo=FALSE}
+test_df_melt <- list_only_updated_melt[[1]]
+```
+
+```{r, echo=FALSE}
+###############################################################################
+# Plot all processing unit activation values over all time
+# Save plot to variable g
+# g will be used to subset the x-axis
+###############################################################################
+strt <- Sys.time()
+g <- ggplot(data = test_df_melt) +
+    geom_line(aes(x = time, y = value, color=variable)) + facet_grid(run_number~variable) +
+    theme(legend.position="none", axis.text.x = element_text(angle=90, vjust=0.5))
+print_difftime_prompt('create ggplot object', diff_time = Sys.time() - strt)
+
+renderPlot({
+    strt <- Sys.time()
+    print(g)
+})
+print_difftime_prompt('show ggplot object', diff_time = Sys.time() - strt)
+```
+
+```{r, echo=FALSE}
+###############################################################################
+# Use sliders to subset the plot by time (x-axis)
+###############################################################################
+inputPanel(
+    sliderInput("time_adjust", label = "Time Range Adjust",
+                min = 0, max = 10000, value = c(100, 1000), step = 1),
+    actionButton("goButton", "Zoom!"),
+    p("Click the button to subset the plot.")
+)
+
+renderPlot({
+    input$goButton
+    strt <- Sys.time()
+    print(g + scale_x_continuous(limits=isolate(input$time_adjust),
+                                 breaks=pretty_breaks()))
+})
+print_difftime_prompt('create ggplot object subset y-axis', diff_time = Sys.time() - strt)
+```

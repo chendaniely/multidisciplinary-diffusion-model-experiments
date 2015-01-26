@@ -2,7 +2,9 @@
 title: "Untitled"
 author: "Daniel Chen"
 date: "01/24/2015"
-output: html_document
+output:
+  html_document:
+    toc: yes
 runtime: shiny
 ---
 

@@ -96,7 +96,9 @@ inputPanel(
 renderPlot({
     input$goButton
     strt <- Sys.time()
-    print(g + scale_x_continuous(limits=isolate(input$time_adjust),
+    print(g + scale_y_continuous(limits=isolate(input$activation_adjust),
+                                 breaks=pretty_breaks()) +
+              scale_x_continuous(limits=isolate(input$time_adjust),
                                  breaks=pretty_breaks()))
 })
 print_difftime_prompt('create ggplot object subset y-axis', diff_time = Sys.time() - strt)

@@ -165,7 +165,7 @@ get_model_simulation_df_group_avg <- function(df_1_sim_run){
     to_clean_df_1_sim <- df_1_sim_run %>%
         group_by(time, ever_updated, run_number) %>%
         # summarize(avg_sse = mean(sse), avg_cos = mean(cos)) %>%
-        summarize(avg_sse = mean(sse)) # %>%
-        # mutate(run_number = j)
+        summarize(avg_sse = mean(sse)) %>%
+        mutate(delta_value = delta, epsilon_value = epsilon)
     return(to_clean_df_1_sim)
 }

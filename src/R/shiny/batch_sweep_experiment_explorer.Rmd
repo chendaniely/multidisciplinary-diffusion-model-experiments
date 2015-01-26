@@ -88,7 +88,7 @@ inputPanel(
                 min = 0, max = 1, value = c(0, 1), step = .1),
     
     sliderInput("time_adjust", label = "Time Range Adjust",
-                min = 0, max = 10000, value = c(100, 1000), step = 1),
+                min = 0, max = 10000, value = c(100, 1000), step = 50),
     actionButton("goButton", "Zoom!"),
     p("Click the button to subset the plot.")
 )

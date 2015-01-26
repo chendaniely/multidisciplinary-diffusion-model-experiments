@@ -28,7 +28,7 @@ calculate_prototype_value_columns <- function(num_processing_units,
 
 get_num_cores_to_use <- function(){
     num_cores <- detectCores()
-    if(num_cores <= 8){
+    if(num_cores <= 10){
         return(num_cores)
     } else {
         return(ceiling(num_cores * (2/3)))

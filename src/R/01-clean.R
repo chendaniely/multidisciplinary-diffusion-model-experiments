@@ -4,6 +4,7 @@ library(foreach)
 library(doParallel)
 library(stringr)
 
+source(file = 'R/helper_config.R')
 source(file = 'analysis_config.R')
 source(file = 'R/helper_clean.R')
 source(file = 'R/helper.R')

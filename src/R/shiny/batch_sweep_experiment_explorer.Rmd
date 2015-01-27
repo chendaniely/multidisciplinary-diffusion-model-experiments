@@ -11,6 +11,8 @@ runtime: shiny
 ```{r, echo=FALSE, warning=FALSE}
 library(ggplot2)
 library(scales)
+library(foreach)
+library(doParallel)
 
 source(file = '../helper.R')
 # source(file = '/home/dchen/git/multidisciplinary-diffusion-model-experiments/src/R/helper.R')

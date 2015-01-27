@@ -23,7 +23,9 @@ opts_chunk$set(echo=FALSE#,
                )
 
 source(file = '../helper.R')
-# source(file = '/home/dchen/git/multidisciplinary-diffusion-model-experiments/src/R/helper.R')
+source(file = '../helper_config.R')
+source(file = '../../analysis_config.R')
+
 ```
 
 ## Batch sweep experiment

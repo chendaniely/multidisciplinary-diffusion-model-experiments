@@ -26,6 +26,8 @@ source(file = '../helper.R')
 source(file = '../helper_config.R')
 source(file = '../../analysis_config.R')
 
+cl <- makeCluster(config_num_cores)
+registerDoParallel(cl)
 ```
 
 ## Batch sweep experiment
@@ -40,6 +42,8 @@ print_difftime_prompt('load grouped data', diff_time = Sys.time() - strt)
 #     start <- starts[i]
 ```{r, echo=FALSE}
 test_df_melt <- list_stacked_df_grouped[[1]]
+stopCluster(cl)
+registerDoSEQ()
 ```
 
 ```{r, echo=FALSE}

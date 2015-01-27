@@ -4,6 +4,7 @@ library(foreach)
 library(doParallel)
 library(stringr)
 
+source(file = 'R/helper_config.R')
 source(file = 'analysis_config.R')
 source(file = 'R/helper_clean.R')
 source(file = 'R/helper.R')
@@ -80,7 +81,7 @@ print_difftime_prompt('get grouped dfs from list_stacked_df', diff_time = Sys.ti
 # Save to binary RData filesand rm list_stacked_df
 ###############################################################################
 strt <- Sys.time()
-save(list_stacked_df,
+save(list_stacked_df, reshape_files,
      file = paste(config_batch_folder_path, 'df_stacked_runs_list.RData', sep = '_'),
      compress = 'bzip2',
      compression_level = 9)
@@ -88,7 +89,7 @@ print_difftime_prompt('save list_stacked_df', diff_time = Sys.time() - strt)
 # save list_stacked_df took: 37.5720306118329 min
 
 strt <- Sys.time()
-save(list_stacked_df_grouped,
+save(list_stacked_df_grouped, reshape_files,
      file = paste(config_batch_folder_path, 'df_grouped_runs_list.RData', sep = '_'),
      compress = 'bzip2',
      compression_level = 9)

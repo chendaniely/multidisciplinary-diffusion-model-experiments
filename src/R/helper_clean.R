@@ -1,6 +1,7 @@
 library(foreach)
 library(doParallel)
 library(dplyr)
+library(testthat)
 
 get_batch_pout_files <- function(batch_folder){
     # returns a list of *.pout files from results/simulations/
@@ -155,10 +156,16 @@ get_model_simulation_df_parallel <- function(col_in_sim_set, num_agents, num_tic
 }
 
 get_model_simulation_df_group_avg <- function(df_1_sim_run){
+    expect_equal(length(unique(df_1_sim_run$delta_value)), 1)
+    expect_equal(length(unique(df_1_sim_run$epsilon_value)), 1)
+
+    delta <- unique(df_1_sim_run$delta_value)
+    epsilon <- unique(df_1_sim_run$epsilon_value)
+
     to_clean_df_1_sim <- df_1_sim_run %>%
-        group_by(time, ever_updated) %>%
+        group_by(time, ever_updated, run_number) %>%
         # summarize(avg_sse = mean(sse), avg_cos = mean(cos)) %>%
-        summarize(avg_sse = mean(sse)) # %>%
-        # mutate(run_number = j)
+        summarize(avg_sse = mean(sse)) %>%
+        mutate(delta_value = delta, epsilon_value = epsilon)
     return(to_clean_df_1_sim)
 }

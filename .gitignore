@@ -13,6 +13,7 @@
 *.html
 *.png
 *.Rproj
+*_cache
 
 # Model Runs
 results/simulations/*

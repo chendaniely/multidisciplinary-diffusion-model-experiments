@@ -34,7 +34,6 @@ registerDoParallel(cl)
 ### Average SSE of agents who have been updated
 ```{r, echo=FALSE, cache=TRUE}
 strt <- Sys.time()
-# load('/home/dchen/git/multidisciplinary-diffusion-model-experiments/results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_grouped_runs_list.RData')
 load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_grouped_runs_list.RData')
 print_difftime_prompt('load grouped data', diff_time = Sys.time() - strt)
 ```
@@ -68,7 +67,6 @@ renderPlot({
 ```{r, echo=FALSE, cache=TRUE}
 strt <- Sys.time()
 load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
-# load('/home/dchen/git/multidisciplinary-diffusion-model-experiments/results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
 print_difftime_prompt('load stacked updated only long data', diff_time = Sys.time() - strt)
 ```
 

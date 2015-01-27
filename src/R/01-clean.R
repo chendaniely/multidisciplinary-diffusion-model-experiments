@@ -14,7 +14,7 @@ source(file = 'R/helper.R')
 ###############################################################################
 pout_files <- get_batch_pout_files(config_batch_folder_path)
 pout_files
-length(pout_files)
+sprintf('number of files found: %d', length(pout_files))
 
 ###############################################################################
 # Reshape into matrix such that teach column are all the simulations for a
@@ -25,7 +25,7 @@ length(pout_files)
 ###############################################################################
 reshape_files <- matrix(data = pout_files, nrow = config_num_sims_per_sim_set)
 reshape_files
-dim(reshape_files)
+sprintf('Each sim has %d runs. Total of %d sims', dim(reshape_files)[1], dim(reshape_files)[2])
 
 ###############################################################################
 # For each column (all the simulation runs for a given set) we want to combine
@@ -38,6 +38,7 @@ dim(reshape_files)
 cl <- makeCluster(config_num_cores)
 registerDoParallel(cl)
 
+print('get stacked dfs for all sim runs in parallel')
 strt <- Sys.time()
 list_stacked_df <- foreach(i = 1:ncol(reshape_files),
                            .packages=c('stringr', 'foreach', 'doParallel')) %dopar% {
@@ -73,6 +74,7 @@ print_difftime_prompt('get stacked dfs for all sim runs in parallel', diff_time 
 # Generate df that is average sse of only agents who were updated by time
 ###############################################################################
 # for each dataframe in list_stacked_df we will calculate a new df
+print('get grouped dfs from list_stacked_df')
 strt <- Sys.time()
 list_stacked_df_grouped <- lapply(X = list_stacked_df, FUN = get_model_simulation_df_group_avg)
 print_difftime_prompt('get grouped dfs from list_stacked_df', diff_time = Sys.time() - strt)
@@ -80,6 +82,7 @@ print_difftime_prompt('get grouped dfs from list_stacked_df', diff_time = Sys.ti
 ###############################################################################
 # Save to binary RData filesand rm list_stacked_df
 ###############################################################################
+print('save list_stacked_df')
 strt <- Sys.time()
 save(list_stacked_df, reshape_files,
      file = paste(config_batch_folder_path, 'df_stacked_runs_list.RData', sep = '_'),
@@ -88,6 +91,7 @@ save(list_stacked_df, reshape_files,
 print_difftime_prompt('save list_stacked_df', diff_time = Sys.time() - strt)
 # save list_stacked_df took: 37.5720306118329 min
 
+print('save list_stacked_df_grouped')
 strt <- Sys.time()
 save(list_stacked_df_grouped, reshape_files,
      file = paste(config_batch_folder_path, 'df_grouped_runs_list.RData', sep = '_'),

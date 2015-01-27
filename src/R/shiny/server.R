@@ -117,11 +117,20 @@ shinyServer(function(input, output) {
         print_difftime_prompt('create ggplot object',
                               diff_time = Sys.time() - strt)
 
-        strt <- Sys.time()
-        print(g1)
-        print_difftime_prompt('show ggplot object',
-                              diff_time = Sys.time() - strt)
-
+        input$goVline
+        draw_vline <- isolate(input$vlineRadio)
+        if(draw_vline == 1){
+            lower_vline <-isolate(as.numeric(input$vline_draw[[1]]))
+            upper_vline <-isolate(as.numeric(input$vline_draw[[2]]))
+            print(g1 +
+                      geom_vline(xintercept = lower_vline) +
+                      geom_vline(xintercept = upper_vline))
+        } else{
+            strt <- Sys.time()
+            print(g1)
+            print_difftime_prompt('show ggplot object',
+                                  diff_time = Sys.time() - strt)
+        }
         plot_env$sse_plot <- g1
 
     })

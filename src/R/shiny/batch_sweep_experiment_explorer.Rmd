@@ -13,6 +13,14 @@ library(ggplot2)
 library(scales)
 library(foreach)
 library(doParallel)
+library(knitr)
+
+opts_chunk$set(echo=FALSE#,
+               # fig.path='Figs-batch_analysis_stacked/',
+               # dpi=120,
+               # fig.width=8,
+               # fig.height=8
+               )
 
 source(file = '../helper.R')
 # source(file = '/home/dchen/git/multidisciplinary-diffusion-model-experiments/src/R/helper.R')

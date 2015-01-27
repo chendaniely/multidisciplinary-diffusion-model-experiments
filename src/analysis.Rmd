@@ -7,21 +7,22 @@ output:
     fig_height: 8
     fig_width: 11
 ---
+
 ```{r load_packages_and_config, echo=FALSE, message=FALSE}
 rm(list=ls())
-library(lsa)
-library(stringr)
-library(ggplot2)
-library(reshape2)
-library(ggthemes)
+# library(lsa)
+# library(stringr)
+# library(ggplot2)
+# library(reshape2)
+# library(ggthemes)
 library(knitr)
-library(foreach)
-library(doParallel)
-library(doMC)
-library(grid)
-library(plyr)
-library(dplyr)
-library(testthat)
+# library(foreach)
+# library(doParallel)
+# library(doMC)
+# library(grid)
+# library(plyr)
+# library(dplyr)
+# library(testthat)
 opts_chunk$set(echo=FALSE,
                # fig.path='Figs-batch_analysis_stacked/',
                dpi=120,
@@ -34,7 +35,6 @@ source(file = 'R/helper_analysis.R')
 # rmarkdown::render('analysis.Rmd', output_file=paste(name_batch_simulation_output_folder, 'html', sep = '.'), output_dir='simulation_results_folder')
 
 ```
-
 
 ```{r get_batch_pout_files, include=FALSE}
 pout_files <- get_batch_pout_files(batch_folder)
@@ -51,7 +51,7 @@ dim(reshape_files)
 ```
 
 ```{r create_clusters}
-cl <- makeCluster(num_cores)
+cl <- makeCluster(config_num_cores)
 registerDoParallel(cl)
 ```
 
@@ -110,7 +110,10 @@ print(Sys.time() - strt)
 
 ```{r create_faceted_plots}
 # facet plots
-starts <- seq(from = 1, to = ncol(reshape_files), by = num_parameter_sets_no_a)
+# the starts variable is used for when we have the same parameter sets,
+# but different number of agents
+# aka when we run a sweep over number of agents
+starts <- seq(from = 1, to = ncol(reshape_files), by = config_num_parameter_sets_no_a)
 strt <- Sys.time()
 plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2')) %dopar% {
     start <- starts[i]
@@ -128,7 +131,6 @@ plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2')) %dopar% {
 print("time to generate faceted plots")
 print(Sys.time() - strt)
 ```
-
 
 ```{r stop_clusters}
 stopCluster(cl)

@@ -85,18 +85,16 @@ print_difftime_prompt('get grouped dfs from list_stacked_df', diff_time = Sys.ti
 print('save list_stacked_df')
 strt <- Sys.time()
 save(list_stacked_df, reshape_files,
-     file = paste(config_batch_folder_path, 'df_stacked_runs_list.RData', sep = '_'),
-     compress = 'bzip2',
-     compression_level = 9)
+     file = paste(config_batch_folder_path,
+                  'df_stacked_runs_list.RData', sep = '_'))
 print_difftime_prompt('save list_stacked_df', diff_time = Sys.time() - strt)
-# save list_stacked_df took: 37.5720306118329 min
+# save list_stacked_df took: 37.5720306118329 min # using bzip -9
 
 print('save list_stacked_df_grouped')
 strt <- Sys.time()
 save(list_stacked_df_grouped, reshape_files,
-     file = paste(config_batch_folder_path, 'df_grouped_runs_list.RData', sep = '_'),
-     compress = 'bzip2',
-     compression_level = 9)
+     file = paste(config_batch_folder_path,
+                  'df_grouped_runs_list.RData', sep = '_'))
 print_difftime_prompt('save list_stacked_df_grouped', diff_time = Sys.time() - strt)
 
 ###############################################################################

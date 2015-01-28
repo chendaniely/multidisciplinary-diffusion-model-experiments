@@ -45,8 +45,9 @@ sprintf('%d cores used', config_num_cores)
 
 print('get stacked dfs for all sim runs in parallel')
 strt <- Sys.time()
-list_stacked_df <- foreach(i = 1:ncol(reshape_files),
-                           .packages=c('stringr', 'foreach', 'doParallel')) %dopar% {
+par_packages <- c('stringr', 'foreach', 'doParallel')
+par_end <- ncol(reshape_files)
+list_stacked_df <- foreach(i = 1:par_end, .packages=par_packages) %dopar% {
     # read in each set of parameter sweeps into separate dataframe
     strt <- Sys.time()
     df <- get_model_simulation_df_parallel(i, config_num_agents,

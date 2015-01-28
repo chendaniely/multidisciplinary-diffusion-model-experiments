@@ -1,5 +1,6 @@
 rm(list=ls())
 
+library(parallel)
 library(foreach)
 library(doParallel)
 library(stringr)

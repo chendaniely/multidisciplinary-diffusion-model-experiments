@@ -25,7 +25,8 @@ sprintf('number of files found: %d', length(pout_files))
 ###############################################################################
 reshape_files <- matrix(data = pout_files, nrow = config_num_sims_per_sim_set)
 reshape_files
-sprintf('Each sim has %d runs. Total of %d sims', dim(reshape_files)[1], dim(reshape_files)[2])
+sprintf('Each sim has %d runs. Total of %d sims',
+        dim(reshape_files)[1], dim(reshape_files)[2])
 
 ###############################################################################
 # For each column (all the simulation runs for a given set) we want to combine
@@ -40,7 +41,9 @@ registerDoParallel(cl)
 
 print('get stacked dfs for all sim runs in parallel')
 strt <- Sys.time()
-list_stacked_df <- foreach(i = 1:ncol(reshape_files), .packages=c('stringr', 'foreach', 'doParallel')) %dopar% {
+list_stacked_df <- foreach(i = 1:ncol(reshape_files),
+                           .packages=c('stringr', 'foreach', 'doParallel'))
+%dopar% {
     # read in each set of parameter sweeps into separate dataframe
     strt <- Sys.time()
     df <- get_model_simulation_df_parallel(i, config_num_agents,

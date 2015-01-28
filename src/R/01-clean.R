@@ -41,7 +41,8 @@ registerDoParallel(cl)
 print('get stacked dfs for all sim runs in parallel')
 strt <- Sys.time()
 list_stacked_df <- foreach(i = 1:ncol(reshape_files),
-                           .packages=c('stringr', 'foreach', 'doParallel')) %dopar% {
+                           .packages=c('stringr', 'foreach', 'doParallel'))
+                    %dopar% {
     # read in each set of parameter sweeps into separate dataframe
     strt <- Sys.time()
     df <- get_model_simulation_df_parallel(i, config_num_agents,
@@ -53,12 +54,14 @@ list_stacked_df <- foreach(i = 1:ncol(reshape_files),
     plot_name
 
     delta_value <- str_split(string = plot_name, pattern = '_')[[1]][2]
-    delta_value <- str_replace(string = delta_value, pattern = 'd', replacement = '')
+    delta_value <- str_replace(string = delta_value,
+                               pattern = 'd', replacement = '')
     delta_value <- as.numeric(delta_value)
     delta_value
 
     epsilon_value <- str_split(string = plot_name, pattern = '_')[[1]][3]
-    epsilon_value <- str_replace(string = epsilon_value, pattern = 'e', replacement = '')
+    epsilon_value <- str_replace(string = epsilon_value,
+                                 pattern = 'e', replacement = '')
     epsilon_value <- as.numeric(epsilon_value)
     epsilon_value
 
@@ -68,7 +71,8 @@ list_stacked_df <- foreach(i = 1:ncol(reshape_files),
     to_list_stacked_df <- df
     to_list_stacked_df
 }
-print_difftime_prompt('get stacked dfs for all sim runs in parallel', diff_time = Sys.time() - strt)
+print_difftime_prompt('get stacked dfs for all sim runs in parallel',
+                      diff_time = Sys.time() - strt)
 
 ###############################################################################
 # Generate df that is average sse of only agents who were updated by time
@@ -76,8 +80,10 @@ print_difftime_prompt('get stacked dfs for all sim runs in parallel', diff_time 
 # for each dataframe in list_stacked_df we will calculate a new df
 print('get grouped dfs from list_stacked_df')
 strt <- Sys.time()
-list_stacked_df_grouped <- lapply(X = list_stacked_df, FUN = get_model_simulation_df_group_avg)
-print_difftime_prompt('get grouped dfs from list_stacked_df', diff_time = Sys.time() - strt)
+list_stacked_df_grouped <- lapply(X = list_stacked_df,
+                                  FUN = get_model_simulation_df_group_avg)
+print_difftime_prompt('get grouped dfs from list_stacked_df',
+                      diff_time = Sys.time() - strt)
 
 ###############################################################################
 # Save to binary RData filesand rm list_stacked_df
@@ -95,7 +101,8 @@ strt <- Sys.time()
 save(list_stacked_df_grouped, reshape_files,
      file = paste(config_batch_folder_path,
                   'df_grouped_runs_list.RData', sep = '_'))
-print_difftime_prompt('save list_stacked_df_grouped', diff_time = Sys.time() - strt)
+print_difftime_prompt('save list_stacked_df_grouped',
+                      diff_time = Sys.time() - strt)
 
 ###############################################################################
 # rm datasets
@@ -106,7 +113,8 @@ print_difftime_prompt('rm list_stacked_df', diff_time = Sys.time() - strt)
 
 strt <- Sys.time()
 rm(list_stacked_df_grouped)
-print_difftime_prompt('rm list_stacked_df_grouped', diff_time = Sys.time() - strt)
+print_difftime_prompt('rm list_stacked_df_grouped',
+                      diff_time = Sys.time() - strt)
 
 stopCluster(cl)
 registerDoSEQ()

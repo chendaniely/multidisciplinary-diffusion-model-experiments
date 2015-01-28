@@ -22,8 +22,6 @@ load(file = df_stacked_runs_list)
 print_difftime_prompt('load list of df .RData', diff_time = Sys.time() - strt)
 # load list of df .RData took: 1.93490279515584 mins
 
-# list_stacked_df <- list_stacked_df[1:3]
-
 print('add run number to each df in list')
 strt <- Sys.time()
 list_only_updated <- lapply(X = list_stacked_df, FUN = group_by_time)
@@ -41,13 +39,6 @@ print_difftime_prompt('melt dataframs in list_only_updated', diff_time = Sys.tim
 
 rm(list_only_updated)
 gc()
-
-# test_df <- list_only_updated[[1]]
-
-# test_df_melt <- melt(data = test_df, id.vars=c('time', 'agent', 'isUpdated', 'run_number'))
-
-# start <- (nrow(test_df_melt)-100)
-# end <- (nrow(test_df_melt))
 
 print('save list_only_updated_melt')
 strt <- Sys.time()

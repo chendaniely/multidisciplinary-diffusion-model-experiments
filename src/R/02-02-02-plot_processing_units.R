@@ -4,9 +4,16 @@ library(ggplot2)
 library(scales)
 
 source(file = 'R/helper.R')
+source('R/helper_config.R')
+
+source('analysis_config.R')
+
+file_path <- paste0(config_batch_folder_path,
+                   '_df_stacked_runs_updated_melt_list.RData')
+df_stacked_runs_updated_melt_lst <-file_path
 
 strt <- Sys.time()
-load('../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
+load(df_stacked_runs_updated_melt_lst)
 print_difftime_prompt('load data', diff_time = Sys.time() - strt)
 
 test_df_melt <- list_only_updated_melt[[1]]

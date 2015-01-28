@@ -45,4 +45,5 @@ strt <- Sys.time()
 save(list_only_updated_melt,
      file = paste(config_batch_folder_path,
                   'df_stacked_runs_updated_melt_list.RData', sep = '_'))
-print_difftime_prompt('save list_only_updated_melt', diff_time = Sys.time() - strt)
+print_difftime_prompt('save list_only_updated_melt',
+                      diff_time = Sys.time() - strt)

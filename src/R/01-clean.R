@@ -6,9 +6,10 @@ library(doParallel)
 library(stringr)
 
 source(file = 'R/helper_config.R')
-source(file = 'analysis_config.R')
 source(file = 'R/helper_clean.R')
 source(file = 'R/helper.R')
+
+source(file = 'analysis_config.R')
 
 ###############################################################################
 # Get list of .pout files in the results/simulations/SIM_FOLDER/
@@ -45,7 +46,7 @@ sprintf('%d cores used', config_num_cores)
 print('get stacked dfs for all sim runs in parallel')
 strt <- Sys.time()
 list_stacked_df <- foreach(i = 1:ncol(reshape_files),
-                           .packages=c('stringr', 'foreach', 'parallel', 'doParallel')) %dopar% {
+                           .packages=c('stringr', 'foreach', 'doParallel')) %dopar% {
     # read in each set of parameter sweeps into separate dataframe
     strt <- Sys.time()
     df <- get_model_simulation_df_parallel(i, config_num_agents,

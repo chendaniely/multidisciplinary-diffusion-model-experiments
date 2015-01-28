@@ -10,10 +10,10 @@ source('analysis_config.R')
 
 file_path <- paste0(config_batch_folder_path,
                    '_df_stacked_runs_updated_melt_list.RData')
-df_stacked_runs_updated_melt_lst <-file_path
+df_stacked_runs_updated_melt_list <-file_path
 
 strt <- Sys.time()
-load(df_stacked_runs_updated_melt_lst)
+load(df_stacked_runs_updated_melt_list)
 print_difftime_prompt('load data', diff_time = Sys.time() - strt)
 
 test_df_melt <- list_only_updated_melt[[1]]

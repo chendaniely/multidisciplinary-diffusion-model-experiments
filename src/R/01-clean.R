@@ -40,6 +40,8 @@ sprintf('Each sim has %d runs. Total of %d sims',
 cl <- makeCluster(config_num_cores)
 registerDoParallel(cl)
 
+sprintf('%d cores used', config_num_cores)
+
 print('get stacked dfs for all sim runs in parallel')
 strt <- Sys.time()
 list_stacked_df <- foreach(i = 1:ncol(reshape_files),

@@ -10,6 +10,7 @@ source(file = 'analysis_config.R')
 source(file = 'R/helper.R')
 source(file = 'R/helper_plot_processing_units.R')
 
+print('load list of df .RData')
 strt <- Sys.time()
 # load list_stacked_df
 load(file = '../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_list.RData')
@@ -18,6 +19,7 @@ print_difftime_prompt('load list of df .RData', diff_time = Sys.time() - strt)
 
 # list_stacked_df <- list_stacked_df[1:3]
 
+print('add run number to each df in list')
 strt <- Sys.time()
 list_only_updated <- lapply(X = list_stacked_df, FUN = group_by_time)
 print_difftime_prompt('add run number to each df in list', diff_time = Sys.time() - strt)
@@ -25,6 +27,7 @@ print_difftime_prompt('add run number to each df in list', diff_time = Sys.time(
 rm(list_stacked_df)
 gc()
 
+print('melt dataframs in list_only_updated')
 strt <- Sys.time()
 list_only_updated_melt <- lapply(X = list_only_updated,
                             FUN = melt,
@@ -41,6 +44,7 @@ gc()
 # start <- (nrow(test_df_melt)-100)
 # end <- (nrow(test_df_melt))
 
+print('save list_only_updated_melt')
 strt <- Sys.time()
 save(list_only_updated_melt,
      file = paste(config_batch_folder_path, 'df_stacked_runs_updated_melt_list.RData', sep = '_'),

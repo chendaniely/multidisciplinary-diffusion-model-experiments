@@ -53,13 +53,14 @@ calculate_cosine_sim <- function(row_vector, activation_value_columns,
 
 #' Clean and stack dataframes of all the simulation runs for a given set
 #'
-#' @note This function relies on a global variable, reshape_files, that is a matrix
-#' of all simulations (rows) for a given set of simulation parameters (columns)
+#' @note This function relies on a global variable, reshape_files,
+#' that is a matrix of all simulations (rows) for a given set of
+#' simulation parameters (columns)
 #'
-#' @param col_in_sim_set a number, column index from reshape_files
-#' @param num_agents a number, that represents number of agents in the simulation
-#' @param num_ticks, a number
-#' @param num_sims_per_sim_set, a number
+#' @param col_in_sim_set, number, column index from reshape_files
+#' @param num_agents, number, represents number of agents in the simulation
+#' @param num_ticks, number
+#' @param num_sims_per_sim_set, number
 #'
 get_model_simulation_df <- function(col_in_sim_set, num_agents, num_ticks,
                                     num_sims_per_sim_set){
@@ -70,17 +71,21 @@ get_model_simulation_df <- function(col_in_sim_set, num_agents, num_ticks,
 
 #     # preallocate data structure
 #     # time    ever_updated    avg_sse	avg_cos	run_number
-    max_obs <- ((num_agents * num_ticks) + (num_agents * 4)) * num_sims_per_sim_set
+    max_obs <- ((num_agents * num_ticks) + (num_agents * 4)) *
+        num_sims_per_sim_set
 
     df <- data.frame(time = rep(NA, max_obs), ever_updated = rep(NA, max_obs),
                      avg_sse = rep(NA, max_obs), avg_cos = rep(NA, max_obs),
                      run_number = rep(NA, max_obs),
-                     delta_value = rep(NA, max_obs), epsilon_value = rep(NA, max_obs))
+                     delta_value = rep(NA, max_obs),
+                     epsilon_value = rep(NA, max_obs))
     start <- 1
     for(j in 1:num_sims_per_sim_set){
         df_value <-get_pout_df(reshape_files[j, col_in_sim_set],
-                            activation_value_columns = config_activation_value_columns,
-                            prototype_value_columns = config_prototype_value_columns)
+                            activation_value_columns =
+                                config_activation_value_columns,
+                            prototype_value_columns =
+                                config_prototype_value_columns)
         df_name <- letters[j]
         df_value$ever_updated <- ifelse(test = df_value$numUpdate > 0, 1, 0)
         df_value$sse <- apply(df_value, 1, calculate_sse)
@@ -103,7 +108,8 @@ get_model_simulation_df <- function(col_in_sim_set, num_agents, num_ticks,
 
 #' Same as get_model_simulation_df, but uses a foreach loop in parallel
 #'
-get_model_simulation_df_parallel <- function(col_in_sim_set, num_agents, num_ticks,
+get_model_simulation_df_parallel <- function(col_in_sim_set, num_agents,
+                                             num_ticks,
                                              num_sims_per_sim_set){
     #####
     ##### for each row of the column, we load the dataframe, manimulate it, and
@@ -116,9 +122,12 @@ get_model_simulation_df_parallel <- function(col_in_sim_set, num_agents, num_tic
                                         'config_activation_value_columns',
                                         'config_prototype_value_columns',
                                         'calculate_sse')) %dopar% {
-        df_1_sim_run <- get_pout_df(pout_file = reshape_files[j, col_in_sim_set],
-                                 activation_value_columns = config_activation_value_columns,
-                                 prototype_value_columns = config_prototype_value_columns)
+        df_1_sim_run <- get_pout_df(pout_file =
+                                        reshape_files[j, col_in_sim_set],
+                                 activation_value_columns =
+                                     config_activation_value_columns,
+                                 prototype_value_columns =
+                                     config_prototype_value_columns)
 
         df_1_sim_run$ever_updated <-
             ifelse(test = df_1_sim_run$numUpdate > 0, 1, 0)
@@ -144,7 +153,8 @@ get_model_simulation_df_parallel <- function(col_in_sim_set, num_agents, num_tic
 #         to_clean_df_1_sim
     }
 
-    print_difftime_prompt('add simulation dataframes to list', Sys.time() - strt)
+    print_difftime_prompt('add simulation dataframes to list',
+                          Sys.time() - strt)
     # add simulation dataframes to list took: 26.3673622608185 secs
 
     strt <- Sys.time()

@@ -6,14 +6,19 @@ library(reshape2)
 library(ggplot2)
 
 source(file = 'R/helper_config.R')
-source(file = 'analysis_config.R')
 source(file = 'R/helper.R')
 source(file = 'R/helper_plot_processing_units.R')
 
+source(file = 'analysis_config.R')
+
 print('load list of df .RData')
+file_path <- paste0(config_batch_folder_path,
+                    '_df_stacked_runs_list.RData')
+df_stacked_runs_list <-file_path
+
 strt <- Sys.time()
 # load list_stacked_df
-load(file = '../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_list.RData')
+load(file = df_stacked_runs_list)
 print_difftime_prompt('load list of df .RData', diff_time = Sys.time() - strt)
 # load list of df .RData took: 1.93490279515584 mins
 

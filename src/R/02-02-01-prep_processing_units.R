@@ -5,6 +5,7 @@ library(doParallel)
 library(reshape2)
 library(ggplot2)
 
+source(file = 'R/helper_config.R')
 source(file = 'analysis_config.R')
 source(file = 'R/helper.R')
 source(file = 'R/helper_plot_processing_units.R')

@@ -1,3 +1,5 @@
+library(testthat)
+
 ###############################################################################
 # USER CONFIGURATIONS
 ###############################################################################
@@ -33,9 +35,12 @@ config_num_sims_per_sim_set <- 5
 config_num_agents <- 10
 config_num_ticks <- 10000
 
-config_num_parameter_sets_no_a <- 30 # number of parameter sets w/out num agents
+config_num_parameter_sets_no_a <- 30 # num parameter sets w/out num agents
 config_num_delta_values <- 5
 config_num_epsilon_values <- 6
+
+expect_equal(config_num_delta_values * config_num_epsilon_values,
+             config_num_parameter_sets_no_a)
 
 config_activation_value_columns <-
     calculate_activation_value_columns(config_num_processing_units)

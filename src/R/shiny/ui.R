@@ -39,8 +39,7 @@ shinyUI(fluidPage(
                                        "75%" = 4, "100%" = 5)),
             selectInput("select_subplot_epsilon", label = "Select Plot Epsilon",
                         choices = list("0%" = 1, "10%" = 2, "20%" = 3,
-                                       "30%" = 4, "40%" = 5, "50%" = 6),
-                        selected = 1),
+                                       "30%" = 4, "40%" = 5, "50%" = 6)),
             actionButton("goPick", "Pick!"),
 
             h4("Draw Vertical lines"),

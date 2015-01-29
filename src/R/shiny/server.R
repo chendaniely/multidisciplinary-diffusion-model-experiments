@@ -14,6 +14,10 @@ source(file = 'helper_shiny.R')
 shinyServer(function(input, output) {
 
     ###########################################################################
+    # Load datasets needed reactively
+    ###########################################################################
+
+    ###########################################################################
     # Create Faceted Plots
     # Average SSE of agents who have been updated over time
     # Faceted by Delta and Epsilon

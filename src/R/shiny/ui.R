@@ -1,29 +1,7 @@
 library(shiny)
 library(stringr)
 
-get_only_file_name <- function(full_file_name){
-    split_string <- str_split(string = full_file_name, pattern = '/')
-    last_item <- length(split_string[[1]])
-    return(split_string[[1]][[last_item]])
-}
-
-get_simplified_file_name <- function(file_name){
-    file_name <- str_replace(string = file_name,
-                             pattern = '[a-zA-Z]{0,4}[0-9]{2}-.*_batch_',
-                             replacement = '')
-    file_name
-
-    file_name <- str_split(string = file_name, pattern = '_df_')[[1]][1]
-    file_name
-
-    file_name <- str_replace(string = file_name,
-                             pattern = '\\.RData', replacement = '')
-    file_name
-
-    file_name <- str_replace_all(string = file_name,
-                                 pattern = '_', replacement = '-')
-    file_name
-}
+source(file = 'helper_shiny.R')
 
 config_time_adjust_step <- 50
 

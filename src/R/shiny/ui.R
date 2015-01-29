@@ -13,7 +13,8 @@ data_files <- list.files('../../../results/simulations',
 data_files <- as.list(data_files)
 data_files_names <- as.character(data_files)
 data_files_names <- sapply(X = data_files_names, FUN = get_only_file_name)
-data_files_names <- sapply(X = data_files_names, FUN = get_simplified_file_name)
+data_files_names <- sapply(X = data_files_names,
+                           FUN = get_simplified_file_name)
 
 data_files <- lapply(X = data_files, FUN = get_base_file_path)
 names(data_files) <- as.character(data_files_names)
@@ -39,7 +40,8 @@ shinyUI(fluidPage(
             selectInput("select_subplot_delta", label = "Select Plot Delta",
                         choices = list("0%" = 1, "25%" = 2, "50%" = 3,
                                        "75%" = 4, "100%" = 5)),
-            selectInput("select_subplot_epsilon", label = "Select Plot Epsilon",
+            selectInput("select_subplot_epsilon",
+                        label = "Select Plot Epsilon",
                         choices = list("0%" = 1, "10%" = 2, "20%" = 3,
                                        "30%" = 4, "40%" = 5, "50%" = 6)),
             actionButton("goPick", "Pick!"),

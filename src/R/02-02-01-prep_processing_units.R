@@ -25,7 +25,8 @@ print_difftime_prompt('load list of df .RData', diff_time = Sys.time() - strt)
 print('add run number to each df in list')
 strt <- Sys.time()
 list_only_updated <- lapply(X = list_stacked_df, FUN = group_by_time)
-print_difftime_prompt('add run number to each df in list', diff_time = Sys.time() - strt)
+print_difftime_prompt('add run number to each df in list',
+                      diff_time = Sys.time() - strt)
 
 rm(list_stacked_df)
 gc()
@@ -34,8 +35,10 @@ print('melt dataframs in list_only_updated')
 strt <- Sys.time()
 list_only_updated_melt <- lapply(X = list_only_updated,
                             FUN = melt,
-                            id.vars=c('time', 'agent', 'isUpdated', 'run_number'))
-print_difftime_prompt('melt dataframs in list_only_updated', diff_time = Sys.time() - strt)
+                            id.vars=c('time', 'agent', 'isUpdated',
+                                      'run_number'))
+print_difftime_prompt('melt dataframs in list_only_updated',
+                      diff_time = Sys.time() - strt)
 
 rm(list_only_updated)
 gc()

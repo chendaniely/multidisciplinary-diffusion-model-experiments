@@ -13,12 +13,12 @@ source(file = 'helper_shiny.R')
 
 shinyServer(function(input, output) {
 
-    ###############################################################################
+    ###########################################################################
     # Create Faceted Plots
     # Average SSE of agents who have been updated over time
     # Faceted by Delta and Epsilon
-    # This plot will be used to pick a delta/epsilon simulation to zoom into later
-    ###############################################################################
+    # This plot will be used to pick a delta/epsilon simulation to zoom later
+    ###########################################################################
     cl <- makeCluster(config_num_cores)
     registerDoParallel(cl)
 
@@ -48,9 +48,9 @@ shinyServer(function(input, output) {
     stopCluster(cl)
     registerDoSEQ()
 
-    ###############################################################################
+    ###########################################################################
     #
-    ###############################################################################
+    ###########################################################################
     strt <- Sys.time()
     load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
     print_difftime_prompt('load stacked updated only long data',

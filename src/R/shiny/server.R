@@ -11,6 +11,8 @@ source(file = '../helper_config.R')
 source(file = '../../analysis_config.R')
 source(file = 'helper_shiny.R')
 
+shinyServer(function(input, output) {
+
 ###############################################################################
 # Create Faceted Plots
 # Average SSE of agents who have been updated over time
@@ -56,7 +58,7 @@ print_difftime_prompt('load stacked updated only long data',
 # test_df_melt <- list_only_updated_melt[[1]]
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output) {
+
 
     # Expression that generates a plot The expression is
     # wrapped in a call to renderPlot to indicate that:

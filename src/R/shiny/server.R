@@ -29,18 +29,19 @@ shinyServer(function(input, output) {
     starts <- seq(from = 1, to = ncol(reshape_files), by = config_num_parameter_sets_no_a)
     strt <- Sys.time()
     plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2'),
-                           .export=c('config_num_parameter_sets_no_a')) %dopar% {
-                               start <- starts[i]
-                               end <- start + config_num_parameter_sets_no_a - 1
-                               df_all_n <- plyr::ldply(list_stacked_df_grouped[start:end], data.frame)
-                               g <- ggplot(df_all_n[df_all_n$ever_updated == 1, ],
-                                           aes(time, color = as.factor(run_number))) +
-                                   theme(legend.position="none") +
-                                   geom_line(aes(y = avg_sse)) + scale_y_continuous(limits=c(0, 20)) +
-                                   theme(axis.text.x=element_text(angle = -90, hjust = 0)) +
-                                   facet_grid(delta_value~epsilon_value, labeller = label_both)
-                               g
-                           }
+                           .export=c('config_num_parameter_sets_no_a'))
+    %dopar% {
+        start <- starts[i]
+        end <- start + config_num_parameter_sets_no_a - 1
+        df_all_n <- plyr::ldply(list_stacked_df_grouped[start:end], data.frame)
+        g <- ggplot(df_all_n[df_all_n$ever_updated == 1, ],
+                    aes(time, color = as.factor(run_number))) +
+            theme(legend.position="none") +
+            geom_line(aes(y = avg_sse)) + scale_y_continuous(limits=c(0, 20)) +
+            theme(axis.text.x=element_text(angle = -90, hjust = 0)) +
+            facet_grid(delta_value~epsilon_value, labeller = label_both)
+        g
+    }
     print(sprintf("number of faceted plots generated: %s", length(plots_facet)))
     print_difftime_prompt('generate faceted plots', diff_time = Sys.time() - strt)
 

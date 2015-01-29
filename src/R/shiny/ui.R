@@ -49,12 +49,12 @@ shinyUI(fluidPage(
     # Sidebar with a slider input for the number of bins
     sidebarLayout(
         sidebarPanel(
-            h3("Complete Simulation"),
+            h3("Simulation Picker"),
             selectInput("select", label = "Select Plot",
                         choices = data_files),
             actionButton("goData", "Load Dataset"),
 
-            h3("Simulation Picker"),
+            h3("Parameter Picker"),
             selectInput("select_subplot_delta", label = "Select Plot Delta",
                         choices = list("0%" = 1, "25%" = 2, "50%" = 3,
                                        "75%" = 4, "100%" = 5)),

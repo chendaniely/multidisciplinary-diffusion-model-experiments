@@ -35,6 +35,7 @@ shinyUI(fluidPage(
             selectInput("select_data", label = "Select Plot",
                         choices = data_files),
             actionButton("goData", "Load Dataset"),
+            hr(),
 
             h3("Parameter Picker"),
             selectInput("select_subplot_delta", label = "Select Plot Delta",
@@ -56,6 +57,7 @@ shinyUI(fluidPage(
                         min = 0, max = 10000, value = c(100, 1000),
                         step = config_time_adjust_step),
             actionButton("goVline", "Draw Vline"),
+            hr(),
 
             h3("Simulation Zoomer"),
             sliderInput("sse_adjust", label = "Sum Square Error Zoom",

@@ -14,6 +14,11 @@ source(file = '../../analysis_config.R')
 
 
 shinyServer(function(input, output) {
+    #
+    # Enviornment of stuff that can be passed into different renderPlot calls
+    #
+    plot_env <- new.env()
+
     ###########################################################################
     # Load datasets needed reactively
     ###########################################################################
@@ -96,8 +101,6 @@ shinyServer(function(input, output) {
         return_value <- c(delta_picked, epsilon_picked)
         return(return_value)
     })
-
-    plot_env <- new.env()
 
     ###########################################################################
     #

@@ -29,7 +29,7 @@ shinyUI(fluidPage(
     sidebarLayout(
         sidebarPanel(
             h3("Simulation Picker"),
-            selectInput("select", label = "Select Plot",
+            selectInput("select_data", label = "Select Plot",
                         choices = data_files),
             actionButton("goData", "Load Dataset"),
 

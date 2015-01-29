@@ -29,6 +29,8 @@ shinyUI(fluidPage(
     sidebarLayout(
         sidebarPanel(
             h3("Simulation Picker"),
+            strong("This feature does not work yet, please change data file
+              by updating the analysis_config.R file"),
             selectInput("select_data", label = "Select Plot",
                         choices = data_files),
             actionButton("goData", "Load Dataset"),

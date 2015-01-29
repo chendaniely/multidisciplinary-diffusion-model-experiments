@@ -72,7 +72,7 @@ shinyServer(function(input, output) {
     # Plot of all experiment runs faceted by delta and epsilon
     #
     output$facet_plots <- renderPlot({
-        plots_facet[as.numeric(input$select)]
+        plots_facet[1]
     })
 
     ###########################################################################

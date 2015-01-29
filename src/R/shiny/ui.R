@@ -5,16 +5,17 @@ source(file = 'helper_shiny.R')
 
 config_time_adjust_step <- 50
 
-data_files <- list.files('../../../results/simulations/',
+data_files <- list.files('../../../results/simulations',
                          pattern = '_df_stacked_runs_updated_melt_list.RData',
                          recursive = TRUE,
                          full.names = TRUE)
 
-data_files <- list(data_files)
+data_files <- as.list(data_files)
 data_files_names <- as.character(data_files)
 data_files_names <- sapply(X = data_files_names, FUN = get_only_file_name)
 data_files_names <- sapply(X = data_files_names, FUN = get_simplified_file_name)
-data_files <- data_files_names
+
+data_files <- lapply(X = data_files, FUN = get_base_file_path)
 names(data_files) <- as.character(data_files_names)
 data_files
 

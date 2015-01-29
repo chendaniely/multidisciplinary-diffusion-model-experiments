@@ -8,11 +8,12 @@ library(magrittr)
 
 source(file = '../helper.R')
 source(file = '../helper_config.R')
-source(file = '../../analysis_config.R')
 source(file = 'helper_shiny.R')
 
-shinyServer(function(input, output) {
+source(file = '../../analysis_config.R')
 
+
+shinyServer(function(input, output) {
     ###########################################################################
     # Load datasets needed reactively
     ###########################################################################

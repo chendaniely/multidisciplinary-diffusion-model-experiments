@@ -33,15 +33,14 @@ shinyServer(function(input, output) {
     # Faceted by Delta and Epsilon
     # This plot will be used to pick a delta/epsilon simulation to zoom later
     ###########################################################################
-    cl <- makeCluster(config_num_cores)
-    registerDoParallel(cl)
+#     cl <- makeCluster(config_num_cores)
+#     registerDoParallel(cl)
 
     starts <- seq(from = 1, to = ncol(reshape_files),
                   by = config_num_parameter_sets_no_a)
     strt <- Sys.time()
     plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2'),
-                           .export=c('config_num_parameter_sets_no_a'))
-    %dopar% {
+                           .export=c('config_num_parameter_sets_no_a')) %do% {
         start <- starts[i]
         end <- start + config_num_parameter_sets_no_a - 1
         df_all_n <- plyr::ldply(list_stacked_df_grouped[start:end], data.frame)
@@ -58,8 +57,8 @@ shinyServer(function(input, output) {
     print_difftime_prompt('generate faceted plots',
                           diff_time = Sys.time() - strt)
 
-    stopCluster(cl)
-    registerDoSEQ()
+#     stopCluster(cl)
+#     registerDoSEQ()
 
 
     # Expression that generates a plot The expression is

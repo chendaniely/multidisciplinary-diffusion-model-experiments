@@ -26,7 +26,8 @@ shinyServer(function(input, output) {
     load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_grouped_runs_list.RData')
     print_difftime_prompt('load grouped data', diff_time = Sys.time() - strt)
 
-    starts <- seq(from = 1, to = ncol(reshape_files), by = config_num_parameter_sets_no_a)
+    starts <- seq(from = 1, to = ncol(reshape_files),
+                  by = config_num_parameter_sets_no_a)
     strt <- Sys.time()
     plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2'),
                            .export=c('config_num_parameter_sets_no_a'))
@@ -42,8 +43,10 @@ shinyServer(function(input, output) {
             facet_grid(delta_value~epsilon_value, labeller = label_both)
         g
     }
-    print(sprintf("number of faceted plots generated: %s", length(plots_facet)))
-    print_difftime_prompt('generate faceted plots', diff_time = Sys.time() - strt)
+    print(sprintf("number of faceted plots generated: %s",
+                  length(plots_facet)))
+    print_difftime_prompt('generate faceted plots',
+                          diff_time = Sys.time() - strt)
 
     stopCluster(cl)
     registerDoSEQ()

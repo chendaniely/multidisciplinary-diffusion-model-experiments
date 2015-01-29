@@ -61,20 +61,12 @@ shinyServer(function(input, output) {
     stopCluster(cl)
     registerDoSEQ()
 
-    ###########################################################################
-    #
-    ###########################################################################
-    # test_df_melt <- list_only_updated_melt[[1]]
-
-    # Define server logic required to draw a histogram
-
 
     # Expression that generates a plot The expression is
     # wrapped in a call to renderPlot to indicate that:
     #  1) It is "reactive" and therefore should re-execute automatically
     #     when inputs change
     #  2) Its output type is a plot
-
 
     ###########################################################################
     #

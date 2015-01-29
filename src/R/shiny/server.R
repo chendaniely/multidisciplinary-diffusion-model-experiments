@@ -16,6 +16,16 @@ shinyServer(function(input, output) {
     ###########################################################################
     # Load datasets needed reactively
     ###########################################################################
+    strt <- Sys.time()
+    # load list_stacked_df_grouped
+    load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_grouped_runs_list.RData')
+    print_difftime_prompt('load grouped data', diff_time = Sys.time() - strt)
+
+    strt <- Sys.time()
+    # load list_only_updated_melt
+    load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
+    print_difftime_prompt('load stacked updated only long data',
+                          diff_time = Sys.time() - strt)
 
     ###########################################################################
     # Create Faceted Plots
@@ -25,10 +35,6 @@ shinyServer(function(input, output) {
     ###########################################################################
     cl <- makeCluster(config_num_cores)
     registerDoParallel(cl)
-
-    strt <- Sys.time()
-    load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_grouped_runs_list.RData')
-    print_difftime_prompt('load grouped data', diff_time = Sys.time() - strt)
 
     starts <- seq(from = 1, to = ncol(reshape_files),
                   by = config_num_parameter_sets_no_a)
@@ -58,11 +64,6 @@ shinyServer(function(input, output) {
     ###########################################################################
     #
     ###########################################################################
-    strt <- Sys.time()
-    load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
-    print_difftime_prompt('load stacked updated only long data',
-                          diff_time = Sys.time() - strt)
-
     # test_df_melt <- list_only_updated_melt[[1]]
 
     # Define server logic required to draw a histogram

@@ -13,51 +13,51 @@ source(file = 'helper_shiny.R')
 
 shinyServer(function(input, output) {
 
-###############################################################################
-# Create Faceted Plots
-# Average SSE of agents who have been updated over time
-# Faceted by Delta and Epsilon
-# This plot will be used to pick a delta/epsilon simulation to zoom into later
-###############################################################################
-cl <- makeCluster(config_num_cores)
-registerDoParallel(cl)
+    ###############################################################################
+    # Create Faceted Plots
+    # Average SSE of agents who have been updated over time
+    # Faceted by Delta and Epsilon
+    # This plot will be used to pick a delta/epsilon simulation to zoom into later
+    ###############################################################################
+    cl <- makeCluster(config_num_cores)
+    registerDoParallel(cl)
 
-strt <- Sys.time()
-load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_grouped_runs_list.RData')
-print_difftime_prompt('load grouped data', diff_time = Sys.time() - strt)
+    strt <- Sys.time()
+    load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_grouped_runs_list.RData')
+    print_difftime_prompt('load grouped data', diff_time = Sys.time() - strt)
 
-starts <- seq(from = 1, to = ncol(reshape_files), by = config_num_parameter_sets_no_a)
-strt <- Sys.time()
-plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2'),
-                       .export=c('config_num_parameter_sets_no_a')) %dopar% {
-    start <- starts[i]
-    end <- start + config_num_parameter_sets_no_a - 1
-    df_all_n <- plyr::ldply(list_stacked_df_grouped[start:end], data.frame)
-    g <- ggplot(df_all_n[df_all_n$ever_updated == 1, ],
-                aes(time, color = as.factor(run_number))) +
-        theme(legend.position="none") +
-        geom_line(aes(y = avg_sse)) + scale_y_continuous(limits=c(0, 20)) +
-        theme(axis.text.x=element_text(angle = -90, hjust = 0)) +
-        facet_grid(delta_value~epsilon_value, labeller = label_both)
-    g
-}
-print(sprintf("number of faceted plots generated: %s", length(plots_facet)))
-print_difftime_prompt('generate faceted plots', diff_time = Sys.time() - strt)
+    starts <- seq(from = 1, to = ncol(reshape_files), by = config_num_parameter_sets_no_a)
+    strt <- Sys.time()
+    plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2'),
+                           .export=c('config_num_parameter_sets_no_a')) %dopar% {
+                               start <- starts[i]
+                               end <- start + config_num_parameter_sets_no_a - 1
+                               df_all_n <- plyr::ldply(list_stacked_df_grouped[start:end], data.frame)
+                               g <- ggplot(df_all_n[df_all_n$ever_updated == 1, ],
+                                           aes(time, color = as.factor(run_number))) +
+                                   theme(legend.position="none") +
+                                   geom_line(aes(y = avg_sse)) + scale_y_continuous(limits=c(0, 20)) +
+                                   theme(axis.text.x=element_text(angle = -90, hjust = 0)) +
+                                   facet_grid(delta_value~epsilon_value, labeller = label_both)
+                               g
+                           }
+    print(sprintf("number of faceted plots generated: %s", length(plots_facet)))
+    print_difftime_prompt('generate faceted plots', diff_time = Sys.time() - strt)
 
-stopCluster(cl)
-registerDoSEQ()
+    stopCluster(cl)
+    registerDoSEQ()
 
-###############################################################################
-#
-###############################################################################
-strt <- Sys.time()
-load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
-print_difftime_prompt('load stacked updated only long data',
-                      diff_time = Sys.time() - strt)
+    ###############################################################################
+    #
+    ###############################################################################
+    strt <- Sys.time()
+    load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
+    print_difftime_prompt('load stacked updated only long data',
+                          diff_time = Sys.time() - strt)
 
-# test_df_melt <- list_only_updated_melt[[1]]
+    # test_df_melt <- list_only_updated_melt[[1]]
 
-# Define server logic required to draw a histogram
+    # Define server logic required to draw a histogram
 
 
     # Expression that generates a plot The expression is

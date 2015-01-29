@@ -1,6 +1,44 @@
 library(shiny)
+library(stringr)
+
+get_only_file_name <- function(full_file_name){
+    split_string <- str_split(string = full_file_name, pattern = '/')
+    last_item <- length(split_string[[1]])
+    return(split_string[[1]][[last_item]])
+}
+
+get_simplified_file_name <- function(file_name){
+    file_name <- str_replace(string = file_name,
+                             pattern = '[a-zA-Z]{0,4}[0-9]{2}-.*_batch_',
+                             replacement = '')
+    file_name
+
+    file_name <- str_split(string = file_name, pattern = '_df_')[[1]][1]
+    file_name
+
+    file_name <- str_replace(string = file_name,
+                             pattern = '\\.RData', replacement = '')
+    file_name
+
+    file_name <- str_replace_all(string = file_name,
+                                 pattern = '_', replacement = '-')
+    file_name
+}
 
 config_time_adjust_step <- 50
+
+data_files <- list.files('../../../results/simulations/',
+                         pattern = '_df_stacked_runs_updated_melt_list.RData',
+                         recursive = TRUE,
+                         full.names = TRUE)
+
+data_files <- list(data_files)
+data_files_names <- as.character(data_files)
+data_files_names <- sapply(X = data_files_names, FUN = get_only_file_name)
+data_files_names <- sapply(X = data_files_names, FUN = get_simplified_file_name)
+data_files <- data_files_names
+names(data_files) <- as.character(data_files_names)
+data_files
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -13,8 +51,8 @@ shinyUI(fluidPage(
         sidebarPanel(
             h3("Complete Simulation"),
             selectInput("select", label = "Select Plot",
-                        choices = list("1" = 1, "2" = 2, "3" = 3),
-                        selected = 1),
+                        choices = data_files),
+            actionButton("goData", "Load Dataset"),
 
             h3("Simulation Picker"),
             selectInput("select_subplot_delta", label = "Select Plot Delta",

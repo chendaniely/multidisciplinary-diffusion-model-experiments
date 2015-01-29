@@ -114,8 +114,8 @@ print_difftime_prompt('load stacked updated only long data',
         g1 <- ggplot(data = picked_df[picked_df$ever_updated == 1, ]) +
             geom_line(aes(x = time, y = avg_sse,
                           color=as.factor(run_number))) +
-            theme(legend.position="none",
-                  axis.text.x = element_text(angle=90, vjust=0.5))
+            theme(axis.text.x = element_text(angle=90, vjust=0.5)) +
+            scale_color_discrete(name = 'Run')
         print_difftime_prompt('create ggplot object',
                               diff_time = Sys.time() - strt)
 

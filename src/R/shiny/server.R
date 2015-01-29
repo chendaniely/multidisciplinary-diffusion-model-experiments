@@ -12,6 +12,12 @@ source(file = 'helper_shiny.R')
 
 source(file = '../../analysis_config.R')
 
+base_folder_path <- paste0('../../',
+                           config_batch_folder_path)
+list_stacked_df_grouped_path <- paste0(base_folder_path,
+                                       '_df_grouped_runs_list.RData')
+list_only_updated_melt_path <- paste0(base_folder_path,
+                                      '_df_stacked_runs_updated_melt_list.RData')
 
 shinyServer(function(input, output) {
     #
@@ -22,14 +28,15 @@ shinyServer(function(input, output) {
     ###########################################################################
     # Load datasets needed reactively
     ###########################################################################
+
     strt <- Sys.time()
     # load list_stacked_df_grouped
-    load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_grouped_runs_list.RData')
+    load(list_stacked_df_grouped_path)
     print_difftime_prompt('load grouped data', diff_time = Sys.time() - strt)
 
     strt <- Sys.time()
     # load list_only_updated_melt
-    load('../../../results/simulations/02-lens_batch_2014-12-23_03:41:22_sm_partial_df_stacked_runs_updated_melt_list.RData')
+    load(list_only_updated_melt_path)
     print_difftime_prompt('load stacked updated only long data',
                           diff_time = Sys.time() - strt)
 

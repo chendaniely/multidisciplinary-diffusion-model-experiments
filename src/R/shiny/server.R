@@ -59,6 +59,7 @@ shinyServer(function(input, output) {
         df_all_n <- plyr::ldply(list_stacked_df_grouped[start:end], data.frame)
         g <- ggplot(df_all_n[df_all_n$ever_updated == 1, ],
                     aes(time, color = as.factor(run_number))) +
+            theme_bw() +
             theme(legend.position="none") +
             geom_line(aes(y = avg_sse)) + scale_y_continuous(limits=c(0, 20)) +
             theme(axis.text.x=element_text(angle = -90, hjust = 0)) +
@@ -123,6 +124,7 @@ shinyServer(function(input, output) {
 
         strt <- Sys.time()
         g1 <- ggplot(data = picked_df[picked_df$ever_updated == 1, ]) +
+            theme_bw() +
             geom_line(aes(x = time, y = avg_sse,
                           color=as.factor(run_number))) +
             theme(axis.text.x = element_text(angle=90, vjust=0.5)) +
@@ -159,6 +161,7 @@ shinyServer(function(input, output) {
 
         strt <- Sys.time()
         g1 <- ggplot(data = list_only_updated_melt[[plot_index]]) +
+            theme_bw() +
             geom_line(aes(x = time, y = value, color=variable)) +
             facet_grid(run_number~variable) +
             theme(legend.position="none",

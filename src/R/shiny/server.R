@@ -19,6 +19,9 @@ list_only_updated_melt_path <-
     paste0(base_folder_path,
            '_df_stacked_runs_updated_melt_list.RData')
 
+list_only_updated_melt_sub_proto_path <-
+    paste0(base_folder_path,
+           '_df_stacked_runs_updated_melt_list_sub_proto.RData')
 
 shinyServer(function(input, output) {
     #
@@ -39,6 +42,12 @@ shinyServer(function(input, output) {
     # load list_only_updated_melt
     load(list_only_updated_melt_path)
     print_difftime_prompt('load stacked updated only long data',
+                          diff_time = Sys.time() - strt)
+
+    strt <- Sys.time()
+    # load list_only_updated_melt_sub_proto
+    load(list_only_updated_melt_sub_proto_path)
+    print_difftime_prompt('load list_only_updated_melt_sub_proto',
                           diff_time = Sys.time() - strt)
 
     ###########################################################################

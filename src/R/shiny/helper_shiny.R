@@ -23,6 +23,12 @@ get_data_sets <- function(vector_datasets){
     load(vector_datasets[2], envir = globalenv())
     print_difftime_prompt('load stacked updated only long data',
                           diff_time = Sys.time() - strt)
+
+    strt <- Sys.time()
+    # load list_only_updated_melt_sub_proto
+    load(vector_datasets[3], envir = globalenv())
+    print_difftime_prompt('load list_only_updated_melt_sub_proto',
+                          diff_time = Sys.time() - strt)
 }
 
 ###############################################################################

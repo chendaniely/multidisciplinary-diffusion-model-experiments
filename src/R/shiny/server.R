@@ -175,7 +175,9 @@ shinyServer(function(input, output) {
             geom_line(aes(x = time, y = value, color=variable)) +
             facet_grid(run_number~variable) +
             theme(legend.position="none",
-                  axis.text.x = element_text(angle=90, vjust=0.5))
+                  axis.text.x = element_text(angle=90, vjust=0.5)) +
+            scale_x_continuous(breaks=pretty_breaks()) +
+            scale_y_continuous(limits = c(0, 1))
         print_difftime_prompt('create ggplot object',
                               diff_time = Sys.time() - strt)
 

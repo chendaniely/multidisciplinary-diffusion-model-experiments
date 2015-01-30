@@ -3,8 +3,6 @@ library(ggplot2)
 library(scales)
 library(foreach)
 library(doParallel)
-library(knitr)
-library(magrittr)
 
 source(file = '../helper.R')
 source(file = '../helper_config.R')
@@ -14,10 +12,16 @@ source(file = '../../analysis_config.R')
 
 base_folder_path <- paste0('../../',
                            config_batch_folder_path)
+
 list_stacked_df_grouped_path <- paste0(base_folder_path,
                                        '_df_grouped_runs_list.RData')
-list_only_updated_melt_path <- paste0(base_folder_path,
-                                      '_df_stacked_runs_updated_melt_list.RData')
+list_only_updated_melt_path <-
+    paste0(base_folder_path,
+           '_df_stacked_runs_updated_melt_list.RData')
+
+list_only_updated_melt_sub_proto_path <-
+    paste0(base_folder_path,
+           '_df_stacked_runs_updated_melt_list_sub_proto.RData')
 
 shinyServer(function(input, output) {
     #
@@ -38,6 +42,12 @@ shinyServer(function(input, output) {
     # load list_only_updated_melt
     load(list_only_updated_melt_path)
     print_difftime_prompt('load stacked updated only long data',
+                          diff_time = Sys.time() - strt)
+
+    strt <- Sys.time()
+    # load list_only_updated_melt_sub_proto
+    load(list_only_updated_melt_sub_proto_path)
+    print_difftime_prompt('load list_only_updated_melt_sub_proto',
                           diff_time = Sys.time() - strt)
 
     ###########################################################################
@@ -165,7 +175,9 @@ shinyServer(function(input, output) {
             geom_line(aes(x = time, y = value, color=variable)) +
             facet_grid(run_number~variable) +
             theme(legend.position="none",
-                  axis.text.x = element_text(angle=90, vjust=0.5))
+                  axis.text.x = element_text(angle=90, vjust=0.5)) +
+            scale_x_continuous(breaks=pretty_breaks()) +
+            scale_y_continuous(limits = c(0, 1))
         print_difftime_prompt('create ggplot object',
                               diff_time = Sys.time() - strt)
 
@@ -174,6 +186,30 @@ shinyServer(function(input, output) {
         print_difftime_prompt('show ggplot object',
                               diff_time = Sys.time() - strt)
         plot_env$pu_plot <- g1
+    })
+
+    output$selected_facet_minus_proto_run <- renderPlot({
+        input$goPick
+        plot_index <- plot_index_from_d_e(isolate(getFacetCells()))
+        print(sprintf('subsetting plot #%s', plot_index))
+
+        strt <- Sys.time()
+        g2 <- ggplot(data = list_only_updated_melt_sub_proto[[plot_index]]) +
+            theme_bw() +
+            geom_line(aes(x = time, y = value, color=variable)) +
+            facet_grid(run_number~variable) +
+            theme(legend.position="none",
+                  axis.text.x = element_text(angle=90, vjust=0.5)) +
+            scale_x_continuous(breaks=pretty_breaks()) +
+            scale_y_continuous(limits = c(-1, 1))
+        print_difftime_prompt('create ggplot object',
+                              diff_time = Sys.time() - strt)
+
+        strt <- Sys.time()
+        print(g2)
+        print_difftime_prompt('show ggplot object',
+                              diff_time = Sys.time() - strt)
+        plot_env$proto_minus_plot <- g2
     })
 
     ###########################################################################
@@ -215,6 +251,24 @@ shinyServer(function(input, output) {
 
         strt <- Sys.time()
         print(g1_sub)
+        print_difftime_prompt('show pu ggplot object subset x/y-axis',
+                              diff_time = Sys.time() - strt)
+
+    }, env=plot_env)
+
+    output$selected_facet_minus_proto_run_zoom <- renderPlot({
+        input$goZoom
+        strt <- Sys.time()
+        g2_sub <- plot_env$proto_minus_plot +
+            scale_y_continuous(limits=isolate(input$minus_proto_adjust),
+                               breaks=pretty_breaks()) +
+            scale_x_continuous(limits=isolate(input$time_adjust),
+                               breaks=pretty_breaks())
+        print_difftime_prompt('create pu ggplot object subset x/y-axis',
+                              diff_time = Sys.time() - strt)
+
+        strt <- Sys.time()
+        print(g2_sub)
         print_difftime_prompt('show pu ggplot object subset x/y-axis',
                               diff_time = Sys.time() - strt)
 

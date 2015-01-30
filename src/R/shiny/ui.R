@@ -66,6 +66,9 @@ shinyUI(fluidPage(
             sliderInput("activation_adjust", label = "Activation Value Zoom",
                         min = 0, max = 1, value = c(0, 1), step = .05),
 
+            sliderInput("minus_proto_adjust", label = "Minus Prototype Zoom",
+                        min = -1, max = 1, value = c(-.5, .5), step = .01),
+
             sliderInput("time_adjust", label = "Time Range Zoom",
                         min = 0, max = 10000, value = c(100, 1000),
                         step = config_time_adjust_step),
@@ -79,9 +82,11 @@ shinyUI(fluidPage(
             h2("Selected Parameter Set"),
             plotOutput("selected_facet"),
             plotOutput("selected_facet_pu_run"),
+            plotOutput("selected_facet_minus_proto_run"),
             h2("Selected Parameter Set Zoomed"),
             plotOutput("selected_facet_zoom"),
-            plotOutput("selected_facet_pu_run_zoom")
+            plotOutput("selected_facet_pu_run_zoom"),
+            plotOutput("selected_facet_minus_proto_run_zoom")
         )
     )
 ))

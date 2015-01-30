@@ -3,8 +3,6 @@ library(ggplot2)
 library(scales)
 library(foreach)
 library(doParallel)
-library(knitr)
-library(magrittr)
 
 source(file = '../helper.R')
 source(file = '../helper_config.R')

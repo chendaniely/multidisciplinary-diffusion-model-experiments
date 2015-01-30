@@ -12,10 +12,13 @@ source(file = '../../analysis_config.R')
 
 base_folder_path <- paste0('../../',
                            config_batch_folder_path)
+
 list_stacked_df_grouped_path <- paste0(base_folder_path,
                                        '_df_grouped_runs_list.RData')
-list_only_updated_melt_path <- paste0(base_folder_path,
-                                      '_df_stacked_runs_updated_melt_list.RData')
+list_only_updated_melt_path <-
+    paste0(base_folder_path,
+           '_df_stacked_runs_updated_melt_list.RData')
+
 
 shinyServer(function(input, output) {
     #

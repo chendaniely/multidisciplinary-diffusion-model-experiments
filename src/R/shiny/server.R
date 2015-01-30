@@ -188,6 +188,30 @@ shinyServer(function(input, output) {
         plot_env$pu_plot <- g1
     })
 
+    output$selected_facet_minus_proto_run <- renderPlot({
+        input$goPick
+        plot_index <- plot_index_from_d_e(isolate(getFacetCells()))
+        print(sprintf('subsetting plot #%s', plot_index))
+
+        strt <- Sys.time()
+        g2 <- ggplot(data = list_only_updated_melt_sub_proto[[plot_index]]) +
+            theme_bw() +
+            geom_line(aes(x = time, y = value, color=variable)) +
+            facet_grid(run_number~variable) +
+            theme(legend.position="none",
+                  axis.text.x = element_text(angle=90, vjust=0.5)) +
+            scale_x_continuous(breaks=pretty_breaks()) +
+            scale_y_continuous(limits = c(-1, 1))
+        print_difftime_prompt('create ggplot object',
+                              diff_time = Sys.time() - strt)
+
+        strt <- Sys.time()
+        print(g2)
+        print_difftime_prompt('show ggplot object',
+                              diff_time = Sys.time() - strt)
+        plot_env$proto_minus_plot <- g2
+    })
+
     ###########################################################################
     #
     # PLOT 4
@@ -227,6 +251,24 @@ shinyServer(function(input, output) {
 
         strt <- Sys.time()
         print(g1_sub)
+        print_difftime_prompt('show pu ggplot object subset x/y-axis',
+                              diff_time = Sys.time() - strt)
+
+    }, env=plot_env)
+
+    output$selected_facet_minus_proto_run_zoom <- renderPlot({
+        input$goZoom
+        strt <- Sys.time()
+        g2_sub <- plot_env$proto_minus_plot +
+            scale_y_continuous(limits=isolate(input$minus_proto_adjust),
+                               breaks=pretty_breaks()) +
+            scale_x_continuous(limits=isolate(input$time_adjust),
+                               breaks=pretty_breaks())
+        print_difftime_prompt('create pu ggplot object subset x/y-axis',
+                              diff_time = Sys.time() - strt)
+
+        strt <- Sys.time()
+        print(g2_sub)
         print_difftime_prompt('show pu ggplot object subset x/y-axis',
                               diff_time = Sys.time() - strt)
 

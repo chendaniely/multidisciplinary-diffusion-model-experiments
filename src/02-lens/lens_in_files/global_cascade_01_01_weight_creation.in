@@ -1,24 +1,22 @@
-#AUTO ENCODER NETWORK
-#USED FOR BOTH TRAINING (WGT GENERATION) AND UPDATING AGENTS DURING
-#SIMS
-#CREATED OCT 21, 2014
-#UPDATED NONE
-#########################
+###############################################################################
+# AUTO ENCODER NETWORK
+# USED FOR TRAINING (WGT GENERATION)
+# SIMS
+# CREATED OCT 21, 2014
+# UPDATED FEB 19, 2015 - removed commented out update code
+###############################################################################
 
-#GRAB ENV VARS
+# GRAB ENV VARS
 # a is the agent number
+# c is the criterion
 set a $env(a)
 set c $env(c)
 
 deleteNets *
 
-#LOAD EXAMPLES -- UPDATING
-#loadExamples Infl.ex -s encoder
-#LOAD EXAMPLES -- TRAINING
 loadExamples weights/AgentWgt$a.ex -s encoder
-#loadExamples examples/encoder.sparse.ex -s encoder
 
-#BUILD NETWORK STRUCTURE
+# BUILD NETWORK STRUCTURE
 proc buildEncoder hidden {
   addNet "8-${hidden}-8 Encoder" 20 $hidden 20
   useTrainingSet encoder
@@ -33,31 +31,14 @@ setObj learningRate    0.1
 setObj weightDecay     0.0001
 setObj zeroErrorRadius 0.01
 
-#PREPARE FOR PROCESSING
+# PREPARE FOR PROCESSING
 resetNet
 
-#LOAD WEIGHTS -- UPDATING ONLY
-#loadWeights wgt$a.wt
+# TRAIN -- TRAINING # number of epochs
+train 1000
 
-#NO LEARNING ALLOWED -- UPDATING ONLY
-#freezeWeights
-
-
-#OUTPUT OPEN -- UPDATING ONLY
-#openNetOutputFile AgentState.out
-
-#TRAIN -- UPDATING 
-#train 1
-
-#TRAIN -- TRAINING 
-train 1000 
-
-#OUTPUT CLOSE -- UPDATING ONLY
-#closeNetOutputFile
-
-#SAVE WEIGHTS -- TRAINING ONLY
+# SAVE WEIGHTS -- TRAINING ONLY
 saveWeights weights/wgt$a.wt
 
-
 exit
-#EOF
+# EOF

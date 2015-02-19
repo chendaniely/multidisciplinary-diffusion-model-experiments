@@ -1,8 +1,8 @@
 ###############################################################################
 # AUTO ENCODER NETWORK
 # USED FOR UPDATING AGENTS DURING SIMS
-# CREATED OCT 21, 2014
-# UPDATED FEB 19, 2015 - remove commented out training code
+# CREATED OCT 21, 2014 - Mark Orr
+# UPDATED FEB 19, 2015 - Daniel Chen - remove commented out training code
 ###############################################################################
 
 # GRAB ENV VARS

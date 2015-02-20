@@ -13,7 +13,7 @@ set c $env(c)
 
 deleteNets *
 
-loadExamples weights/AgentWgt$a.ex -s encoder
+loadExamples ../weights/AgentWgt$a.ex -s encoder
 
 # BUILD NETWORK STRUCTURE
 proc buildEncoder hidden {
@@ -37,7 +37,8 @@ resetNet
 train 1000
 
 # SAVE WEIGHTS -- TRAINING ONLY
-saveWeights weights/wgt$a.wt
+saveWeights ../weights/wgt$a.wt
 
 exit
 # EOF
+

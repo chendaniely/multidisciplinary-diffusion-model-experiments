@@ -13,7 +13,7 @@ set c $env(c)
 
 deleteNets *
 
-loadExamples Infl.ex -s encoder
+loadExamples ../Infl.ex -s encoder
 
 # BUILD NETWORK STRUCTURE
 proc buildEncoder hidden {
@@ -34,15 +34,15 @@ setObj zeroErrorRadius 0.01
 resetNet
 
 # LOAD WEIGHTS -- UPDATING ONLY
-loadWeights weights/wgt$a.wt
+loadWeights ../weights/wgt$a.wt
 
 # NO LEARNING ALLOWED -- UPDATING ONLY
 freezeWeights
 
 # OUTPUT OPEN -- UPDATING ONLY
-openNetOutputFile AgentState.out
+openNetOutputFile ../AgentState.out
 
-# TRAIN -- UPDATING 
+# TRAIN -- UPDATING
 train 1
 
 #OUTPUT CLOSE -- UPDATING ONLY
@@ -50,3 +50,4 @@ closeNetOutputFile
 
 exit
 # EOF
+

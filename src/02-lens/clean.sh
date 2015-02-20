@@ -10,3 +10,7 @@ mkdir ./output
 echo "Output folder for model runs.  Nothing in here should be tracked.
 This README is mostly here so the 'output' folder exists when git cloned
 " > ./output/README.md
+
+echo "Output folder for weights in model runs.  Nothing in here should be tracked.
+This README is mostly here so the 'weights' folder exists when git cloned
+" > ./weights/README.md

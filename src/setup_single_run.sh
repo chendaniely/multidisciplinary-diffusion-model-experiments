@@ -10,3 +10,4 @@ echo $new_dir
 echo 'copying complete, taking you there now!'
 cd $new_dir
 
+bash ./clean.sh

@@ -6,10 +6,10 @@ library(testthat)
 get_pout_files <- function(folder, sim_type){
   if(sim_type == 'batch'){
     # returns a list of *.pout files from results/simulations/
-    batch_experiments <- list.files(batch_folder)
+    batch_experiments <- list.files(folder)
     pout_files <- c()
     for(batch_experiment in batch_experiments){
-      pout_path <- paste(batch_folder, batch_experiment, 'output', sep = '/')
+      pout_path <- paste(folder, batch_experiment, 'output', sep = '/')
       pout_path_file <- paste(pout_path, 'network_of_agents.pout', sep = '/')
       pout_files <- c(pout_files, pout_path_file)
     }

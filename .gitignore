@@ -82,3 +82,4 @@ docs/_build/
 target/
 /experiments/.ipynb_checkpoints/batch_analysis-checkpoint.ipynb
 .Rproj.user
+/src/.Rhistory

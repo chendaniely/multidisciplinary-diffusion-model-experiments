@@ -3,16 +3,23 @@ library(doParallel)
 library(dplyr)
 library(testthat)
 
-get_batch_pout_files <- function(batch_folder){
+get_pout_files <- function(folder, sim_type){
+  if(sim_type == 'batch'){
     # returns a list of *.pout files from results/simulations/
-    batch_experiments <- list.files(batch_folder)
+    batch_experiments <- list.files(folder)
     pout_files <- c()
     for(batch_experiment in batch_experiments){
-        pout_path <- paste(batch_folder, batch_experiment, 'output', sep = '/')
-        pout_path_file <- paste(pout_path, 'network_of_agents.pout', sep = '/')
-        pout_files <- c(pout_files, pout_path_file)
+      pout_path <- paste(folder, batch_experiment, 'output', sep = '/')
+      pout_path_file <- paste(pout_path, 'network_of_agents.pout', sep = '/')
+      pout_files <- c(pout_files, pout_path_file)
     }
     return(pout_files)
+  } else if(sim_type == 'single'){
+    pout_full_path <- paste(folder, 'output', 'network_of_agents.pout', sep = '/')
+    return(pout_full_path)
+  } else{
+    stop("known sim_type passed into get_pout_files")
+  }
 }
 
 
@@ -53,7 +60,7 @@ calculate_cosine_sim <- function(row_vector, activation_value_columns,
 
 #' Clean and stack dataframes of all the simulation runs for a given set
 #'
-#' @note This function relies on a global variable, reshape_files,
+#' @note if sim_type is 'batch': this function relies on a global variable, reshape_files,
 #' that is a matrix of all simulations (rows) for a given set of
 #' simulation parameters (columns)
 #'
@@ -61,18 +68,20 @@ calculate_cosine_sim <- function(row_vector, activation_value_columns,
 #' @param num_agents, number, represents number of agents in the simulation
 #' @param num_ticks, number
 #' @param num_sims_per_sim_set, number
+#' @param sim_type, string, either 'batch' or 'single'
 #'
 get_model_simulation_df <- function(col_in_sim_set, num_agents, num_ticks,
-                                    num_sims_per_sim_set){
+                                    num_sims_per_sim_set, sim_type){
+  if(sim_type == 'batch'){
     # return a df that contains all the simulations for a given parameter set
     # that is all the runs for a given simulation set
-#     min       lq     mean   median       uq      max neval
-#     59.22262 60.16209 63.55249 60.47024 63.25996 74.64754     5
+    #     min       lq     mean   median       uq      max neval
+    #     59.22262 60.16209 63.55249 60.47024 63.25996 74.64754     5
 
-#     # preallocate data structure
-#     # time    ever_updated    avg_sse	avg_cos	run_number
+    #     # preallocate data structure
+    #     # time    ever_updated    avg_sse	avg_cos	run_number
     max_obs <- ((num_agents * num_ticks) + (num_agents * 4)) *
-        num_sims_per_sim_set
+      num_sims_per_sim_set
 
     df <- data.frame(time = rep(NA, max_obs), ever_updated = rep(NA, max_obs),
                      avg_sse = rep(NA, max_obs), avg_cos = rep(NA, max_obs),
@@ -81,29 +90,51 @@ get_model_simulation_df <- function(col_in_sim_set, num_agents, num_ticks,
                      epsilon_value = rep(NA, max_obs))
     start <- 1
     for(j in 1:num_sims_per_sim_set){
-        df_value <-get_pout_df(reshape_files[j, col_in_sim_set],
-                            activation_value_columns =
-                                config_activation_value_columns,
-                            prototype_value_columns =
-                                config_prototype_value_columns)
-        df_name <- letters[j]
-        df_value$ever_updated <- ifelse(test = df_value$numUpdate > 0, 1, 0)
-        df_value$sse <- apply(df_value, 1, calculate_sse)
-        df_value$cos <- apply(df_value, 1, calculate_cosine_sim)
+      df_value <-get_pout_df(reshape_files[j, col_in_sim_set],
+                             activation_value_columns =
+                               config_activation_value_columns,
+                             prototype_value_columns =
+                               config_prototype_value_columns)
+      df_name <- letters[j]
+      df_value$ever_updated <- ifelse(test = df_value$numUpdate > 0, 1, 0)
+      df_value$sse <- apply(df_value, 1, calculate_sse)
+      df_value$cos <- apply(df_value, 1, calculate_cosine_sim)
 
-        df_by_time_update <- df_value %>%
-            group_by(time, ever_updated) %>%
-            summarize(avg_sse = mean(sse), avg_cos = mean(cos)) %>%
-            mutate(run_number = j)
+      df_by_time_update <- df_value %>%
+        group_by(time, ever_updated) %>%
+        summarize(avg_sse = mean(sse), avg_cos = mean(cos)) %>%
+        mutate(run_number = j)
 
-        end <- start + nrow(df_by_time_update) - 1
+      end <- start + nrow(df_by_time_update) - 1
 
-        df[start:end, ] <- df_by_time_update
+      df[start:end, ] <- df_by_time_update
 
-        start <- end + 1
-        # assign(x = df_name, value = df_by_time_update)
+      start <- end + 1
+      # assign(x = df_name, value = df_by_time_update)
     }
     return(na.omit(df))
+  } else if(sim_type == 'single'){
+    df <- get_pout_df(pout_file = pout_files,
+                      activation_value_columns =
+                        config_activation_value_columns,
+                      prototype_value_columns =
+                        config_prototype_value_columns)
+
+    df$ever_updated <- ifelse(test = df$numUpdate > 0, 1, 0)
+    df$sse <- apply(df, 1, calculate_sse,
+                    activation_value_columns = config_activation_value_columns,
+                    prototype_value_columns = config_prototype_value_columns)
+    # df$cos <- apply(df, 1, calculate_cosine_sim)
+
+    df_by_time_update <- df %>%
+      group_by(time, ever_updated) %>%
+      summarize(avg_sse = mean(sse))
+
+    return(df_by_time_update)
+
+  } else{
+    stop('sim_type unknown in get_model_simulation_df')
+  }
 }
 
 #' Same as get_model_simulation_df, but uses a foreach loop in parallel

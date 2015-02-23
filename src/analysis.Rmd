@@ -33,95 +33,13 @@ pout_files <- get_pout_files(folder = config_batch_folder_path, sim_type = 'sing
 pout_files
 ```
 
-```{r view_shape_of_pout_files}
-dim(reshape_files)
-```
-
-```{r create_clusters}
-cl <- makeCluster(config_num_cores)
-registerDoParallel(cl)
-```
-
-```{r get_pout_data_frames}
+```{r get_pout_data_frame}
 strt <- Sys.time()
-
-dfs <- foreach(i = 1:ncol(reshape_files), 
-                 .packages=c('dplyr', 'stringr')) %dopar% {
-    # read in each set of parameter sweeps into separate dataframe
-    # strt <- Sys.time()
-    df <- get_model_simulation_df(i, num_agents, num_ticks) # Time difference of 5.335534 secs
-    # print(Sys.time() - strt)
-    
-    plot_name <- str_split(string = reshape_files[1, i], pattern = '/')[[1]][5]
-    
-    delta_value <- str_split(string = plot_name, pattern = '_')[[1]][2]
-    delta_value <- str_replace(string = delta_value, pattern = 'd', replacement = '')
-    delta_value <- as.numeric(delta_value)
-    
-    epsilon_value <- str_split(string = plot_name, pattern = '_')[[1]][3]
-    epsilon_value <- str_replace(string = epsilon_value, pattern = 'e', replacement = '')
-    epsilon_value <- as.numeric(epsilon_value)
-    
-    df$delta_value <- delta_value
-    df$epsilon_value <- epsilon_value
-    
-    dfs <- list(df)
-}
-print('time to get dfs in parallel:')
+df <- get_model_simulation_df(1, num_agents, num_ticks, sim_type='single')
+print('time to get df:')
 print(Sys.time() - strt)
 ```
 
-```{r}
-# strt <- Sys.time()
-# plots <- foreach(i = 1:length(dfs), .packages=c('ggplot2')) %dopar% {
-#     df <- as.data.frame(dfs[i])
-#     plot_name <- str_split(string = reshape_files[1, i], pattern = '/')[[1]][2]
-#     
-#     g <- ggplot(df[df$ever_updated == 1, ], 
-#                 aes(time, color = as.factor(run_number))) + 
-#         ggtitle(plot_name) + 
-#         # theme(plot.title = element_text(size = rel(0.75))) +
-#         scale_color_discrete(name="Run") +
-#         theme(legend.position="none")
-#     
-#     s <- g + geom_line(aes(y = avg_sse))
-#     s
-#     c <- g + geom_line(aes(y = avg_cos))
-#     c
-#     plots <- list(s, c)
-# }
-# 
-# print("ltime to generate plots")
-# print(Sys.time() - strt)
-```
-
-```{r create_faceted_plots}
-# facet plots
-# the starts variable is used for when we have the same parameter sets,
-# but different number of agents
-# aka when we run a sweep over number of agents
-starts <- seq(from = 1, to = ncol(reshape_files), by = config_num_parameter_sets_no_a)
-strt <- Sys.time()
-plots_facet <- foreach(i = 1:length(starts), .packages=c('ggplot2')) %dopar% {
-    start <- starts[i]
-    end <- start + num_parameter_sets_no_a - 1
-    df_all_n <- plyr::ldply(dfs[start:end], data.frame)
-    g <- ggplot(df_all_n[df_all_n$ever_updated == 1, ], 
-                aes(time, color = as.factor(run_number))) + 
-        theme(legend.position="none") +
-        geom_line(aes(y = avg_sse)) + scale_y_continuous(limits=c(0, 20)) +
-        theme(axis.text.x=element_text(angle = -90, hjust = 0)) +
-        facet_grid(delta_value~epsilon_value)
-    g
-}
-
-print("time to generate faceted plots")
-print(Sys.time() - strt)
-```
-
-```{r stop_clusters}
-stopCluster(cl)
-registerDoSEQ()
 ```
 
 # Plots

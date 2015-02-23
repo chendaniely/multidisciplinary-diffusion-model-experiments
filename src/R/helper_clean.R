@@ -4,7 +4,7 @@ library(dplyr)
 library(testthat)
 
 get_pout_files <- function(folder, sim_type){
-  if sim_type == 'batch'{
+  if(sim_type == 'batch'){
     # returns a list of *.pout files from results/simulations/
     batch_experiments <- list.files(batch_folder)
     pout_files <- c()

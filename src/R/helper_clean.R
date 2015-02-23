@@ -14,8 +14,12 @@ get_pout_files <- function(folder, sim_type){
       pout_files <- c(pout_files, pout_path_file)
     }
     return(pout_files)
+  } else if(sim_type == 'single'){
+    pout_full_path <- paste(folder, 'output', 'network_of_agents.pout', sep = '/')
+    return(pout_full_path)
+  } else{
+    stop("known sim_type passed into get_pout_files")
   }
-
 }
 
 

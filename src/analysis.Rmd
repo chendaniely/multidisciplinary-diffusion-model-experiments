@@ -42,11 +42,6 @@ pout_files <- get_pout_files(folder = config_batch_folder_path, sim_type = 'sing
 pout_files
 ```
 
-```{r reshape_pout_files_by_runs, include=FALSE}
-reshape_files <- matrix(data = pout_files, nrow = num_sims_per_sim_set)
-reshape_files
-```
-
 ```{r view_shape_of_pout_files}
 dim(reshape_files)
 ```

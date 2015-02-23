@@ -38,7 +38,7 @@ source(file = 'R/helper_clean.R')
 ```
 
 ```{r get_batch_pout_files, include=FALSE}
-pout_files <- get_batch_pout_files(batch_folder)
+pout_files <- get_pout_files(folder = config_batch_folder_path, sim_type = 'single')
 pout_files
 ```
 

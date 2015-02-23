@@ -10,19 +10,10 @@ output:
 
 ```{r load_packages_and_config, echo=FALSE, message=FALSE}
 rm(list=ls())
-# library(lsa)
-# library(stringr)
-# library(ggplot2)
-# library(reshape2)
-# library(ggthemes)
+library(lsa)
+library(ggplot2)
 library(knitr)
-# library(foreach)
-# library(doParallel)
-# library(doMC)
-# library(grid)
-# library(plyr)
-# library(dplyr)
-# library(testthat)
+
 opts_chunk$set(echo=FALSE,
                # fig.path='Figs-batch_analysis_stacked/',
                dpi=120,

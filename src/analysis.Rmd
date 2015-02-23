@@ -40,24 +40,14 @@ print('time to get df:')
 print(Sys.time() - strt)
 ```
 
+```{r create_plots}
+g <- ggplot(df[df$ever_updated == 1, ], 
+            aes(x = time)) + 
+  theme(legend.position="none") +
+  geom_line(aes(y = avg_sse))
 ```
 
 # Plots
 ```{r print_faceted_plots}
-plots_facet
-```
-
-
-```{r}
-# strt <- Sys.time()
-# # unlisted <- c()
-# # create multiplots
-# for(plot in plots){
-#     # unlisted <- c(unlisted, plot)
-#     multiplot(plotlist = plot)
-#     print("================================================================================")
-# }
-# 
-# print("plot time")
-# print(Sys.time() - strt)
+g
 ```

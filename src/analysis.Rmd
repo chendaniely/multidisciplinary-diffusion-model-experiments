@@ -25,8 +25,23 @@ source(file = 'analysis_config.R')
 source(file = 'R/helper_clean.R')
 # to render document:
 # source(file = 'R/helper_config.R'); source(file = 'analysis_config.R'); source(file = 'R/helper_clean.R'); rmarkdown::render('analysis.Rmd', output_file=paste(config_name_batch_simulation_output_folder, 'html', sep = '.'), output_dir='config_simulation_results_folder')
-
 ```
+
+```{r}
+# this is code if this rmarkdown document is run from a makefile
+# the make fill will create a variable 'config_from_makefile'
+# and assign 'config_make_name_batch_simulation_output_folder' to 'config_name_batch_simulation_output_folder'
+# and assign 'config_make_batch_folder_path' to 'config_batch_folder_path'
+# essentially I will overwrite these variables since they are used to get the .pout files
+if(exists("config_from_makefile")){
+  config_batch_folder_path <- config_make_batch_folder_path
+  config_name_batch_simulation_output_folder <- config_make_name_batch_simulation_output_folder
+  print("config.ini data replaced")
+} else{
+  print("Reading Data from config.ini")
+}
+```
+
 
 ```{r get_batch_pout_files, include=FALSE}
 pout_files <- get_pout_files(folder = config_batch_folder_path, sim_type = 'single')

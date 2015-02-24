@@ -1,5 +1,7 @@
 # temp files
 *~
+\#*
+.\#*
 
 # MDME output
 *.pout

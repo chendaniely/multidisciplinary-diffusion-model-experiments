@@ -26,6 +26,16 @@ clean_02-lens :
 	@find ./$(base_lens_dir) -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' -o -name '*.out' | xargs rm
 	@find ./$(base_lens_dir)/weights -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' | xargs rm
 
+single_sim : clean copy_base_lens_dir
+
+copy_base_lens_dir :
+# the eval is how you assign a variable in a recipe
+# the shell is used to execute the next line as a shell command
+	@echo "copying base_lens_dir to new_dir"
+	$(eval new_dir = $(shell echo './results/simulations/02-lens_single_'`date +%Y-%m-%d_%H:%M:%S`))
+	@echo $(new_dir)
+	cp -r $(base_lens_dir) $(new_dir)
+
 
 % :
 	@echo "Unknown make target"

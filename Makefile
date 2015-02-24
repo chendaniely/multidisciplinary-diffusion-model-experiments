@@ -21,11 +21,15 @@ clean_02-lens :
 	@touch ./$(base_lens_dir)/1.out
 	@touch ./$(base_lens_dir)/weights/1.wt
 	@touch ./$(base_lens_dir)/weights/1.ex
+	@touch ./$(base_lens_dir)/output/temp.filler
 
 	@echo "cleaning base_lens_dir: $(base_lens_dir)"
 	@find ./$(base_lens_dir) -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' -o -name '*.out' | xargs rm
 	@echo "cleaning base_lens_dir: $(base_lens_dir)/weights"
 	@find ./$(base_lens_dir)/weights -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' | xargs rm
+	@echo "cleaning base_lens_dir: $(base_lens_dir)/output"
+	@find ./$(base_lens_dir)/output -maxdepth 1 -type f -not -name 'README.md' | xargs rm
+
 clean_analysis :
 	@echo "cleaning analysis output (mostly knitr .html files)"
 	@touch src/1.html

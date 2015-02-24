@@ -1,6 +1,6 @@
 base_lens_dir = src/02-lens
 
-.PHONY : help clean clean_02-lens single_sim copy_base_lens_dir
+.PHONY : help clean clean_02-lens clean_analysis single_sim copy_base_lens_dir
 
 help :
 	@echo "Please use \`make <target>\` where <target> is one of:"
@@ -8,7 +8,7 @@ help :
 	@echo "  batch_sim       to setup a batch/sweep experiment (not implemented yet)"
 	@echo "  clean           clean the directory (excluding results folder)"
 
-clean : clean_02-lens
+clean : clean_02-lens clean_analysis
 
 # rm the *.wt *.ex and *.out files in the base 02-lens directory
 #    only .out should be here and Infl.ex

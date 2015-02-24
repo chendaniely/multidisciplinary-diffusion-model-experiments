@@ -1,4 +1,5 @@
-base_lens_dir = src/02-lens
+BASE_LENS_DIR = src/02-lens
+SIM_RESULTS_DIR = results/simulations
 
 .PHONY : help clean clean_02-lens clean_analysis single_sim copy_base_lens_dir
 
@@ -16,21 +17,21 @@ clean : clean_02-lens clean_analysis
 clean_02-lens :
 # really hacky code to to ensure that there are files to delete
 # which means that this target will succeed
-	@touch ./$(base_lens_dir)/1.wt
-	@touch ./$(base_lens_dir)/1.ex
-	@touch ./$(base_lens_dir)/1.out
-	@touch ./$(base_lens_dir)/weights/1.wt
-	@touch ./$(base_lens_dir)/weights/1.ex
-	@touch ./$(base_lens_dir)/output/temp.filler
+	@touch ./$(BASE_LENS_DIR)/1.wt
+	@touch ./$(BASE_LENS_DIR)/1.ex
+	@touch ./$(BASE_LENS_DIR)/1.out
+	@touch ./$(BASE_LENS_DIR)/weights/1.wt
+	@touch ./$(BASE_LENS_DIR)/weights/1.ex
+	@touch ./$(BASE_LENS_DIR)/output/temp.filler
 
-	@echo "cleaning dir: $(base_lens_dir)"
-	@find ./$(base_lens_dir) -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' -o -name '*.out' | xargs rm
+	@echo "cleaning dir: $(BASE_LENS_DIR)"
+	@find ./$(BASE_LENS_DIR) -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' -o -name '*.out' | xargs rm
 
-	@echo "cleaning dir: $(base_lens_dir)/weights"
-	@find ./$(base_lens_dir)/weights -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' | xargs rm
+	@echo "cleaning dir: $(BASE_LENS_DIR)/weights"
+	@find ./$(BASE_LENS_DIR)/weights -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' | xargs rm
 
-	@echo "cleaning dir: $(base_lens_dir)/output"
-	@find ./$(base_lens_dir)/output -maxdepth 1 -type f -not -name 'README.md' | xargs rm
+	@echo "cleaning dir: $(BASE_LENS_DIR)/output"
+	@find ./$(BASE_LENS_DIR)/output -maxdepth 1 -type f -not -name 'README.md' | xargs rm
 
 clean_analysis :
 	@echo "cleaning analysis output (mostly knitr .html files)"
@@ -43,10 +44,10 @@ single_sim : clean copy_base_lens_dir
 copy_base_lens_dir :
 # the eval is how you assign a variable in a recipe
 # the shell is used to execute the next line as a shell command
-	@echo "copying base_lens_dir to new_dir"
+	@echo "copying BASE_LENS_DIR to new_dir"
 	$(eval new_dir = $(shell echo './results/simulations/02-lens_single_'`date +%Y-%m-%d_%H:%M:%S`))
 	@echo $(new_dir)
-	cp -r $(base_lens_dir) $(new_dir)
+	cp -r $(BASE_LENS_DIR) $(new_dir)
 
 
 % :

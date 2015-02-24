@@ -5,7 +5,7 @@ base_lens_dir = src/02-lens
 help :
 	@echo "Please use \`make <target>\` where <target> is one of:"
 	@echo "  single_sim      to setup a single experiment"
-	@echo "  batch_sim       to setup a batch/sweep experiment"
+	@echo "  batch_sim       to setup a batch/sweep experiment (not implemented yet)"
 	@echo "  clean           clean the directory (excluding results folder)"
 
 clean : clean_02-lens

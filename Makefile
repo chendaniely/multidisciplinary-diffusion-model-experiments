@@ -1,4 +1,4 @@
-base_lens_dir = 'src/02-lens'
+base_lens_dir = src/02-lens
 
 .PHONY : help clean clean_02-lens
 

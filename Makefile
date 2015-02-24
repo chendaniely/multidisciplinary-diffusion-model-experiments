@@ -25,6 +25,11 @@ clean_02-lens :
 
 	@find ./$(base_lens_dir) -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' -o -name '*.out' | xargs rm
 	@find ./$(base_lens_dir)/weights -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' | xargs rm
+clean_analysis :
+	@echo "cleaning analysis output (mostly knitr .html files)"
+	@touch src/1.html
+
+	@find ./src -maxdepth 1 -type f -name '*.html' | xargs rm
 
 single_sim : clean copy_base_lens_dir
 

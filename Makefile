@@ -8,6 +8,7 @@ help :
 	@echo "  single_sim      to setup a single experiment"
 	@echo "  batch_sim       to setup a batch/sweep experiment (not implemented yet)"
 	@echo "  clean           clean the directory (excluding results folder)"
+	@echo "  analyze_single  generate analysis for single simulation"
 
 clean : clean_02-lens clean_analysis
 
@@ -49,6 +50,26 @@ copy_base_lens_dir :
 	@echo $(new_dir)
 	cp -r $(BASE_LENS_DIR) $(new_dir)
 
+# folders that match single simulation pattern
+SINGLE_SIM_DIR = \
+	$(shell find $(SIM_RESULTS_DIR) -maxdepth 1 -type d -name '*02-lens_single_*')
+
+# append .html to end of the folder names (this is the generated analysis file)
+SINGLE_SIM_OUTPUT_PATH = \
+	$(addsuffix .html,$(SINGLE_SIM_DIR))
+
+SINGLE_SIM_OUTPUT_FILE = \
+	$(notdir $(SINGLE_SIM_OUTPUT_PATH))
+
+%02-lens_single_%.html : src/analysis.Rmd
+	cd $(dir $<) && \
+	Rscript -e "config_from_makefile <- TRUE; \
+		config_make_batch_folder_path <- ../results/simulations/$$(basename $<) \
+		config_make_name_batch_simulation_output_folder <- $$(basename $<) \
+		rmarkdown::render('$$(basename $<)', \
+				  output = '$$(basename $@)')"
+
+analyze_single : $(SINGLE_SIM_OUTPUT_PATH)
 
 % :
 	@echo "Unknown make target"

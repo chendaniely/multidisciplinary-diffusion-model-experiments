@@ -14,7 +14,6 @@ clean : clean_02-lens clean_analysis
 #    only .out should be here and Infl.ex
 # rm the *.wt and .*ex files form the weights directory
 clean_02-lens :
-	@echo "cleaning base_lens_dir: $(base_lens_dir)"
 # really hacky code to to ensure that there are files to delete
 # which means that this target will succeed
 	@touch ./$(base_lens_dir)/1.wt
@@ -23,6 +22,7 @@ clean_02-lens :
 	@touch ./$(base_lens_dir)/weights/1.wt
 	@touch ./$(base_lens_dir)/weights/1.ex
 
+	@echo "cleaning base_lens_dir: $(base_lens_dir)"
 	@find ./$(base_lens_dir) -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' -o -name '*.out' | xargs rm
 	@find ./$(base_lens_dir)/weights -maxdepth 1 -type f -name '*.wt' -o -name '*.ex' | xargs rm
 clean_analysis :

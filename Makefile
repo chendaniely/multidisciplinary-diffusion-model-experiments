@@ -1,6 +1,6 @@
 base_lens_dir = src/02-lens
 
-.PHONY : help clean clean_02-lens
+.PHONY : help clean clean_02-lens single_sim copy_base_lens_dir
 
 help :
 	@echo "Please use \`make <target>\` where <target> is one of:"

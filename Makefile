@@ -96,6 +96,56 @@ analyze_single :
 		fi ; \
 	done
 
+as :
+	@for HTML_OUTPUT_FILE in $(SINGLE_SIM_OUTPUT_PATH) ; do \
+		echo $$HTML_OUTPUT_FILE ; \
+		if [ -e $$HTML_OUTPUT_FILE ] ; \
+		then \
+			echo 'file exists' ; \
+			if [ "`stat --format %Y src/analysis.Rmd`" -gt "`stat --format %Y $$HTML_OUTPUT_FILE`" ] ; \
+			then \
+				echo 'needs updating... updating now...' ; \
+				Rscript -e "str <- 'updating in R'; \
+                                            print(str); \
+                                            f <- '$$HTML_OUTPUT_FILE'; \
+                                            print(f); \
+\
+                                            config_from_makefile <- TRUE; \
+\
+                                            config_make_batch_folder_path <- stringr::str_replace(f, '.html', ''); \
+                                            config_make_batch_folder_path <- paste0('../', config_make_batch_folder_path); \
+                                            print(config_make_batch_folder_path) ; \
+\
+                                            config_make_name_batch_simulation_output_folder <- \
+                                                stringr::str_replace(config_make_batch_folder_path, 'results\\\/simulations\\\/', ''); \
+                                            print(config_make_name_batch_simulation_output_folder); \
+                                            rmarkdown::render('src/analysis.Rmd', output_file = f, output_dir = '../results/simulations'); \
+\
+                                            " ; \
+			fi ; \
+		else \
+			echo 'file does not exist... creating now...' ; \
+				Rscript -e "str <- 'updating in R'; \
+                                            print(str); \
+                                            f <- '$$HTML_OUTPUT_FILE'; \
+                                            print(f); \
+\
+                                            config_from_makefile <- TRUE; \
+\
+                                            config_make_batch_folder_path <- stringr::str_replace(f, '.html', ''); \
+                                            config_make_batch_folder_path <- paste0('../', config_make_batch_folder_path); \
+                                            print(config_make_batch_folder_path) ; \
+\
+                                            config_make_name_batch_simulation_output_folder <- \
+                                                stringr::str_replace(config_make_batch_folder_path, 'results\\\/simulations\\\/', ''); \
+                                            print(config_make_name_batch_simulation_output_folder); \
+                                            rmarkdown::render('src/analysis.Rmd', output_file = f, output_dir = '../results/simulations'); \
+\
+                                            " ; \
+		fi ; \
+		echo "==========" ; \
+	done
+
 
 % :
 	@echo "Unknown make target"

@@ -70,33 +70,6 @@ SINGLE_SIM_OUTPUT_FILE = \
 				  output = '$$(basename $@)')"
 
 analyze_single :
-#	@echo $(SINGLE_SIM_OUTPUT_DIR)
-#	@echo '=========='
-#	@echo $(SINGLE_SIM_OUTPUT_PATH)
-#	@echo '=========='
-#	@echo $(SINGLE_SIM_OUTPUT_FILE)
-#	@echo '=========='
-	@for HTML_OUTPUT_FILE in $(SINGLE_SIM_OUTPUT_PATH) ; do \
-		echo $$HTML_OUTPUT_FILE ; \
-		if [ -e $$HTML_OUTPUT_FILE ] ; \
-		then \
-			echo 'file exists' ; \
-			if [ "`stat --format %Y src/analysis.Rmd`" -gt "`stat --format %Y $$HTML_OUTPUT_FILE`" ] ; \
-			then \
-				echo 'needs updating... updating now...' ; \
-				Rscript -e "config_from_makefile <- TRUE ; \
-						config_make_batch_folder_path <- $(SIM_RESULTS_DIR)/${$$HTML_OUTPUT_FILE%.*} ; \
-						config_make_name_batch_simulation_output_folder <- ${$HTML_OUTPUT_FILE%.*} ; \
-						rmarkdown::render('src/analysis.Rmd', \
-							output__file = $$(HTML_OUTPUT_FILE), \
-							output_dir = $(SIM_RESULTS_DIR))" ; \
-			fi ; \
-		else \
-			echo 'file does not exist... creating now...' ; \
-		fi ; \
-	done
-
-as :
 	@for HTML_OUTPUT_FILE in $(SINGLE_SIM_OUTPUT_PATH) ; do \
 		echo $$HTML_OUTPUT_FILE ; \
 		if [ -e $$HTML_OUTPUT_FILE ] ; \

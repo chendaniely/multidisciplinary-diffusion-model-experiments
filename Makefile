@@ -51,12 +51,12 @@ copy_base_lens_dir :
 	cp -r $(BASE_LENS_DIR) $(new_dir)
 
 # folders that match single simulation pattern
-SINGLE_SIM_DIR = \
+SINGLE_SIM_OUTPUT_DIR = \
 	$(shell find $(SIM_RESULTS_DIR) -maxdepth 1 -type d -name '*02-lens_single_*')
 
 # append .html to end of the folder names (this is the generated analysis file)
 SINGLE_SIM_OUTPUT_PATH = \
-	$(addsuffix .html,$(SINGLE_SIM_DIR))
+	$(addsuffix .html,$(SINGLE_SIM_OUTPUT_DIR))
 
 SINGLE_SIM_OUTPUT_FILE = \
 	$(notdir $(SINGLE_SIM_OUTPUT_PATH))

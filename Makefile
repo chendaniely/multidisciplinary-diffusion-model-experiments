@@ -69,7 +69,7 @@ SINGLE_SIM_OUTPUT_FILE = \
 		rmarkdown::render('$$(basename $<)', \
 				  output = '$$(basename $@)')"
 
-analyze_single : $(SINGLE_SIM_OUTPUT_PATH)
+analyze_single :
 
 % :
 	@echo "Unknown make target"

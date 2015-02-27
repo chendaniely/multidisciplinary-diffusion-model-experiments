@@ -9,7 +9,6 @@ output:
 ---
 
 ```{r load_packages_and_config, echo=FALSE, message=FALSE}
-rm(list=ls())
 library(lsa)
 library(ggplot2)
 library(knitr)
@@ -41,7 +40,6 @@ if(exists("config_from_makefile")){
   print("Reading Data from config.ini")
 }
 ```
-
 
 ```{r get_batch_pout_files, include=FALSE}
 pout_files <- get_pout_files(folder = config_batch_folder_path, sim_type = 'single')

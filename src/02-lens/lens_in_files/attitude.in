@@ -68,7 +68,7 @@ loadExamples Infl.ex -s train -exmode PERMUTED
 setObj train.graceTime  1.0
 setObj train.minTime    3.0
 setObj train.maxTime    3.0
-sit1
+
 setObj learningRate     0.01
 setObj momentum         0.8
 setObj clampStrength 	0.2

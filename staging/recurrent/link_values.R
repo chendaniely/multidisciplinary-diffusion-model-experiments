@@ -1,4 +1,4 @@
-#
+################################################################################
 # This script uses LENS numering convensions
 # That means things are most likely going to be 0 indexed
 # instead of what R normally is in, 1 indexed
@@ -13,6 +13,8 @@ library(foreach)
 library(ggplot2)
 library(parallel)
 
+source('helper.R')
+
 link_values <- read.table(file = 'link.values',
                           header = FALSE,
                           stringsAsFactors = FALSE)
@@ -21,138 +23,80 @@ head(link_values)
 tail(link_values)
 dim(link_values)
 
-link_values$from <-sapply(str_split(link_values$V1, '->'), "[[", 1)
-link_values$to <-sapply(str_split(link_values$V1, '->'), "[[", 2)
+link_values <- parse_link_values_file(link_values)
+head(link_values)
+tail(link_values)
 dim(link_values)
 
-link_values$j_type <-sapply(str_split(link_values$from, ':'), "[[", 1)
-link_values$j_value <-sapply(str_split(link_values$from, ':'), "[[", 2)
-dim(link_values)
-
-link_values$i_type <-sapply(str_split(link_values$to, ':'), "[[", 1)
-link_values$i_value <-sapply(str_split(link_values$to, ':'), "[[", 2)
-dim(link_values)
-
+################################################################################
 #
-# Get same bank matrix
+# Same bank values
 #
-
-same_bank <- link_values[link_values$j_type == 'Input' &
-                             link_values$i_type == 'Input', ]
+################################################################################
+same_bank <- get_same_bank_df(link_values)
 dim(same_bank)
+head(same_bank)
+tail(same_bank)
 
-same_bank_sub <- same_bank[, c('j_value', 'i_value', 'V2')]
-same_bank_sub
+same_bank <- randomize_weights(same_bank, 'V2', -10, 10)
+dim(same_bank)
+head(same_bank)
+tail(same_bank)
+
+same_bank_sub <- get_same_bank_sub_df(same_bank)
+dim(same_bank_sub)
 head(same_bank_sub)
+tail(same_bank_sub)
 
 #
-# randomize weights
+# reshape and sort rows & columns
 #
-same_bank_sub$V2 <- apply(same_bank_sub, 1,
-                          function(x){runif(n = 1, min = -10, max = 10)})
-
-weight_df <- dcast(same_bank_sub, i_value ~ j_value, value.var = 'V2')
+weight_df <- reshape_weights_df(same_bank_sub)
 weight_df
 
-row.names(weight_df) <- weight_df$i_value
-weight_df <- weight_df[, !names(weight_df) %in% c('i_value')]
+weight_df <- sort_rows_columns_df(weight_df)
 weight_df
 
-columns <- names(weight_df)
-columns
-
-sorted_columns <- sort(as.numeric(columns))
-sorted_columns
-
-# TODO
-# this sapply can be generalized into a function
-column_order <- sapply(sorted_columns,
-                       function(x){pattern <- sprintf('^%s$', x);
-                                   grep(pattern, columns)})
-column_order
-
-weight_df <- weight_df[, column_order]
-weight_df
-
-rows <- row.names(weight_df)
-rows
-
-sorted_rows <- sort(as.numeric(rows))
-sorted_rows
-
-# TODO
-# sapply function above is duplicated here
-row_order <- sapply(sorted_rows,
-                    function(x){pattern <- sprintf('^%s$', x);
-                                grep(pattern, rows)})
-row_order
-
-weight_df <- weight_df[row_order, ]
-weight_df
-
+#
+# turn dataframe into matrix
+#
 weight_matrix <- as.matrix(weight_df)
 weight_matrix
 
 weight_matrix[lower.tri(weight_matrix)] <- NA
 weight_matrix
 
-# code to randomize weights
-
-
 # if you take the bottom half of the matrix you would not need to transpose
-list_weights <- (weight_matrix)
+list_weights <- unlist(as.data.frame(weight_matrix))
 # list_weights <- list_weights[!is.na(list_weights)]
 list_weights
 
-
-
+################################################################################
 #
-# Create Opposite side matrix
+# Opposite bank values
 #
-opposite_bank <- link_values[link_values$j_type == 'InputMirror' &
-                                 link_values$i_type == 'Input', ]
-opposite_bank
-
-opposite_bank_sub <- opposite_bank[, c('j_value', 'i_value', 'V2')]
-opposite_bank_sub
-
-#
-# randomize weights
-#
-opposite_bank_sub$V2 <- apply(opposite_bank_sub, 1,
-                          function(x){runif(n = 1, min = -10, max = 10)})
-
-odd_rows <- seq(1, nrow(opposite_bank_sub), 2)
-weights_opposite_bank <- opposite_bank_sub[odd_rows, ]
+################################################################################
+weights_opposite_bank <- get_opposite_bank_df(link_values,
+                                              randomize_weights = TRUE)
 weights_opposite_bank
 
-# opposite_df <- dcast(opposite_bank_sub, i_value ~ j_value, value.var = 'V2')
-# opposite_df
-
+################################################################################
 #
-# Create Hidden side matrix
+# Hidden bank values
 #
-hidden_bank <- link_values[link_values$j_type == 'Hidden' &
-                                 link_values$i_type == 'Input', ]
-hidden_bank
+################################################################################
+weights_hidden_bank <- get_hidden_bank_df(link_values, randomize_weights = TRUE)
+weights_hidden_bank
 
-hidden_bank_sub <- hidden_bank[, c('j_value', 'i_value', 'V2')]
-hidden_bank_sub
-
-hidden_bank_sub$V2 <- apply(hidden_bank_sub, 1,
-                            function(x){runif(n = 1, min = -10, max = 10)})
-
-weights_hidden_bank <- hidden_bank_sub
-
+################################################################################
 #
 # Config Values
 #
+################################################################################
 
 # these are 0 indexed values, aka the values in LENS
 a_i_index <- 3
 a_j_index <- 7
-# a_i_index <- as.character(a_i_index)
-# a_j_index <- as.character(a_j_index)
 
 ij_index_in_matrix <- nrow(weight_matrix) * (a_j_index) + (a_i_index + 1)
 ij_index_in_matrix
@@ -160,8 +104,8 @@ ij_index_in_matrix
 ai <- 0
 aj <- 0
 
-ai_aj_sets <- expand.grid(ai = seq(0, 1, .01),
-                          aj = seq(0, 1, .01))
+ai_aj_sets <- expand.grid(ai = seq(0, 1, .2),
+                          aj = seq(0, 1, .2))
 ai_aj_sets
 
 

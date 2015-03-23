@@ -320,6 +320,33 @@ g
 ai_aj_sets$goodness <- apply(ai_aj_sets, 1, calculate_goodness)
 ai_aj_sets
 
+png('goodness.png')
+
 ggplot(ai_aj_sets, aes(ai, aj)) +
     geom_tile(aes(fill = goodness), color = 'white') +
     scale_fill_gradient(low = 'white', high = 'steelblue')
+
+dev.off()
+
+persp(ai_aj_sets$ai, ai_aj_sets$aj, goodness, phi = 45, theta = 45,
+  xlab = "ai", ylab = "aj",
+  main = "Goodness Surface"
+)
+
+persp(seq(10, 300, 5), seq(10, 300, 5), z, phi = 45, theta = 45,
+  xlab = "X Coordinate (feet)", ylab = "Y Coordinate (feet)",
+  main = "Surface elevation data"
+)
+
+
+png('goodness_surface.png')
+
+wireframe(goodness ~ ai * aj, data = ai_aj_sets,
+  xlab = "ai", ylab = "aj",
+  main = "Goodness Surface",
+  drape = TRUE,
+  colorkey = TRUE,
+  screen = list(z = -60, x = -60)
+)
+
+dev.off()

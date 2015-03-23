@@ -3,7 +3,7 @@
 
 deleteNets * 
 
-set a $env(a)
+# set a $env(a)
 set a 0000001
 
 # test input values

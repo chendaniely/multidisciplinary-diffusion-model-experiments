@@ -139,7 +139,18 @@ def step(time_tick, network_of_agents):
     logger1.debug('STEP TIME TICK: %s', str(time_tick))
 
     logger1.debug('Begin random select and update network of agents')
-    random_select_and_update(network_of_agents)
+
+    update_type = config.get('ModelParameters', 'UpdateType')
+
+    if update_type == 'sequential':
+        random_select_and_update(network_of_agents)
+    elif update_type == 'simultaneous':
+        update_simultaneous(network_of_agents,
+                            config.getInt(
+                                'ModelParameters',
+                                'NumberOfAgentsToUpdatePerTimeTick'))
+    else:
+        raise ValueError('Unknown simulation update type')
 
     # here = os.path.abspath(os.path.dirname(__file__))
     network_agent_step_time_dir = os.path.join(here, 'output',

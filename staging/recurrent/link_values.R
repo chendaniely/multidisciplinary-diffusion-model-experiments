@@ -320,6 +320,8 @@ g
 ai_aj_sets$goodness <- apply(ai_aj_sets, 1, calculate_goodness)
 ai_aj_sets
 
+write.csv(ai_aj_sets, 'goodness.csv')
+
 png('goodness.png')
 
 ggplot(ai_aj_sets, aes(ai, aj)) +

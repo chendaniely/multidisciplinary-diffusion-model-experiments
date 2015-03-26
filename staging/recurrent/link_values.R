@@ -38,10 +38,10 @@ dim(same_bank)
 head(same_bank)
 tail(same_bank)
 
-same_bank <- randomize_weights(same_bank, 'V2', -10, 10)
-dim(same_bank)
-head(same_bank)
-tail(same_bank)
+## same_bank <- randomize_weights(same_bank, 'V2', -10, 10)
+## dim(same_bank)
+## head(same_bank)
+## tail(same_bank)
 
 same_bank_sub <- get_same_bank_sub_df(same_bank)
 dim(same_bank_sub)
@@ -77,7 +77,7 @@ list_weights
 #
 ################################################################################
 weights_opposite_bank <- get_opposite_bank_df(link_values,
-                                              randomize_weights = TRUE)
+                                              randomize_weights = FALSE)
 weights_opposite_bank
 
 ################################################################################
@@ -85,7 +85,7 @@ weights_opposite_bank
 # Hidden bank values
 #
 ################################################################################
-weights_hidden_bank <- get_hidden_bank_df(link_values, randomize_weights = TRUE)
+weights_hidden_bank <- get_hidden_bank_df(link_values, randomize_weights = FALSE)
 weights_hidden_bank
 
 ################################################################################

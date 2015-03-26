@@ -86,7 +86,8 @@ def random_select_and_update(network_of_agents):
                                           lens_in_file=lens_in_file_dir,
                                           agent_ex_file=agent_ex_file_dir,
                                           infl_ex_file=infl_ex_file_dir,
-                                          agent_state_out_file=agent_state_out_file_dir)
+                                          agent_state_out_file=\
+                                          agent_state_out_file_dir)
         # print('post-update state', selected_agent.get_state())
 
 

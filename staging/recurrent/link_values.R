@@ -121,7 +121,7 @@ t1_list <- foreach(i = (1:length(list_weights))) %do% {
     if(i == ij_index_in_matrix){
         list_weights[i] * ai * aj
     } else{
-        list_weights[i] * .5 * .5
+        list_weights[i] * .0 * .0
     }
 }
 t1_list
@@ -146,7 +146,7 @@ t2_list <- foreach(i = (0:num_units_per_bank_0)) %do% {
         # print('hello')
         get_input_i(i) * ai
     } else{
-        get_input_i(i) * .5
+        get_input_i(i) * .0
     }
 }
 t2_list
@@ -169,7 +169,7 @@ t3_list <- foreach(i = (1:length(list_weights))) %do% {
         # print('hello')
         get_bias_i(i) * ai
     } else{
-        get_bias_i(i) * .5
+        get_bias_i(i) * .0
     }
 }
 t3_list
@@ -209,9 +209,9 @@ k_ai <- get_ks('i', a_i_index, a_j_index, num_units_per_bank_0, 9)
 k_ai
 
 #' get activation value for a_k
-#' currently returns 0.5
+#' currently returns 0.0
 get_a_k <- function(){
-    return(0.5)
+    return(0.0)
 }
 
 #'get

@@ -214,7 +214,11 @@ def main():
         agent.LensAgent.prototypes = prototypes
         assert(isinstance(agent.LensAgent.prototypes, list))
     elif prototype_generation == 'random':
-        agent.LensAgent.set_lens_agent_prototypes(number_of_prototypes)
+        num_units = config.getint('LENSParameters',
+                                  'TotalNumberOfProcessingUnits')
+        print(num_units)
+        agent.LensAgent.set_lens_agent_prototypes(number_of_prototypes,
+                                                  num_units)
         assert(isinstance(agent.LensAgent.prototypes, list))
         assert(isinstance(agent.LensAgent.prototypes[0], list))
         print('LensAgent prototype(s): ', str(agent.LensAgent.prototypes))

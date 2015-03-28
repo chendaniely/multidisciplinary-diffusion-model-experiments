@@ -146,7 +146,7 @@ def step(time_tick, network_of_agents):
         random_select_and_update(network_of_agents)
     elif update_type == 'simultaneous':
         update_simultaneous(network_of_agents,
-                            config.getInt(
+                            config.getint(
                                 'ModelParameters',
                                 'NumberOfAgentsToUpdatePerTimeTick'))
     else:

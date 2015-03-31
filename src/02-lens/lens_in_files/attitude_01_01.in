@@ -33,7 +33,7 @@ for {set i 0} {$i < 5} {incr i} {
 }
 
 #SECOND BANK (MIRROR)
-for {set i 5} {$i < 5} {incr i} { 
+for {set i 0} {$i < 5} {incr i} {
    for {set j [expr $i+1]} {$j < 5} {incr j} {
       connectUnits InputMirror:$i InputMirror:$j -m 1 -r .1 -b
    }

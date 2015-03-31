@@ -1,4 +1,4 @@
-deleteNets * 
+deleteNets *
 
 # set a $env(a)
 
@@ -9,10 +9,10 @@ addGroup InputMirror 5 INPUT DOT_PRODUCT INCR_CLAMP INTERACT_INTEGR WRITE_OUTPUT
 
 #FIX INTERBANK UNITS
 repeat u [getObj Input.numUnits] {
-   connectUnits Input:$u InputMirror:$u -m -1.0 -r 0 -b 		 
+   connectUnits Input:$u InputMirror:$u -m -0.3 -r 0 -b
 }
 repeat u [getObj Input.numUnits] {
-   connectUnits InputMirror:$u Input:$u -m -1.0 -r 0 -b 		 
+   connectUnits InputMirror:$u Input:$u -m -0.3 -r 0 -b
 }
 
 #Remove Input->Input self connections AND mirror
@@ -68,7 +68,7 @@ setObj randRange        0.25
 #resetNet
 
 #LOAD WEIGHTS
-#DAN USE ENV VARIABLE "a" for Agent ID 
+#DAN USE ENV VARIABLE "a" for Agent ID
 # loadWeights weights/AgentWgt$a.wt
 
 
@@ -76,7 +76,7 @@ setObj randRange        0.25
 freezeWeights
 
 #MAKE DATA AND SIMULATE
-#DAN FOR NOW 
+#DAN FOR NOW
 openNetOutputFile ../output/AgentState.out
 train 1
 closeNetOutputFile
@@ -86,7 +86,7 @@ proc printStuff {g1 u1 g2 u2 b l} {
               [getObj $u2.incoming($l).weight]
           }
 
- printLinkValues - printStuff {Input InputMirror} *
+printLinkValues - printStuff {Input InputMirror} *
 
-exit 
+exit
 #EOF

@@ -53,7 +53,7 @@ deleteExampleSets *
 
 #EXAMPLE SETS
 # ORDERED MUST BE SET AS IS HERE
-loadExamples Infl.ex -s train -exmode ORDERED 
+loadExamples ../Infl.ex -s train -exmode ORDERED
 
 setObj train.graceTime  1.0
 setObj train.minTime    3.0

@@ -86,8 +86,53 @@ def random_select_and_update(network_of_agents):
                                           lens_in_file=lens_in_file_dir,
                                           agent_ex_file=agent_ex_file_dir,
                                           infl_ex_file=infl_ex_file_dir,
-                                          agent_state_out_file=agent_state_out_file_dir)
+                                          agent_state_out_file=\
+                                          agent_state_out_file_dir)
         # print('post-update state', selected_agent.get_state())
+
+
+def update_simultaneous(network_of_agents, num_agents_update):
+    """Simultaneously updates agents
+
+    :param network_of_agents: NetworkX graph of agents
+    :type network_of_agents: NetworkX graph
+
+    :parm num_agents_update: Number of agents that will be picked for update
+    :type num_agents_update: int
+    """
+    agents_for_update = network_of_agents.sample_network(num_agents_update)
+    print('agents for update: ', agents_for_update)
+    print('key of agent for update')
+    print(network_of_agents.G.nodes()[agents_for_update[0].get_key()])
+
+    lens_in_file_dir = os.path.join(here, config.get('LENSParameters',
+                                                     'UpdateFromInflInFile'))
+
+    agent_ex_file_dir = os.path.join(here, config.get('LENSParameters',
+                                                      'AgentExFile'))
+
+    infl_ex_file_dir = os.path.join(here, config.get('LENSParameters',
+                                                     'InflExFile'))
+
+    agent_state_out_file_dir = os.path.join(here,
+                                            config.get('LENSParameters',
+                                                       'NewAgentStateFile'))
+
+    for selected_agent in agents_for_update:
+        print("updating: ",
+              network_of_agents.G.nodes()[selected_agent.get_key()])
+        assert selected_agent.temp_new_state is None
+        selected_agent.temp_new_state = selected_agent.calculate_new_state(
+            'default',
+            lens_in_file=lens_in_file_dir,
+            agent_ex_file=agent_ex_file_dir,
+            infl_ex_file=infl_ex_file_dir,
+            agent_state_out_file=agent_state_out_file_dir)
+    # simultaneous update
+    for selected_agent in agents_for_update:
+        assert selected_agent.temp_new_state is not None
+        selected_agent.set_state(selected_agent.temp_new_state)
+        selected_agent.temp_new_state = None
 
 
 def step(time_tick, network_of_agents):

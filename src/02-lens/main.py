@@ -139,7 +139,18 @@ def step(time_tick, network_of_agents):
     logger1.debug('STEP TIME TICK: %s', str(time_tick))
 
     logger1.debug('Begin random select and update network of agents')
-    random_select_and_update(network_of_agents)
+
+    update_type = config.get('ModelParameters', 'UpdateType')
+
+    if update_type == 'sequential':
+        random_select_and_update(network_of_agents)
+    elif update_type == 'simultaneous':
+        update_simultaneous(network_of_agents,
+                            config.getint(
+                                'ModelParameters',
+                                'NumberOfAgentsToUpdatePerTimeTick'))
+    else:
+        raise ValueError('Unknown simulation update type')
 
     # here = os.path.abspath(os.path.dirname(__file__))
     network_agent_step_time_dir = os.path.join(here, 'output',
@@ -203,7 +214,11 @@ def main():
         agent.LensAgent.prototypes = prototypes
         assert(isinstance(agent.LensAgent.prototypes, list))
     elif prototype_generation == 'random':
-        agent.LensAgent.set_lens_agent_prototypes(number_of_prototypes)
+        num_units = config.getint('LENSParameters',
+                                  'TotalNumberOfProcessingUnits')
+        print(num_units)
+        agent.LensAgent.set_lens_agent_prototypes(number_of_prototypes,
+                                                  num_units)
         assert(isinstance(agent.LensAgent.prototypes, list))
         assert(isinstance(agent.LensAgent.prototypes[0], list))
         print('LensAgent prototype(s): ', str(agent.LensAgent.prototypes))

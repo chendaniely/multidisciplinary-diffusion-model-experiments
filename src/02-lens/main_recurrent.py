@@ -82,8 +82,8 @@ def random_select_and_update(network_of_agents):
                                           lens_in_file=lens_in_file_dir,
                                           agent_ex_file=agent_ex_file_dir,
                                           infl_ex_file=infl_ex_file_dir,
-                                          agent_state_out_file=\
-                                          agent_state_out_file_dir)
+                                          agent_state_out_file=agent_state_out_file_dir)
+
 
 def update_simultaneous(network_of_agents, num_agents_update):
     """Simultaneously updates agents
@@ -111,8 +111,8 @@ def update_simultaneous(network_of_agents, num_agents_update):
     # print(config.get('LENSParameters', 'UpdateFromInflInFile'))
     # print(os.path.join(here, config.get('LENSParameters', 'UpdateFromInflInFile')))
     # print(here + '/' +  config.get('LENSParameters', 'UpdateFromInflInFile'))
-    lens_in_file_dir = here + '/' +\
-                       config.get('LENSParameters', 'UpdateFromInflInFile')
+    lens_in_file_dir = here + '/' + config.get('LENSParameters',
+                                               'UpdateFromInflInFile')
 
     infl_ex_file_dir = os.path.join(here, config.get('LENSParameters',
                                                      'InflExFile'))
@@ -134,7 +134,8 @@ def update_simultaneous(network_of_agents, num_agents_update):
         assert selected_agent.temp_new_state is None
 
         try:
-            random_predecessor_id = random.sample(selected_agent.predecessors, 1)
+            random_predecessor_id = random.sample(selected_agent.predecessors,
+                                                  1)
         except ValueError:
             # if agent has no predecessor we skip it
             continue
@@ -160,9 +161,10 @@ def update_simultaneous(network_of_agents, num_agents_update):
             print(lens_in_file_dir)
             selected_agent.call_lens(lens_in_file_dir)
 
-            new_state_values = selected_agent.get_new_state_values_from_out_file(
-                agent_state_out_file_dir,
-                'agent_type param is not used ... yet')
+            new_state_values = selected_agent.\
+                get_new_state_values_from_out_file(
+                    agent_state_out_file_dir,
+                    'agent_type param is not used ... yet')
             selected_agent.temp_new_state = new_state_values
 
     # simultaneous update
@@ -173,7 +175,8 @@ def update_simultaneous(network_of_agents, num_agents_update):
             selected_agent.temp_new_state = None
         else:
             assert len(selected_agent.predecessors) == 0
-            warnings_str ="Pedecessors for Agent {}: {}".format(selected_agent.agent_id, selected_agent.predecessors)
+            warnings_str = "Pedecessors for Agent {}: {}".format(
+                selected_agent.agent_id, selected_agent.predecessors)
             warnings.warn(warnings_str)
 
 
@@ -234,15 +237,15 @@ def main():
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
 
     network_of_agents.\
-                        create_multidigraph_of_agents_from_edge_list(
-                            n, my_network.G.edges_iter(),
-                            fig_path,
-                            agent_type=(
-                                config.get('NetworkParameters', 'AgentType'),
-                                config.getint('LENSParameters',
-                                              'TotalNumberOfProcessingUnits'),
-                                config.get('LENSParameters', 'AgentType'))
-                        )
+        create_multidigraph_of_agents_from_edge_list(
+            n, my_network.G.edges_iter(),
+            fig_path,
+            agent_type=(
+                config.get('NetworkParameters', 'AgentType'),
+                config.getint('LENSParameters',
+                              'TotalNumberOfProcessingUnits'),
+                config.get('LENSParameters', 'AgentType')))
+
     print('print network of agents:')
     # print(type(network_of_agents))
 
@@ -322,9 +325,10 @@ def main():
         print(selected_agent.state)
         print(selected_agent.agent_id)
         print(type(selected_agent.agent_id))
-        new_state_values_dict[selected_agent.agent_id] = selected_agent.temp_new_state
         print("DICTIONARY\n\n")
         print(new_state_values_dict)
+        new_state_values_dict[selected_agent.agent_id] = selected_agent.\
+            temp_new_state
 
     print("SIMULTANEOUS UPDATE SEEDS")
     print(new_state_values_dict)
@@ -342,7 +346,6 @@ def main():
         logger1.debug('Agent %s, post-seed state: %s',
                       str(selected_agent.agent_id),
                       str(selected_agent.state))
-
 
     # agent states after seed get updated
     network_of_agents.write_network_agent_step_info(

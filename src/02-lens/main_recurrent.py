@@ -154,8 +154,10 @@ def update_simultaneous(network_of_agents, num_agents_update):
             print(predecessor_picked)
 
             write_str = lens_in_writer_helper.generate_lens_recurrent_attitude(
-            helper.convert_list_to_delim_str(selected_agent.state, delim=' '),
-            helper.convert_list_to_delim_str(predecessor_picked.state, delim=' '))
+                helper.convert_list_to_delim_str(selected_agent.state,
+                                                 delim=' '),
+                helper.convert_list_to_delim_str(predecessor_picked.state,
+                                                 delim=' '))
             lens_in_writer_helper.write_in_file(infl_ex_file_dir, write_str)
 
             print(lens_in_file_dir)

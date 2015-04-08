@@ -323,6 +323,11 @@ def main():
 
     print(network_of_agents.G.nodes())
 
+    edge_list_file_dir = os.path.join(here, 'output', 'edge_list.gz')
+    print(edge_list_file_dir)
+    # network_of_agents.export_edge_list(edge_list_file_dir)
+    network_of_agents.export_edge_list(edge_list_file_dir)
+
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):
         print("STEP # ", i)
         step(i, network_of_agents)

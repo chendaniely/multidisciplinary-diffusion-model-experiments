@@ -140,12 +140,13 @@ def update_simultaneous(network_of_agents, num_agents_update):
             # if agent has no predecessor we skip it
             continue
         else:
-            print('random_predecessor picked: {}'.format(random_predecessor_id))
-            print(type(random_predecessor_id), len(random_predecessor_id))
-            print(random_predecessor_id[0])
-            print(type(random_predecessor_id[0]))
-            print(random_predecessor_id[0].agent_id)
-            print(random_predecessor_id[0].state)
+            # print('random_predecessor picked: {}'.format(
+            #     random_predecessor_id))
+            # print(type(random_predecessor_id), len(random_predecessor_id))
+            # print(random_predecessor_id[0])
+            # print(type(random_predecessor_id[0]))
+            # print(random_predecessor_id[0].agent_id)
+            # print(random_predecessor_id[0].state)
 
             predecessor_picked = random_predecessor_id[0]
 
@@ -310,37 +311,37 @@ def main():
             helper.convert_list_to_delim_str(selected_agent.state, delim=' '),
             helper.convert_list_to_delim_str(types_of_inputs['amb_good'],
                                              delim=' '))
-        print(write_str)
-        print(agent_self_ex_file)
+        # print(write_str)
+        # print(agent_self_ex_file)
         lens_in_writer_helper.write_in_file(agent_self_ex_file, write_str)
 
-        print(lens_in_file_dir)
+        # print(lens_in_file_dir)
         selected_agent.call_lens(lens_in_file_dir)
 
         new_state_values = selected_agent.get_new_state_values_from_out_file(
             os.path.join(agent_self_out_file),
             'agent_type param is not used ... yet')
-        print(new_state_values)
+        # print(new_state_values)
         selected_agent.temp_new_state = new_state_values[:]
-        print(selected_agent.temp_new_state)
-        print(type(selected_agent.temp_new_state))
-        print(selected_agent.state)
-        print(selected_agent.agent_id)
-        print(type(selected_agent.agent_id))
-        print("DICTIONARY\n\n")
-        print(new_state_values_dict)
+        # print(selected_agent.temp_new_state)
+        # print(type(selected_agent.temp_new_state))
+        # print(selected_agent.state)
+        # print(selected_agent.agent_id)
+        # print(type(selected_agent.agent_id))
         new_state_values_dict[selected_agent.agent_id] = selected_agent.\
             temp_new_state
+        # print("DICTIONARY\n\n")
+        # print(new_state_values_dict)
 
     print("SIMULTANEOUS UPDATE SEEDS")
-    print(new_state_values_dict)
+    # print(new_state_values_dict)
     for selected_agent in agents_to_seed:
         # assert selected_agent.temp_new_state is not None
-        #print(selected_agent.temp_new_state)
-        #print(len(selected_agent.temp_new_state))
-        #print(len(selected_agent.state))
+        # print(selected_agent.temp_new_state)
+        # print(len(selected_agent.temp_new_state))
+        # print(len(selected_agent.state))
         selected_agent.state = new_state_values_dict[selected_agent.agent_id]
-        print(selected_agent.state)
+        # print(selected_agent.state)
         selected_agent.temp_new_state = None
 
         logger1.debug('Agent %s seeded', str(selected_agent.get_key()))

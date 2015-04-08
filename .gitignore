@@ -16,6 +16,7 @@
 *.png
 *.Rproj
 *_cache
+.Rhistory
 
 # Model Runs
 results/simulations/*

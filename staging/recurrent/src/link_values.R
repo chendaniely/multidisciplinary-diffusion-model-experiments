@@ -104,8 +104,8 @@ ij_index_in_matrix
 ai <- 0
 aj <- 0
 
-ai_aj_sets <- expand.grid(ai = seq(0, 1, .2),
-                          aj = seq(0, 1, .2))
+ai_aj_sets <- expand.grid(ai = seq(0, 1, .05),
+                          aj = seq(0, 1, .05))
 ai_aj_sets
 
 
@@ -320,9 +320,9 @@ g
 ai_aj_sets$goodness <- apply(ai_aj_sets, 1, calculate_goodness)
 ai_aj_sets
 
-write.csv(ai_aj_sets, 'goodness.csv')
+write.csv(ai_aj_sets, 'goodness_ai10.csv')
 
-png('goodness.png')
+png('goodness_ai10.png')
 
 ggplot(ai_aj_sets, aes(ai, aj)) +
     geom_tile(aes(fill = goodness), color = 'white') +

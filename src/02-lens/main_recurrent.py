@@ -49,9 +49,6 @@ config.read(os.path.join(here, 'config.ini'))
 
 
 def random_select_and_update(network_of_agents):
-    # not needed bc num update per step is in config
-    # n = len(network_of_agents.G)
-
     # randomly select nodes from network_of_agents
     # select num_update number of the nodes for update
     num_update = config.getint('ModelParameters',
@@ -188,7 +185,6 @@ def step(time_tick, network_of_agents):
     else:
         raise ValueError('Unknown simulation update type')
 
-    # here = os.path.abspath(os.path.dirname(__file__))
     network_agent_step_time_dir = os.path.join(here, 'output',
                                                'network_of_agents.pout')
 

@@ -271,11 +271,11 @@ def main():
                                                   'NewAgentStateFile')
 
     new_state_values_dict = {}
-    types_of_inputs = {'all_neg' :[0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-                       'all_pos' :[1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-                       'amb_pos' :[1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-                       'amb_neg' :[0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-                       'amb_good' :[1, 1, 0, 0, 0, 1, 1, 0, 0, 0]}
+    types_of_inputs = {'all_neg': [0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+                       'all_pos': [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+                       'amb_pos': [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+                       'amb_neg': [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+                       'amb_good': [1, 1, 0, 0, 0, 1, 1, 0, 0, 0]}
 
     # seed agents who were select
     for selected_agent in agents_to_seed:

@@ -55,6 +55,15 @@ sort_rows_columns_df <- function(df){
     return(df)
 }
 
+sort_rows_columns_matrix <- function(m){
+    column_order <- sort(colnames(m))
+    m <- m[, column_order]
+    row_order <- sort(row.names(m))
+    m <- m[row_order, ]
+    return(m)
+}
+
+
 order_vector_index <- function(unsorted){
     sorted <- sort(as.numeric(unsorted))
     sorted_order <- sapply(sorted, function(x){pattern <- sprintf('^%s$', x);

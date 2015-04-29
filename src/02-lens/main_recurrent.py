@@ -3,10 +3,13 @@
 import os
 import logging
 import configparser
+import random
+import warnings
 
-import mann.network as network
-import mann.network_agent as network_agent
-import mann.agent as agent
+from mann import network
+from mann import network_agent
+from mann import helper
+from mann import lens_in_writer
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -22,10 +25,10 @@ logging.basicConfig(level=logging.DEBUG,
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 
-# set a format which is simpler for console use
 formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
 
 # tell the handler to use this format
+# set a format which is simpler for console use
 console.setFormatter(formatter)
 
 # add the handler to the root logger
@@ -46,9 +49,6 @@ config.read(os.path.join(here, 'config.ini'))
 
 
 def random_select_and_update(network_of_agents):
-    # not needed bc num update per step is in config
-    # n = len(network_of_agents.G)
-
     # randomly select nodes from network_of_agents
     # select num_update number of the nodes for update
     num_update = config.getint('ModelParameters',
@@ -62,23 +62,16 @@ def random_select_and_update(network_of_agents):
     for selected_agent in agents_for_update:
         print("updating: ",
               network_of_agents.G.nodes()[selected_agent.get_key()])
-        # print('pre-update state', selected_agent.get_state())
 
-        # here = os.path.abspath(os.path.dirname(__file__))
-        # lens_in_file_dir = here + '/' + './MainM1PlautFix2.in'
-        # lens_in_file_dir = here + '/' + './UpdateFromInfl.in'
         lens_in_file_dir = here + '/' + config.get('LENSParameters',
                                                    'UpdateFromInflInFile')
 
-        # agent_ex_file_dir = here + '/' + './AgentState.ex'
         agent_ex_file_dir = here + '/' + config.get('LENSParameters',
                                                     'AgentExFile')
 
-        # infl_ex_file_dir = here + '/' + './Infl.ex'
         infl_ex_file_dir = here + '/' + config.get('LENSParameters',
                                                    'InflExFile')
 
-        # agent_state_out_file_dir = here + '/' + './AgentState.out'
         agent_state_out_file_dir = here + '/' + config.get('LENSParameters',
                                                            'NewAgentStateFile')
 
@@ -86,9 +79,7 @@ def random_select_and_update(network_of_agents):
                                           lens_in_file=lens_in_file_dir,
                                           agent_ex_file=agent_ex_file_dir,
                                           infl_ex_file=infl_ex_file_dir,
-                                          agent_state_out_file=\
-                                          agent_state_out_file_dir)
-        # print('post-update state', selected_agent.get_state())
+                                          agent_state_out_file=agent_state_out_file_dir)
 
 
 def update_simultaneous(network_of_agents, num_agents_update):
@@ -99,17 +90,21 @@ def update_simultaneous(network_of_agents, num_agents_update):
 
     :parm num_agents_update: Number of agents that will be picked for update
     :type num_agents_update: int
+
+    iterates through each node in the network and calculates a new state value
+    that will be saved to a temp variable.  It will then iterate though the
+    network again to update each node to the temp variable
     """
     agents_for_update = network_of_agents.sample_network(num_agents_update)
     print('agents for update: ', agents_for_update)
     print('key of agent for update')
-    print(network_of_agents.G.nodes()[agents_for_update[0].get_key()])
+    for agent_update_key in agents_for_update:
+        print(network_of_agents.G.nodes()[agent_update_key.get_key()])
 
     lens_in_file_dir = os.path.join(here, config.get('LENSParameters',
                                                      'UpdateFromInflInFile'))
-
-    agent_ex_file_dir = os.path.join(here, config.get('LENSParameters',
-                                                      'AgentExFile'))
+    lens_in_file_dir = here + '/' + config.get('LENSParameters',
+                                               'UpdateFromInflInFile')
 
     infl_ex_file_dir = os.path.join(here, config.get('LENSParameters',
                                                      'InflExFile'))
@@ -118,21 +113,58 @@ def update_simultaneous(network_of_agents, num_agents_update):
                                             config.get('LENSParameters',
                                                        'NewAgentStateFile'))
 
+    print('printing network_of_agents.G nodes')
+    for node in network_of_agents.G:
+        print(node)
+
+    # save to temp state before looping to sim update
+    lens_in_writer_helper = lens_in_writer.LensInWriterHelper()
     for selected_agent in agents_for_update:
         print("updating: ",
               network_of_agents.G.nodes()[selected_agent.get_key()])
+        print(selected_agent.temp_new_state)
         assert selected_agent.temp_new_state is None
-        selected_agent.temp_new_state = selected_agent.calculate_new_state(
-            'default',
-            lens_in_file=lens_in_file_dir,
-            agent_ex_file=agent_ex_file_dir,
-            infl_ex_file=infl_ex_file_dir,
-            agent_state_out_file=agent_state_out_file_dir)
+
+        try:
+            random_predecessor_id = random.sample(selected_agent.predecessors,
+                                                  1)
+        except ValueError:
+            # if agent has no predecessor we skip it
+            continue
+        else:
+            predecessor_picked = random_predecessor_id[0]
+
+            print(type(predecessor_picked))
+
+            print(predecessor_picked)
+
+            write_str = lens_in_writer_helper.generate_lens_recurrent_attitude(
+                helper.convert_list_to_delim_str(selected_agent.state,
+                                                 delim=' '),
+                helper.convert_list_to_delim_str(predecessor_picked.state,
+                                                 delim=' '))
+            lens_in_writer_helper.write_in_file(infl_ex_file_dir, write_str)
+
+            print(lens_in_file_dir)
+            selected_agent.call_lens(lens_in_file_dir)
+
+            new_state_values = selected_agent.\
+                get_new_state_values_from_out_file(
+                    agent_state_out_file_dir,
+                    'agent_type param is not used ... yet')
+            selected_agent.temp_new_state = new_state_values
+
     # simultaneous update
     for selected_agent in agents_for_update:
-        assert selected_agent.temp_new_state is not None
-        selected_agent.set_state(selected_agent.temp_new_state)
-        selected_agent.temp_new_state = None
+        if len(selected_agent.predecessors) > 0:
+            assert (selected_agent.temp_new_state is not None)
+            selected_agent.state = selected_agent.temp_new_state
+            selected_agent.temp_new_state = None
+        else:
+            assert len(selected_agent.predecessors) == 0
+            warnings_str = "Pedecessors for Agent {}: {}".format(
+                selected_agent.agent_id, selected_agent.predecessors)
+            warnings.warn(warnings_str)
 
 
 def step(time_tick, network_of_agents):
@@ -145,6 +177,7 @@ def step(time_tick, network_of_agents):
     if update_type == 'sequential':
         random_select_and_update(network_of_agents)
     elif update_type == 'simultaneous':
+        print("Performing a simultaneous update.")
         update_simultaneous(network_of_agents,
                             config.getint(
                                 'ModelParameters',
@@ -152,7 +185,6 @@ def step(time_tick, network_of_agents):
     else:
         raise ValueError('Unknown simulation update type')
 
-    # here = os.path.abspath(os.path.dirname(__file__))
     network_agent_step_time_dir = os.path.join(here, 'output',
                                                'network_of_agents.pout')
 
@@ -187,62 +219,27 @@ def main():
     my_network.show_graph(generated_graph_dir)
     logger1.info('Generated graph saved in %s', generated_graph_dir)
 
-    # here = os.path.abspath(os.path.dirname(__file__))
-    # weight_in = here + '/WgtMakeM1.in'
-    weight_in = here + config.get('LENSParameters', 'WeightInFile')
-    # weight_dir = here + '/weights'
-    weight_dir = here + config.get('LENSParameters', 'WeightsDirectory')
-
     network_of_agents = network_agent.NetworkAgent()
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
 
-    # TODO turn this into a function
-    number_of_prototypes = config.getint('LENSParameters',
-                                         'NumberOfPrototypes')
-    prototype_generation = config.get('LENSParameters',
-                                      'PrototypeGeneration')
-    # if the prototype generation is the user, we will use the prototype
-    # from the config file
-    # else we will have the LensAgent Generate a random one
-    if prototype_generation == 'user':
-        prototypes_str = config.get('LENSParameters',
-                                    'WeightBaseExample').split(';')
-        prototypes = list(agent.LensAgent._str_to_int_list(s)
-                          for s in prototypes_str)
-        assert(isinstance(prototypes, list))
-        assert(isinstance(prototypes[0], list))
-        agent.LensAgent.prototypes = prototypes
-        assert(isinstance(agent.LensAgent.prototypes, list))
-    elif prototype_generation == 'random':
-        num_units = config.getint('LENSParameters',
-                                  'TotalNumberOfProcessingUnits')
-        print(num_units)
-        agent.LensAgent.set_lens_agent_prototypes(number_of_prototypes,
-                                                  num_units)
-        assert(isinstance(agent.LensAgent.prototypes, list))
-        assert(isinstance(agent.LensAgent.prototypes[0], list))
-        print('LensAgent prototype(s): ', str(agent.LensAgent.prototypes))
-    else:
-        raise ValueError("Unknown prototype generation algorithm")
+    network_of_agents.\
+        create_multidigraph_of_agents_from_edge_list(
+            n, my_network.G.edges_iter(),
+            fig_path,
+            agent_type=(
+                config.get('NetworkParameters', 'AgentType'),
+                config.getint('LENSParameters',
+                              'TotalNumberOfProcessingUnits'),
+                config.get('LENSParameters', 'AgentType')))
 
-    network_of_agents.create_multidigraph_of_agents_from_edge_list(
-        n, my_network.G.edges_iter(),
-        fig_path,
-        agent_type=(config.get('NetworkParameters', 'AgentType'),
-                    # TODO this interface should pass kwarg so it is more
-                    # generalizable
-                    config.getint('LENSParameters',
-                                  'TotalNumberOfProcessingUnits')),
-        weight_in_file=weight_in,
-        weight_dir=weight_dir,
-        base_example=config.get('LENSParameters', 'WeightBaseExample'),
-        num_train_examples=config.getint('LENSParameters',
-                                         'NumberOfWeightTrainExamples'),
-        prototype_mutation_prob=config.getfloat(
-            'LENSParameters', 'WeightTrainExampleMutationsProb'),
-        training_criterion=config.getint('LENSParameters',
-                                         'Criterion')
-    )
+    print('print network of agents:')
+
+    print(len(network_of_agents.G))
+    for node in network_of_agents.G:
+        print(node)
+        print(type(node))
+
+    print(type(network_of_agents.G))
 
     model_output = os.path.join(here, 'output',
                                 config.get('General', 'ModelOutput'))
@@ -253,6 +250,10 @@ def main():
     # make agents aware of predecessors
     # predecessors are agents who influence the current agent
     network_of_agents.set_predecessors_for_each_node()
+
+    for node in network_of_agents.G:
+        print(node)
+        print(node.predecessors)
 
     # randomly select nodes from network_of_agents to seed
     num_seed = config.getint('ModelParameters', 'NumberOfAgentsToSeedOnInit')
@@ -269,50 +270,64 @@ def main():
     agent_self_out_file = here + '/' + config.get('LENSParameters',
                                                   'NewAgentStateFile')
 
-    # prototype_string = config.get('LENSParameters', 'weightBaseExample')
-    criterion = config.getint('LENSParameters', 'Criterion')
-    epsilon = config.getfloat('LENSParameters', 'Epsilon')
+    new_state_values_dict = {}
+    types_of_inputs = {'all_neg': [0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+                       'all_pos': [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+                       'amb_pos': [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+                       'amb_neg': [0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+                       'amb_good': [1, 1, 0, 0, 0, 1, 1, 0, 0, 0]}
+
     # seed agents who were select
     for selected_agent in agents_to_seed:
-        # print("seeding: ",
-        #       network_of_agents.G.nodes()[selected_agent.get_key()])
         logger1.info('Seeding agent  %s', str(selected_agent.get_key()))
 
-        # print('pre-seed binary_state', selected_agent.binary_state)
         logger1.debug('Agent %s, pre-seed state: %s',
                       str(selected_agent.get_key()),
                       str(selected_agent.get_state()))
 
-        # TODO REALLY HACKY CODE, the update/no_update function
-        # since the prototypes are already set, we seed the agent with
-        # using a prototype
-        seed_list = selected_agent.prototype
-        selected_agent.seed_agent_no_update(seed_list, epsilon)
-        # write agent states to get the seeded value (without updating)
         network_of_agents.write_network_agent_step_info(
             -2, model_output, 'a')
 
-        # since the prototypes are already set, we seed the agent with
-        # using a prototype
+        lens_in_writer_helper = lens_in_writer.LensInWriterHelper()
+        write_str = lens_in_writer_helper.generate_lens_recurrent_attitude(
+            helper.convert_list_to_delim_str(selected_agent.state, delim=' '),
+            helper.convert_list_to_delim_str(types_of_inputs['amb_good'],
+                                             delim=' '))
+        lens_in_writer_helper.write_in_file(agent_self_ex_file, write_str)
 
-        selected_agent.seed_agent_update(seed_list,
-                                         lens_in_file_dir,
-                                         agent_self_ex_file,
-                                         agent_self_out_file,
-                                         criterion, epsilon)
+        selected_agent.call_lens(lens_in_file_dir)
+
+        new_state_values = selected_agent.get_new_state_values_from_out_file(
+            os.path.join(agent_self_out_file),
+            'agent_type param is not used ... yet')
+        selected_agent.temp_new_state = new_state_values[:]
+        new_state_values_dict[selected_agent.agent_id] = selected_agent.\
+            temp_new_state
+
+    print("SIMULTANEOUS UPDATE SEEDS")
+    for selected_agent in agents_to_seed:
+        selected_agent.state = new_state_values_dict[selected_agent.agent_id]
+        selected_agent.temp_new_state = None
 
         logger1.debug('Agent %s seeded', str(selected_agent.get_key()))
 
-        # print('post-seed_agent_binary_state', selected_agent.binary_state)
         logger1.debug('Agent %s, post-seed state: %s',
-                      str(selected_agent.get_key()),
-                      str(selected_agent.get_state()))
+                      str(selected_agent.agent_id),
+                      str(selected_agent.state))
 
     # agent states after seed get updated
     network_of_agents.write_network_agent_step_info(
         -1, model_output, 'a')
 
     logger1.info('Begin steps')
+
+    print(network_of_agents.G.nodes())
+
+    edge_list_file_dir = os.path.join(here, 'output', 'edge_list.gz')
+    print(edge_list_file_dir)
+    # network_of_agents.export_edge_list(edge_list_file_dir)
+    network_of_agents.export_edge_list(edge_list_file_dir)
+
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):
         print("STEP # ", i)
         step(i, network_of_agents)

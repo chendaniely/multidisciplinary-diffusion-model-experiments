@@ -95,7 +95,7 @@ proc printStuff {g1 u1 g2 u2 b l} {
               [getObj $u2.incoming($l).weight]
           }
 
- printLinkValues link.values printStuff {Input InputMirror Hidden HiddenMirror} *
+printLinkValues 14x14_input_hidden_bias.link_values printStuff {Input InputMirror Hidden HiddenMirror bias} *
 
 #MAKE DATA AND SIMULATE
 #EOF

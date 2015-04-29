@@ -110,3 +110,9 @@ __pycache__
 \#*#
 .#*
 .coverage
+/staging/recurrent/link.values
+/staging/recurrent/output/adj_matrix_sort.Rdata
+/staging/recurrent/output/m_sort.csv
+/staging/recurrent/output/mi_sort.csv
+/staging/recurrent/output/mj_sort.csv
+/staging/recurrent/results/goodness.csv

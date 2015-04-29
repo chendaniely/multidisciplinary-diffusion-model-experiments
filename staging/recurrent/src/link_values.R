@@ -320,9 +320,9 @@ g
 ai_aj_sets$goodness <- apply(ai_aj_sets, 1, calculate_goodness)
 ai_aj_sets
 
-write.csv(ai_aj_sets, 'goodness_ai10.csv')
+write.csv(ai_aj_sets, '../results/goodness.csv')
 
-png('goodness_ai10.png')
+png('../results/goodness.png')
 
 ggplot(ai_aj_sets, aes(ai, aj)) +
     geom_tile(aes(fill = goodness), color = 'white') +

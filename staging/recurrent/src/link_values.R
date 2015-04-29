@@ -15,7 +15,7 @@ library(parallel)
 
 source('helper.R')
 
-link_values <- read.table(file = 'link.values',
+link_values <- read.table(file = '../link.values',
                           header = FALSE,
                           stringsAsFactors = FALSE)
 

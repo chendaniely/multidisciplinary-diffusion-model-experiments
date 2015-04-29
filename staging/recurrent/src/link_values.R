@@ -95,8 +95,8 @@ weights_hidden_bank
 ################################################################################
 
 # these are 0 indexed values, aka the values in LENS
-a_i_index <- 3
-a_j_index <- 7
+a_i_index <- 0
+a_j_index <- 1
 
 ij_index_in_matrix <- nrow(weight_matrix) * (a_j_index) + (a_i_index + 1)
 ij_index_in_matrix

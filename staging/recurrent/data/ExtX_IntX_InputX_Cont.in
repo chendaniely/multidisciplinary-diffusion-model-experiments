@@ -37,7 +37,9 @@ repeat u [getObj Input.numUnits] {
    connectUnits Input:$u InputMirror:$u -m -1.0 -r 0 -b
 }
 repeat u [getObj Input.numUnits] {
-   connectUnits InputMirror:$u Input:$u -m -1.0 -r 0 -b 		 
+   connectUnits InputMirror:$u Input:$u -m -1.0 -r 0 -b
+}
+
 }
 
 #Remove Input->Input self connections

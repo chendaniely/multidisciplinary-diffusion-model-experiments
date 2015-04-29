@@ -59,5 +59,13 @@ calculate_goodness_t1 <- function(ai, aj, a_i_pu_index, a_j_pu_index,
     return(w * ai * aj)
 }
 
+calculate_goodness_t2 <- function(ai, input_i){
+    t2 <- ai * input_i
+    if (is.na(t2)){
+        stop("t2 is null")
+    }
+    return(t2)
+}
+
 
 }

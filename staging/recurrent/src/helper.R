@@ -136,3 +136,21 @@ get_hidden_bank_df <- function(link_values_df,
     }
     weights_hidden_bank <- hidden_bank_sub
 }
+
+abr_type <- function(type){
+    if (type == 'Hidden'){
+        return("hi")
+    } else if (type == "InputMirror"){
+        return("im")
+    } else if (type == "Input"){
+        return("in")
+    } else if (type == "HiddenMirror"){
+        return("hm")
+    } else if (type == "bias"){
+        return("bi")
+    } else if (type == "ExternalInput"){
+        return("ei")
+    } else if(type == "ExternalMirror"){
+       return("em")
+   }
+}

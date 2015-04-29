@@ -67,5 +67,16 @@ calculate_goodness_t2 <- function(ai, input_i){
     return(t2)
 }
 
+calculate_goodness <- function(ai_aj_set, a_i_pu_index, a_j_pu_index,
+                               same_bank_values,
+                               opposite_bank_values,
+                               hidden_bank_values){
+    ai <- ai_aj_set[1]
+    aj <- ai_aj_set[2]
 
+    t1 <- calculate_goodness_t1(ai, aj, a_i_pu_index, a_j_pu_index,
+                                same_bank_values)
+    t2 <- calculate_goodness_t2(ai, 1)
+
+    return(sum(t1, t2))
 }

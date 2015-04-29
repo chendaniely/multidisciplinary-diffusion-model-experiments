@@ -14,8 +14,8 @@ c###############################################################################
 rm(list = ls())
 
 library(stringr)
-# library(reshape2)
 library(igraph)
+library(ggplot2)
 
 source('helper.R')
 
@@ -38,9 +38,10 @@ ai <- 0
 aj <- 0
 
 # values of ai and aj to calculate goodness
-ai_aj_sets <- expand.grid(ai = seq(0, 1, 1),
-                          aj = seq(0, 1, 1))
+ai_aj_sets <- expand.grid(ai = seq(0, 1, .01),
+                          aj = seq(0, 1, .01))
 ai_aj_sets
+dim(ai_aj_sets)
 
 
 ###############################################################################
@@ -166,6 +167,12 @@ head(link_values)
 tail(link_values)
 dim(link_values)
 
+#
+#
+# Create edge list values
+#
+#
+
 edge_list_values <- link_values[, names(link_values) %in%
                                     c("j_name", "i_name", "weights")]
 head(edge_list_values)
@@ -182,11 +189,18 @@ edge_list_values$a_i <- ifelse(
     ai_aj_sets[4, 1],
     0)
 
+head(edge_list_values)
+tail(edge_list_values)
+dim(edge_list_values)
+
 edge_list_values$a_j <- ifelse(
     edge_list_values$j_name == sprintf("in%02d", a_j_index),
     ai_aj_sets[4, 2],
     0)
 
+head(edge_list_values)
+tail(edge_list_values)
+dim(edge_list_values)
 
 
 g <- graph.edgelist(as.matrix(edge_list_values[, names(edge_list_values) %in%
@@ -223,9 +237,21 @@ diff <- m_sort - t(m_sort)
 diff
 hist(diff[lower.tri(diff)])
 
-write.csv(m_sort, file = '../output/m_sort.csv')
-write.csv(m_sort, file = '../output/mi_sort.csv')
-write.csv(m_sort, file = '../output/mj_sort.csv')
+# write.csv(m_sort, file = '../output/m_sort.csv')
+# write.csv(m_sort, file = '../output/mi_sort.csv')
+# write.csv(m_sort, file = '../output/mj_sort.csv')
+
+###############################################################################
+#
+# Calculating goodness
+#
+###############################################################################
+
+#
+#
+# Single Partial
+#
+#
 
 edge_list_values$partial_goodness <- edge_list_values$weights *
     edge_list_values$a_i *
@@ -236,3 +262,57 @@ goodness
 
 goodness <- goodness / 2 # account for duplicated bi-directionality
 goodness
+
+#
+#
+# All
+#
+#
+
+calculate_goodness_from_ai_aj_set <- function(x, a_i_index, a_j_index,
+                                              link_values){
+    ai <- x[1]
+    aj <- x[2]
+
+    edge_list_values <- link_values[, names(link_values) %in%
+                                        c("j_name", "i_name", "weights")]
+
+    edge_list_values$a_i <- ifelse(
+        edge_list_values$i_name == sprintf("in%02d", a_i_index),
+        ai,
+        0)
+
+    edge_list_values$a_j <- ifelse(
+        edge_list_values$j_name == sprintf("in%02d", a_j_index),
+        aj,
+        0)
+
+    edge_list_values$partial_goodness <- edge_list_values$weights *
+        edge_list_values$a_i *
+        edge_list_values$a_j
+
+    goodness <- sum(edge_list_values$partial_goodness, na.rm = TRUE)
+
+    goodness <- goodness / 2 # account for duplicated bi-directionality
+    return(goodness)
+}
+
+goodness <- ai_aj_sets
+goodness$goodness <- apply(X = goodness, MARGIN = 1,
+                           FUN = calculate_goodness_from_ai_aj_set,
+                           a_i_index=0,
+                           a_j_index=1,
+                           link_values=link_values)
+
+head(goodness)
+tail(goodness)
+dim(goodness)
+write.csv(x = goodness, file = '../results/goodness.csv')
+
+png('../results/goodness.png')
+
+ggplot(goodness, aes(ai, aj)) +
+    geom_tile(aes(fill = goodness), color = 'white') +
+    scale_fill_gradient(low = 'white', high = 'steelblue')
+
+dev.off()

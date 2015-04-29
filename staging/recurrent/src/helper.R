@@ -22,6 +22,9 @@ parse_link_values_file <- function(link_values_file_df){
     link_values$i_value <-sapply(str_split(link_values$to, ':'), "[[", 2)
     dim(link_values)
 
+    names(link_values)[1] <- 'original'
+    names(link_values)[2] <- 'weights'
+
     return(link_values)
 }
 

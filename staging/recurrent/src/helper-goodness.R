@@ -45,6 +45,38 @@ get_w_ij_k <- function(index_in_unlist_k_ai){
 #' First term of the Goodness function on the 2 activation units
 #' 2 activation units share 1 weight between them
 #' \sum_{i}\sum_{j > i} w_{ij} a_i a_j
-calculate_goodness_t1 <- function(weights_same_bank_list){
+calculate_goodness_t1 <- function(ai, aj, a_i_pu_index, a_j_pu_index,
+                                  same_bank_values){
+    w <- same_bank_weight_matrix[
+                                 row.names(same_bank_weight_matrix) ==
+                                    a_i_pu_index,
+                                 colnames(same_bank_weight_matrix) ==
+                                     a_j_pu_index]
+    t1 <- w * ai * aj
+    if (is.na(t1)){
+        stop("t1 value is NA")
+    }
+    return(w * ai * aj)
+}
 
+calculate_goodness_t2 <- function(ai, input_i){
+    t2 <- ai * input_i
+    if (is.na(t2)){
+        stop("t2 is null")
+    }
+    return(t2)
+}
+
+calculate_goodness <- function(ai_aj_set, a_i_pu_index, a_j_pu_index,
+                               same_bank_values,
+                               opposite_bank_values,
+                               hidden_bank_values){
+    ai <- ai_aj_set[1]
+    aj <- ai_aj_set[2]
+
+    t1 <- calculate_goodness_t1(ai, aj, a_i_pu_index, a_j_pu_index,
+                                same_bank_values)
+    t2 <- calculate_goodness_t2(ai, 1)
+
+    return(sum(t1, t2))
 }

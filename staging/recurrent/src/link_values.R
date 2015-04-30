@@ -15,7 +15,7 @@ library(parallel)
 
 source('helper.R')
 
-link_values <- read.table(file = 'link.values',
+link_values <- read.table(file = '../link.values',
                           header = FALSE,
                           stringsAsFactors = FALSE)
 
@@ -95,8 +95,8 @@ weights_hidden_bank
 ################################################################################
 
 # these are 0 indexed values, aka the values in LENS
-a_i_index <- 3
-a_j_index <- 7
+a_i_index <- 0
+a_j_index <- 1
 
 ij_index_in_matrix <- nrow(weight_matrix) * (a_j_index) + (a_i_index + 1)
 ij_index_in_matrix
@@ -320,9 +320,9 @@ g
 ai_aj_sets$goodness <- apply(ai_aj_sets, 1, calculate_goodness)
 ai_aj_sets
 
-write.csv(ai_aj_sets, 'goodness_ai10.csv')
+write.csv(ai_aj_sets, '../results/goodness.csv')
 
-png('goodness_ai10.png')
+png('../results/goodness.png')
 
 ggplot(ai_aj_sets, aes(ai, aj)) +
     geom_tile(aes(fill = goodness), color = 'white') +

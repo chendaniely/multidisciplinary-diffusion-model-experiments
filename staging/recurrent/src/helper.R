@@ -22,6 +22,9 @@ parse_link_values_file <- function(link_values_file_df){
     link_values$i_value <-sapply(str_split(link_values$to, ':'), "[[", 2)
     dim(link_values)
 
+    names(link_values)[1] <- 'original'
+    names(link_values)[2] <- 'weights'
+
     return(link_values)
 }
 
@@ -32,11 +35,11 @@ get_same_bank_df <- function(link_values_df){
 }
 
 get_same_bank_sub_df <- function(same_bank_df,
-                                 cols = c('j_value', 'i_value', 'V2')){
+                                 cols = c('j_value', 'i_value', 'weights')){
     return(same_bank_df[, cols])
 }
 
-reshape_weights_df <- function(df, value_var = 'V2'){
+reshape_weights_df <- function(df, value_var = 'weights'){
     wide <- dcast(df, i_value ~ j_value, value.var = value_var)
     wide
     row.names(wide) <- wide$i_value
@@ -51,6 +54,15 @@ sort_rows_columns_df <- function(df){
     df <- df[row_order, ]
     return(df)
 }
+
+sort_rows_columns_matrix <- function(m){
+    column_order <- sort(colnames(m))
+    m <- m[, column_order]
+    row_order <- sort(row.names(m))
+    m <- m[row_order, ]
+    return(m)
+}
+
 
 order_vector_index <- function(unsorted){
     sorted <- sort(as.numeric(unsorted))
@@ -71,6 +83,7 @@ randomize_weights <- function(link_values_df,
 }
 
 get_opposite_bank_df <- function(link_values_df,
+                                 weight_col_name = 'weights',
                                  keep = 'odd',
                                  randomize_weights = FALSE,
                                  randomize_min = -10,
@@ -79,16 +92,17 @@ get_opposite_bank_df <- function(link_values_df,
                                  link_values$i_type == 'Input', ]
     opposite_bank
 
-    opposite_bank_sub <- opposite_bank[, c('j_value', 'i_value', 'V2')]
+    opposite_bank_sub <- opposite_bank[, c('j_value', 'i_value', 'weights')]
     opposite_bank_sub
 
     if(randomize_weights == TRUE){
-    opposite_bank_sub$V2 <- apply(opposite_bank_sub, 1,
-                                  function(x){
-                                      runif(n = 1,
-                                            min = randomize_min,
-                                            max = randomize_max)
-                                  })
+    opposite_bank_sub[, weight_col_name] <-
+        apply(opposite_bank_sub, 1,
+              function(x){
+                  runif(n = 1,
+                        min = randomize_min,
+                        max = randomize_max)
+              })
     }
     if(keep == 'odd'){
         keep_rows <- seq(1, nrow(opposite_bank_sub), 2)
@@ -100,6 +114,7 @@ get_opposite_bank_df <- function(link_values_df,
 }
 
 get_hidden_bank_df <- function(link_values_df,
+                               weight_col_name = 'weights',
                                randomize_weights = FALSE,
                                randomize_min = -10,
                                randomize_max = 10){
@@ -107,16 +122,35 @@ get_hidden_bank_df <- function(link_values_df,
                                   link_values$i_type == 'Input', ]
     hidden_bank
 
-    hidden_bank_sub <- hidden_bank[, c('j_value', 'i_value', 'V2')]
+    hidden_bank_sub <- hidden_bank[, c('j_value', 'i_value', 'weights')]
     hidden_bank_sub
 
     if(randomize_weights == TRUE){
-        hidden_bank_sub$V2 <- apply(hidden_bank_sub, 1,
-                                    function(x){
-                                        runif(n = 1,
-                                              min = randomize_min,
-                                              max = randomize_max)
-                                    })
+        hidden_bank_sub[, weight_col_name] <-
+            apply(hidden_bank_sub, 1,
+                  function(x){
+                      runif(n = 1,
+                            min = randomize_min,
+                            max = randomize_max)
+                  })
     }
     weights_hidden_bank <- hidden_bank_sub
+}
+
+abr_type <- function(type){
+    if (type == 'Hidden'){
+        return("hi")
+    } else if (type == "InputMirror"){
+        return("im")
+    } else if (type == "Input"){
+        return("in")
+    } else if (type == "HiddenMirror"){
+        return("hm")
+    } else if (type == "bias"){
+        return("bi")
+    } else if (type == "ExternalInput"){
+        return("ei")
+    } else if(type == "ExternalMirror"){
+       return("em")
+   }
 }

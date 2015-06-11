@@ -10,7 +10,6 @@ import mann.agent as agent
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-# set up logging to file - see previous section for more details
 logging_format = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 logging.basicConfig(level=logging.DEBUG,
                     format=logging_format,

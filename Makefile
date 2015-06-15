@@ -1,3 +1,4 @@
+BASE_WATTS_DIR = src/01-watts
 BASE_LENS_DIR = src/02-lens
 SIM_RESULTS_DIR = results/simulations
 
@@ -10,7 +11,10 @@ help :
 	@echo "  clean           clean the directory (excluding results folder)"
 	@echo "  analyze_single  generate analysis for single simulation"
 
-clean : clean_02-lens clean_analysis
+clean : clean_01-watts clean_02-lens clean_analysis
+
+clean_01-watts :
+	@rm -rf ./$(BASE_WATTS_DIR)/output
 
 # rm the *.wt *.ex and *.out files in the base 02-lens directory
 #    only .out should be here and Infl.ex
@@ -40,7 +44,7 @@ clean_analysis :
 
 	@find ./src -maxdepth 1 -type f -name '*.html' | xargs rm
 
-single_sim : clean copy_base_lens_dir
+single_sim_lens : clean copy_base_lens_dir
 
 copy_base_lens_dir :
 # the eval is how you assign a variable in a recipe
@@ -51,7 +55,7 @@ copy_base_lens_dir :
 	cp -r $(BASE_LENS_DIR) $(new_dir)
 
 # folders that match single simulation pattern
-SINGLE_SIM_OUTPUT_DIR = \
+SINGLE_SIM_LENS_OUTPUT_DIR = \
 	$(shell find $(SIM_RESULTS_DIR) -maxdepth 1 -type d -name '*02-lens_single_*')
 
 # append .html to end of the folder names (this is the generated analysis file)

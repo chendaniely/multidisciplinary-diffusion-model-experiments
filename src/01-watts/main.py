@@ -93,7 +93,7 @@ def setup(agent_type, model_output_path):
         number_of_agents=n,
         edge_list=my_network.G.edges_iter(),
         fig_path=os.path.join(HERE, 'output', 'mann-generated.png'),
-        agent_type=[agent_type, 0.4])
+        agent_type=[agent_type, 0.18])
 
     # write initial state of agents as time -2
     network_of_agents.\

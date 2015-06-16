@@ -8,8 +8,9 @@ For example: of the base folder specified is '02-lens'
 then a folder titled: 02-lens_batch_YYYY-MM-DD_HH-MM-SS
 will be created.
 
-In side this newly created folder, subfolders named by the
-mutation, criterion, and run number will be created (d,c,r),
+Inside this newly created folder, subfolders named by the
+varuious parameters will be created, for example:
+mutation, criterion, and run number (d,c,r),
 each will be a copy of the base folder (e.g., 02-lens).
 These dcr represent a simulation, and will be run in parallel according
 to the total number of cores availiable

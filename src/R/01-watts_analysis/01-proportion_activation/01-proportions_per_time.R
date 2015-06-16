@@ -82,9 +82,11 @@ main <- function(){
     plot_file_path = paste0(output_dir, '/prop_1.png')
     dir.create(file.path(batch_folder_name, 'batch_output'), showWarnings = FALSE)
 
-    png(filename = plot_file_path)
-    g
-    dev.off()
+    ggsave(filename = plot_file_path,
+           plot = g)
+    #     png(filename = plot_file_path)
+    #     g
+    #     dev.off()
     print(sprintf("Plot saved in: %s", plot_file_path))
 
     # subset of the plot

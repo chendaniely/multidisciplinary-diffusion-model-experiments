@@ -153,7 +153,7 @@ def seed(network_of_agents, agent_type, model_output_path):
 
 
 def step(time_tick, network_of_agents, update_type, total_num_agents,
-         model_output_path, agent_type='binary'):
+         model_output_path, agent_type, update_algorithm):
     logger_mdme.info('START STEP # {}'.format(time_tick))
 
     try:

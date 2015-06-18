@@ -5,6 +5,7 @@
 
 # MDME output
 *.pout
+*mann-generated.csv
 
 # LENS files
 *.wt

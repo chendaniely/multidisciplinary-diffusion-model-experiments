@@ -63,11 +63,13 @@ main <- function(){
                          full.names = TRUE)
 
     print("Combining proportion of 1 for each for simulations")
+    # d <- analyze_prop_single('../../../01-watts/output/network_of_agents.pout')
     d <- do.call(rbind,
                  lapply(X = pout_files,
                         FUN = analyze_prop_single))
 
     print("Creating plot")
+    # g <- ggplot(data = d) + geom_line(aes(x = time, y = prop_1))
     g <- ggplot(data = d) +
         geom_line(aes(x = time,
                       y = prop_1,

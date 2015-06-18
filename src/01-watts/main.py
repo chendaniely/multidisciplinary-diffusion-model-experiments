@@ -95,6 +95,9 @@ def setup(agent_type, model_output_path):
         fig_path=os.path.join(HERE, 'output', 'mann-generated.png'),
         agent_type=[agent_type, 0.18])
 
+    edgelist_path = os.path.join(HERE, 'output', 'mann-generated.csv')
+    network_of_agents.export_edge_list(edgelist_path)
+
     # write initial state of agents as time -2
     network_of_agents.\
         write_network_agent_step_info(-2, model_output_path, 'w', agent_type)

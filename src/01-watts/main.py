@@ -95,6 +95,9 @@ def setup(agent_type, model_output_path):
         fig_path=os.path.join(HERE, 'output', 'mann-generated.png'),
         agent_type=[agent_type, 0.18])
 
+    edgelist_path = os.path.join(HERE, 'output', 'mann-generated.csv')
+    network_of_agents.export_edge_list(edgelist_path)
+
     # write initial state of agents as time -2
     network_of_agents.\
         write_network_agent_step_info(-2, model_output_path, 'w', agent_type)
@@ -150,7 +153,7 @@ def seed(network_of_agents, agent_type, model_output_path):
 
 
 def step(time_tick, network_of_agents, update_type, total_num_agents,
-         model_output_path, agent_type='binary'):
+         model_output_path, agent_type, update_algorithm):
     logger_mdme.info('START STEP # {}'.format(time_tick))
 
     try:
@@ -162,17 +165,17 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
         if num_agent_update == 'all':
             num_agent_update = total_num_agents
         else:
-            raise ValueError
+            raise ValueError("Unknown value passed for num agents to Update")
 
     logger_mdme.info('Update type: {}'.format(update_type))
 
     if update_type == 'simultaneous':
         network_of_agents.update_simultaneous(num_agent_update,
-                                              'threshold_watts')
+                                              update_algorithm)
 
     elif update_type == 'sequential':
-        # random_select_and_update(network_of_agents)
-        pass
+        network_of_agents.update_sequential(num_agent_update,
+                                            update_algorithm)
     else:
         raise ValueError('Unknown simulation update type')
     network_of_agents.\
@@ -203,9 +206,13 @@ def main():
     update_type = config.get('ModelParameters', 'UpdateType')
     logger_mdme.info('Update type: {}'.format(update_type))
 
+    update_algorithm = config.get('ModelParameters', 'UpdateAlgorithm')
+    logger_mdme.info('Update algorithm: {}'.format(update_algorithm))
+
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):
         step(i, network_of_agents, update_type, total_num_agents,
-             model_output_path)
+             model_output_path, agent_type=agent_type,
+             update_algorithm=update_algorithm)
 
 
 if __name__ == "__main__":

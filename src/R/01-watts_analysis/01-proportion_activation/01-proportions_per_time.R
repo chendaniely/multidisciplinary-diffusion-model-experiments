@@ -63,31 +63,39 @@ main <- function(){
                          full.names = TRUE)
 
     print("Combining proportion of 1 for each for simulations")
+    # d <- analyze_prop_single('../../../01-watts/output/network_of_agents.pout')
     d <- do.call(rbind,
                  lapply(X = pout_files,
                         FUN = analyze_prop_single))
 
     print("Creating plot")
+    # g <- ggplot(data = d) + geom_line(aes(x = time, y = prop_1))
     g <- ggplot(data = d) +
         geom_line(aes(x = time,
                       y = prop_1,
                       color = as.factor(run_number))) +
-        scale_y_continuous(limit = c(0, 1), labels = percent) +
+        scale_y_continuous(labels = percent) +
         scale_x_continuous(labels = comma) +
         scale_color_discrete(guide = FALSE) +
         xlab("Time") +
-        ylab("Proportion of 1")
+        ylab("Proportion of 1") +
+        theme_bw()
+
+    g_y_all <- g + scale_y_continuous(limit = c(0, 1))
 
     output_dir = paste0(batch_folder_name, '/batch_output')
-    plot_file_path = paste0(output_dir, '/prop_1.png')
+    plot_file_path_1 = paste0(output_dir, '/prop_1_y.png')
+    plot_file_path_2 = paste0(output_dir, '/prop_1_y_all.png')
+
     dir.create(file.path(batch_folder_name, 'batch_output'), showWarnings = FALSE)
 
-    ggsave(filename = plot_file_path,
-           plot = g)
+    ggsave(filename = plot_file_path_1, plot = g)
+    ggsave(filename = plot_file_path_2, plot = g_y_all)
     #     png(filename = plot_file_path)
     #     g
     #     dev.off()
-    print(sprintf("Plot saved in: %s", plot_file_path))
+    print(sprintf("Plot saved in: %s", plot_file_path_1))
+    print(sprintf("Plot saved in: %s", plot_file_path_2))
 
     # subset of the plot
     #     g + scale_x_continuous(limit = c(0, 25)) +

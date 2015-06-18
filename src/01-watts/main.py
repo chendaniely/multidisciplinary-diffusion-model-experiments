@@ -171,11 +171,11 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
 
     if update_type == 'simultaneous':
         network_of_agents.update_simultaneous(num_agent_update,
-                                              'threshold_watts')
+                                              update_algorithm)
 
     elif update_type == 'sequential':
         network_of_agents.update_sequential(num_agent_update,
-                                            'threshold_watts')
+                                            update_algorithm)
     else:
         raise ValueError('Unknown simulation update type')
     network_of_agents.\

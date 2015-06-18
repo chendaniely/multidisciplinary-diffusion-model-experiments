@@ -72,11 +72,14 @@ main <- function(){
         geom_line(aes(x = time,
                       y = prop_1,
                       color = as.factor(run_number))) +
-        scale_y_continuous(limit = c(0, 1), labels = percent) +
+        scale_y_continuous(labels = percent) +
         scale_x_continuous(labels = comma) +
         scale_color_discrete(guide = FALSE) +
         xlab("Time") +
-        ylab("Proportion of 1")
+        ylab("Proportion of 1") +
+        theme_bw()
+
+    g_y_all <- g + scale_y_continuous(limit = c(0, 1))
 
     output_dir = paste0(batch_folder_name, '/batch_output')
     plot_file_path = paste0(output_dir, '/prop_1.png')

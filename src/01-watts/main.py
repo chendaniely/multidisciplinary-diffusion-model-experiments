@@ -165,7 +165,7 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
         if num_agent_update == 'all':
             num_agent_update = total_num_agents
         else:
-            raise ValueError
+            raise ValueError("Unknown value passed for num agents to Update")
 
     logger_mdme.info('Update type: {}'.format(update_type))
 

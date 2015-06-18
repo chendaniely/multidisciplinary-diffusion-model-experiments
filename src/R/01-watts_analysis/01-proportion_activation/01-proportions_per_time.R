@@ -82,15 +82,18 @@ main <- function(){
     g_y_all <- g + scale_y_continuous(limit = c(0, 1))
 
     output_dir = paste0(batch_folder_name, '/batch_output')
-    plot_file_path = paste0(output_dir, '/prop_1.png')
+    plot_file_path_1 = paste0(output_dir, '/prop_1_y.png')
+    plot_file_path_2 = paste0(output_dir, '/prop_1_y_all.png')
+
     dir.create(file.path(batch_folder_name, 'batch_output'), showWarnings = FALSE)
 
-    ggsave(filename = plot_file_path,
-           plot = g)
+    ggsave(filename = plot_file_path_1, plot = g)
+    ggsave(filename = plot_file_path_2, plot = g_y_all)
     #     png(filename = plot_file_path)
     #     g
     #     dev.off()
-    print(sprintf("Plot saved in: %s", plot_file_path))
+    print(sprintf("Plot saved in: %s", plot_file_path_1))
+    print(sprintf("Plot saved in: %s", plot_file_path_2))
 
     # subset of the plot
     #     g + scale_x_continuous(limit = c(0, 25)) +

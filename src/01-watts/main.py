@@ -171,8 +171,8 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
                                               'threshold_watts')
 
     elif update_type == 'sequential':
-        # random_select_and_update(network_of_agents)
-        pass
+        network_of_agents.update_sequential(num_agent_update,
+                                            'threshold_watts')
     else:
         raise ValueError('Unknown simulation update type')
     network_of_agents.\

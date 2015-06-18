@@ -206,9 +206,13 @@ def main():
     update_type = config.get('ModelParameters', 'UpdateType')
     logger_mdme.info('Update type: {}'.format(update_type))
 
+    update_algorithm = config.get('ModelParameters', 'UpdateAlgorithm')
+    logger_mdme.info('Update algorithm: {}'.format(update_algorithm))
+
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):
         step(i, network_of_agents, update_type, total_num_agents,
-             model_output_path)
+             model_output_path, agent_type=agent_type,
+             update_algorithm=update_algorithm)
 
 
 if __name__ == "__main__":

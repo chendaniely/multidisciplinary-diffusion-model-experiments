@@ -88,12 +88,14 @@ def setup(agent_type, model_output_path):
     my_network.show_graph(generated_graph_path)
     logger_mdme.info('Generated graph saved as %s', generated_graph_path)
 
+    max_flips = config.getfloat('ModelParameters', 'NumberOfAgentFlips')
+
     network_of_agents = mann.network_agent.NetworkAgent()
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         number_of_agents=n,
         edge_list=my_network.G.edges_iter(),
         fig_path=os.path.join(HERE, 'output', 'mann-generated.png'),
-        agent_type=[agent_type, 0.18])
+        agent_type=[agent_type, 0.18, max_flips])
 
     edgelist_path = os.path.join(HERE, 'output', 'mann-generated.csv')
     network_of_agents.export_edge_list(edgelist_path)

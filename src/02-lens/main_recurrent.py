@@ -6,10 +6,15 @@ import configparser
 import random
 import warnings
 
-from mann import network
-from mann import network_agent
-from mann import helper
-from mann import lens_in_writer
+import mann.network
+import mann.network_agent
+import mann.helper
+import mann.lens_in_writer
+
+# from mann import network
+# from mann import network_agent
+# from mann import helper
+# from mann import lens_in_writer
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -75,11 +80,12 @@ def random_select_and_update(network_of_agents):
         agent_state_out_file_dir = here + '/' + config.get('LENSParameters',
                                                            'NewAgentStateFile')
 
-        selected_agent.update_agent_state('default',
-                                          lens_in_file=lens_in_file_dir,
-                                          agent_ex_file=agent_ex_file_dir,
-                                          infl_ex_file=infl_ex_file_dir,
-                                          agent_state_out_file=agent_state_out_file_dir)
+        selected_agent.update_agent_state(
+            'default',
+            lens_in_file=lens_in_file_dir,
+            agent_ex_file=agent_ex_file_dir,
+            infl_ex_file=infl_ex_file_dir,
+            agent_state_out_file=agent_state_out_file_dir)
 
 
 def update_simultaneous(network_of_agents, num_agents_update):
@@ -118,7 +124,7 @@ def update_simultaneous(network_of_agents, num_agents_update):
         print(node)
 
     # save to temp state before looping to sim update
-    lens_in_writer_helper = lens_in_writer.LensInWriterHelper()
+    lens_in_writer_helper = mann.lens_in_writer.LensInWriterHelper()
     for selected_agent in agents_for_update:
         print("updating: ",
               network_of_agents.G.nodes()[selected_agent.get_key()])
@@ -139,10 +145,10 @@ def update_simultaneous(network_of_agents, num_agents_update):
             print(predecessor_picked)
 
             write_str = lens_in_writer_helper.generate_lens_recurrent_attitude(
-                helper.convert_list_to_delim_str(selected_agent.state,
-                                                 delim=' '),
-                helper.convert_list_to_delim_str(predecessor_picked.state,
-                                                 delim=' '))
+                mann.helper.convert_list_to_delim_str(selected_agent.state,
+                                                      delim=' '),
+                mann.helper.convert_list_to_delim_str(predecessor_picked.state,
+                                                      delim=' '))
             lens_in_writer_helper.write_in_file(infl_ex_file_dir, write_str)
 
             print(lens_in_file_dir)
@@ -167,7 +173,7 @@ def update_simultaneous(network_of_agents, num_agents_update):
             warnings.warn(warnings_str)
 
 
-def step(time_tick, network_of_agents):
+def step(time_tick, network_of_agents, agent_type):
     logger1.debug('STEP TIME TICK: %s', str(time_tick))
 
     logger1.debug('Begin random select and update network of agents')
@@ -189,7 +195,9 @@ def step(time_tick, network_of_agents):
                                                'network_of_agents.pout')
 
     network_of_agents.write_network_agent_step_info(
-        time_tick, network_agent_step_time_dir, 'a')
+        time_tick, network_agent_step_time_dir, 'a',
+        agent_type.get("network_agent_type"),
+        lens_agent_type=agent_type.get('lens_agent_type'))
     logger1.debug('Time ticks %s values appended to %s',
                   str(time_tick),
                   network_agent_step_time_dir)
@@ -208,7 +216,7 @@ def main():
     logger1.debug('Probablity for edge creation: %s', str(p))
 
     # Create Erdos-Renyi graph
-    my_network = network.DirectedFastGNPRandomGraph(n, p)
+    my_network = mann.network.DirectedFastGNPRandomGraph(n, p)
 
     # print("network edge list to copy\n", my_network.G.edges())  # edge list
     logger1.info('Network edge list to copy: %s', str(my_network.G.edges()))
@@ -219,18 +227,24 @@ def main():
     my_network.show_graph(generated_graph_dir)
     logger1.info('Generated graph saved in %s', generated_graph_dir)
 
-    network_of_agents = network_agent.NetworkAgent()
+    network_of_agents = mann.network_agent.NetworkAgent()
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
+
+    agent_type = {
+        "network_agent_type": config.get('NetworkParameters', 'AgentType'),
+        "lens_num_processing_units": config.getint(
+            'LENSParameters', 'TotalNumberOfProcessingUnits'),
+        "lens_agent_type": config.get('LENSParameters', 'AgentType')
+    }
 
     network_of_agents.\
         create_multidigraph_of_agents_from_edge_list(
             n, my_network.G.edges_iter(),
             fig_path,
-            agent_type=(
-                config.get('NetworkParameters', 'AgentType'),
-                config.getint('LENSParameters',
-                              'TotalNumberOfProcessingUnits'),
-                config.get('LENSParameters', 'AgentType')))
+            agent_type=(agent_type.get("network_agent_type"),
+                        agent_type.get("lens_num_processing_units"),
+                        agent_type.get("lens_agent_type"))
+        )
 
     print('print network of agents:')
 
@@ -245,7 +259,8 @@ def main():
                                 config.get('General', 'ModelOutput'))
     # write all agent's init state (0's and None)
     network_of_agents.write_network_agent_step_info(
-        -3, model_output, 'w')
+        -3, model_output, 'w', agent_type.get("network_agent_type"),
+        lens_agent_type=agent_type.get('lens_agent_type'))
 
     # make agents aware of predecessors
     # predecessors are agents who influence the current agent
@@ -286,13 +301,15 @@ def main():
                       str(selected_agent.get_state()))
 
         network_of_agents.write_network_agent_step_info(
-            -2, model_output, 'a')
+            -2, model_output, 'a', agent_type.get("network_agent_type"),
+            lens_agent_type=agent_type.get('lens_agent_type'))
 
-        lens_in_writer_helper = lens_in_writer.LensInWriterHelper()
+        lens_in_writer_helper = mann.lens_in_writer.LensInWriterHelper()
         write_str = lens_in_writer_helper.generate_lens_recurrent_attitude(
-            helper.convert_list_to_delim_str(selected_agent.state, delim=' '),
-            helper.convert_list_to_delim_str(types_of_inputs['amb_good'],
-                                             delim=' '))
+            mann.helper.convert_list_to_delim_str(selected_agent.state,
+                                                  delim=' '),
+            mann.helper.convert_list_to_delim_str(types_of_inputs['amb_good'],
+                                                  delim=' '))
         lens_in_writer_helper.write_in_file(agent_self_ex_file, write_str)
 
         selected_agent.call_lens(lens_in_file_dir)
@@ -317,7 +334,8 @@ def main():
 
     # agent states after seed get updated
     network_of_agents.write_network_agent_step_info(
-        -1, model_output, 'a')
+        -1, model_output, 'a', agent_type.get("network_agent_type"),
+        lens_agent_type=agent_type.get('lens_agent_type'))
 
     logger1.info('Begin steps')
 
@@ -330,7 +348,7 @@ def main():
 
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):
         print("STEP # ", i)
-        step(i, network_of_agents)
+        step(i, network_of_agents, agent_type)
 
 if __name__ == "__main__":
     main()

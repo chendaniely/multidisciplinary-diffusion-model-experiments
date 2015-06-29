@@ -239,11 +239,10 @@ def main():
         create_multidigraph_of_agents_from_edge_list(
             n, my_network.G.edges_iter(),
             fig_path,
-            agent_type=(
-                config.get('NetworkParameters', 'AgentType'),
-                config.getint('LENSParameters',
-                              'TotalNumberOfProcessingUnits'),
-                config.get('LENSParameters', 'AgentType')))
+            agent_type=(agent_type.get("network_agent_type"),
+                        agent_type.get("lens_num_processing_units"),
+                        agent_type.get("lens_agent_type"))
+        )
 
     print('print network of agents:')
 

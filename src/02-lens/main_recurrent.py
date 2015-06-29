@@ -195,7 +195,9 @@ def step(time_tick, network_of_agents, agent_type):
                                                'network_of_agents.pout')
 
     network_of_agents.write_network_agent_step_info(
-        time_tick, network_agent_step_time_dir, 'a')
+        time_tick, network_agent_step_time_dir, 'a',
+        agent_type.get("network_agent_type"),
+        lens_agent_type=agent_type.get('lens_agent_type'))
     logger1.debug('Time ticks %s values appended to %s',
                   str(time_tick),
                   network_agent_step_time_dir)
@@ -257,7 +259,8 @@ def main():
                                 config.get('General', 'ModelOutput'))
     # write all agent's init state (0's and None)
     network_of_agents.write_network_agent_step_info(
-        -3, model_output, 'w')
+        -3, model_output, 'w', agent_type.get("network_agent_type"),
+        lens_agent_type=agent_type.get('lens_agent_type'))
 
     # make agents aware of predecessors
     # predecessors are agents who influence the current agent
@@ -298,7 +301,8 @@ def main():
                       str(selected_agent.get_state()))
 
         network_of_agents.write_network_agent_step_info(
-            -2, model_output, 'a')
+            -2, model_output, 'a', agent_type.get("network_agent_type"),
+            lens_agent_type=agent_type.get('lens_agent_type'))
 
         lens_in_writer_helper = mann.lens_in_writer.LensInWriterHelper()
         write_str = lens_in_writer_helper.generate_lens_recurrent_attitude(
@@ -330,7 +334,8 @@ def main():
 
     # agent states after seed get updated
     network_of_agents.write_network_agent_step_info(
-        -1, model_output, 'a')
+        -1, model_output, 'a', agent_type.get("network_agent_type"),
+        lens_agent_type=agent_type.get('lens_agent_type'))
 
     logger1.info('Begin steps')
 

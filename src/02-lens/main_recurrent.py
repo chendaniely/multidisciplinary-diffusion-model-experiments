@@ -6,10 +6,15 @@ import configparser
 import random
 import warnings
 
-from mann import network
-from mann import network_agent
-from mann import helper
-from mann import lens_in_writer
+import mann.network
+import mann.network_agent
+import mann.helper
+import mann.lens_in_writer
+
+# from mann import network
+# from mann import network_agent
+# from mann import helper
+# from mann import lens_in_writer
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -118,7 +123,7 @@ def update_simultaneous(network_of_agents, num_agents_update):
         print(node)
 
     # save to temp state before looping to sim update
-    lens_in_writer_helper = lens_in_writer.LensInWriterHelper()
+    lens_in_writer_helper = mann.lens_in_writer.LensInWriterHelper()
     for selected_agent in agents_for_update:
         print("updating: ",
               network_of_agents.G.nodes()[selected_agent.get_key()])
@@ -139,10 +144,10 @@ def update_simultaneous(network_of_agents, num_agents_update):
             print(predecessor_picked)
 
             write_str = lens_in_writer_helper.generate_lens_recurrent_attitude(
-                helper.convert_list_to_delim_str(selected_agent.state,
-                                                 delim=' '),
-                helper.convert_list_to_delim_str(predecessor_picked.state,
-                                                 delim=' '))
+                mann.helper.convert_list_to_delim_str(selected_agent.state,
+                                                      delim=' '),
+                mann.helper.convert_list_to_delim_str(predecessor_picked.state,
+                                                      delim=' '))
             lens_in_writer_helper.write_in_file(infl_ex_file_dir, write_str)
 
             print(lens_in_file_dir)
@@ -208,7 +213,7 @@ def main():
     logger1.debug('Probablity for edge creation: %s', str(p))
 
     # Create Erdos-Renyi graph
-    my_network = network.DirectedFastGNPRandomGraph(n, p)
+    my_network = mann.network.DirectedFastGNPRandomGraph(n, p)
 
     # print("network edge list to copy\n", my_network.G.edges())  # edge list
     logger1.info('Network edge list to copy: %s', str(my_network.G.edges()))
@@ -219,7 +224,7 @@ def main():
     my_network.show_graph(generated_graph_dir)
     logger1.info('Generated graph saved in %s', generated_graph_dir)
 
-    network_of_agents = network_agent.NetworkAgent()
+    network_of_agents = mann.network_agent.NetworkAgent()
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
 
     network_of_agents.\
@@ -288,11 +293,12 @@ def main():
         network_of_agents.write_network_agent_step_info(
             -2, model_output, 'a')
 
-        lens_in_writer_helper = lens_in_writer.LensInWriterHelper()
+        lens_in_writer_helper = mann.lens_in_writer.LensInWriterHelper()
         write_str = lens_in_writer_helper.generate_lens_recurrent_attitude(
-            helper.convert_list_to_delim_str(selected_agent.state, delim=' '),
-            helper.convert_list_to_delim_str(types_of_inputs['amb_good'],
-                                             delim=' '))
+            mann.helper.convert_list_to_delim_str(selected_agent.state,
+                                                  delim=' '),
+            mann.helper.convert_list_to_delim_str(types_of_inputs['amb_good'],
+                                                  delim=' '))
         lens_in_writer_helper.write_in_file(agent_self_ex_file, write_str)
 
         selected_agent.call_lens(lens_in_file_dir)

@@ -173,7 +173,7 @@ def update_simultaneous(network_of_agents, num_agents_update):
             warnings.warn(warnings_str)
 
 
-def step(time_tick, network_of_agents):
+def step(time_tick, network_of_agents, agent_type):
     logger1.debug('STEP TIME TICK: %s', str(time_tick))
 
     logger1.debug('Begin random select and update network of agents')
@@ -227,6 +227,13 @@ def main():
 
     network_of_agents = mann.network_agent.NetworkAgent()
     fig_path = os.path.join(here, 'output', 'mann-generated.png')
+
+    agent_type = {
+        "network_agent_type": config.get('NetworkParameters', 'AgentType'),
+        "lens_num_processing_units": config.getint(
+            'LENSParameters', 'TotalNumberOfProcessingUnits'),
+        "lens_agent_type": config.get('LENSParameters', 'AgentType')
+    }
 
     network_of_agents.\
         create_multidigraph_of_agents_from_edge_list(
@@ -337,7 +344,7 @@ def main():
 
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):
         print("STEP # ", i)
-        step(i, network_of_agents)
+        step(i, network_of_agents, agent_type)
 
 if __name__ == "__main__":
     main()

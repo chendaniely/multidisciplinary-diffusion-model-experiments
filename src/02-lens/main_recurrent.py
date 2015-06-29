@@ -80,11 +80,12 @@ def random_select_and_update(network_of_agents):
         agent_state_out_file_dir = here + '/' + config.get('LENSParameters',
                                                            'NewAgentStateFile')
 
-        selected_agent.update_agent_state('default',
-                                          lens_in_file=lens_in_file_dir,
-                                          agent_ex_file=agent_ex_file_dir,
-                                          infl_ex_file=infl_ex_file_dir,
-                                          agent_state_out_file=agent_state_out_file_dir)
+        selected_agent.update_agent_state(
+            'default',
+            lens_in_file=lens_in_file_dir,
+            agent_ex_file=agent_ex_file_dir,
+            infl_ex_file=infl_ex_file_dir,
+            agent_state_out_file=agent_state_out_file_dir)
 
 
 def update_simultaneous(network_of_agents, num_agents_update):

@@ -222,6 +222,7 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
                                             update_algorithm,
                                             ex_file_path)
     elif update_type == 'simultaneous':
+        # TODO needs to be re-impemented
         print("Performing a simultaneous update.")
         update_simultaneous(network_of_agents,
                             config.getint(

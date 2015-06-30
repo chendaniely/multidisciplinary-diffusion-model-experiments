@@ -205,6 +205,16 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
 
     logger1.debug('Begin random select and update network of agents')
 
+    try:
+        num_agent_update = config.get(
+            'ModelParameters', 'NumberOfAgentsToUpdatePerTimeTick')
+        num_agent_update = int(num_agent_update)
+        assert num_agent_update <= total_num_agents, 'updating too many agents'
+    except ValueError:
+        if num_agent_update == 'all':
+            num_agent_update = total_num_agents
+        else:
+            raise ValueError("Unknown value passed for num agents to Update")
 
     if update_type == 'sequential':
         random_select_and_update(network_of_agents)

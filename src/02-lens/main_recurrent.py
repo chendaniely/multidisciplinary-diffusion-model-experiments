@@ -332,14 +332,17 @@ def main():
     # print("agents to seed: ", agents_to_seed)
     logger1.info('Agents seeded: %s', str(agents_to_seed))
 
-    lens_in_file_dir = HERE + '/' + config.get('LENSParameters',
-                                               'UpdateFromInflInFile')
+    lens_in_file_dir = os.path.join(HERE,
+                                    config.get('LENSParameters',
+                                               'UpdateFromInflInFile'))
 
-    agent_self_ex_file = HERE + '/' + config.get('LENSParameters',
-                                                 'InflExFile')
+    agent_self_ex_file = os.path.join(HERE,
+                                      config.get('LENSParameters',
+                                                 'InflExFile'))
 
-    agent_self_out_file = HERE + '/' + config.get('LENSParameters',
-                                                  'NewAgentStateFile')
+    agent_self_out_file = os.path.join(HERE,
+                                       config.get('LENSParameters',
+                                                  'NewAgentStateFile'))
 
     new_state_values_dict = {}
     types_of_inputs = {'all_neg': [0, 0, 0, 0, 0, 1, 1, 1, 1, 1],

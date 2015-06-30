@@ -381,8 +381,7 @@ def main():
         selected_agent.call_lens(lens_in_file_dir)
 
         new_state_values = selected_agent.get_new_state_values_from_out_file(
-            os.path.join(agent_self_out_file),
-            'agent_type param is not used ... yet')
+            os.path.join(agent_self_out_file))
         selected_agent.temp_new_state = new_state_values[:]
         new_state_values_dict[selected_agent.agent_id] = selected_agent.\
             temp_new_state

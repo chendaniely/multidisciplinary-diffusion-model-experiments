@@ -217,7 +217,10 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
             raise ValueError("Unknown value passed for num agents to Update")
 
     if update_type == 'sequential':
-        random_select_and_update(network_of_agents)
+        # random_select_and_update(network_of_agents)
+        network_of_agents.update_sequential(num_agent_update,
+                                            update_algorithm,
+                                            ex_file_path)
     elif update_type == 'simultaneous':
         print("Performing a simultaneous update.")
         update_simultaneous(network_of_agents,

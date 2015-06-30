@@ -191,8 +191,12 @@ config.read(os.path.join(HERE, 'config.ini'))
 
 
 def step(time_tick, network_of_agents, update_type, total_num_agents,
-         model_output_path, ex_file_path, agent_type, update_algorithm):
+         model_output_path, agent_type, update_algorithm,
+         lens_parameters):
     """Step function
+
+    kwargs are used to pass in the intermediate LENS files used to call LENS
+    and update the state
 
     :param time_tick: time tick
     :type time_tick: int
@@ -216,6 +220,9 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
     :param update_algorithm: 'random_1' or 'random_all'
     how should each agent choose its neighbours for updating
     :type update_algorithm: str
+
+    :param lens_parameters: parameters used for LENS
+    :type lens_parameters: dict
     """
     logger1.debug('STEP TIME TICK: %s', str(time_tick))
 
@@ -236,7 +243,7 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
         # random_select_and_update(network_of_agents)
         network_of_agents.update_sequential(num_agent_update,
                                             update_algorithm,
-                                            ex_file_path)
+                                            lens_parameters=lens_parameters)
     elif update_type == 'simultaneous':
         # TODO needs to be re-impemented
         print("Performing a simultaneous update.")
@@ -429,9 +436,9 @@ def main():
         print("STEP # ", i)
         step(i, network_of_agents, update_type, total_num_agents,
              model_output_path,
-             ex_file_path=agent_self_ex_file,
              agent_type=agent_type,
-             update_algorithm=update_algorithm)
+             update_algorithm=update_algorithm,
+             lens_parameters=lens_parameters)
 
 if __name__ == "__main__":
     main()

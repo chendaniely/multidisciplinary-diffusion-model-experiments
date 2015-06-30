@@ -174,7 +174,33 @@ def update_simultaneous(network_of_agents, num_agents_update):
             warnings.warn(warnings_str)
 
 
-def step(time_tick, network_of_agents, agent_type):
+def step(time_tick, network_of_agents, update_type, total_num_agents,
+         model_output_path, ex_file_path, agent_type, update_algorithm):
+    """Step function
+
+    :param time_tick: time tick
+    :type time_tick: int
+
+    :param network_of_agents: mann.network_agent.NetworkAgent class instance
+    contains the NetworkX graph of agents
+    :type network_of_agents: mann.network_agent.NetworkAgent
+
+    :param update_type: 'simultaneous' or 'sequential' updating
+    :type update_type: str
+
+    :param total_num_agents: Total number of agents in the network
+    :type total_num_agents: int
+
+    :param model_output_path: path of where the simulation output goes
+    :type model_output_path: str
+
+    :param agent_type: LENS agent info
+    :type agent_type: dict
+
+    :param update_algorithm: 'random_1' or 'random_all'
+    how should each agent choose its neighbours for updating
+    :type update_algorithm: str
+    """
     logger1.debug('STEP TIME TICK: %s', str(time_tick))
 
     logger1.debug('Begin random select and update network of agents')

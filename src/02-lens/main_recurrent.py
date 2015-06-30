@@ -414,6 +414,17 @@ def main():
 
     update_algorithm = config.get('ModelParameters', 'UpdateAlgorithm')
 
+    # these variables are copies from above... shouldn't be doing this
+    lens_in_file_dir = lens_in_file_dir
+    infl_ex_file_dir = agent_self_ex_file
+    agent_state_out_file_dir = agent_self_out_file
+
+    lens_parameters = {
+        'in_file_path': lens_in_file_dir,
+        'ex_file_path': infl_ex_file_dir,
+        'new_state_path': agent_state_out_file_dir
+    }
+
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):
         print("STEP # ", i)
         step(i, network_of_agents, update_type, total_num_agents,

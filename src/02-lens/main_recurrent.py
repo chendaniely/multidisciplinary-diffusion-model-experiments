@@ -347,9 +347,22 @@ def main():
     # network_of_agents.export_edge_list(edge_list_file_dir)
     network_of_agents.export_edge_list(edge_list_file_dir)
 
+    model_output_path = os.path.join(
+        HERE, 'output', config.get('General', 'ModelOutput'))
+
+    total_num_agents = config.getint('NetworkParameters', 'NumberOfAgents')
+
+    update_type = config.get('ModelParameters', 'UpdateType')
+
+    update_algorithm = config.get('ModelParameters', 'UpdateAlgorithm')
+
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):
         print("STEP # ", i)
-        step(i, network_of_agents, agent_type)
+        step(i, network_of_agents, update_type, total_num_agents,
+             model_output_path,
+             ex_file_path=agent_self_ex_file,
+             agent_type=agent_type,
+             update_algorithm=update_algorithm)
 
 if __name__ == "__main__":
     main()

@@ -16,14 +16,15 @@ import mann.lens_in_writer
 # from mann import helper
 # from mann import lens_in_writer
 
-here = os.path.abspath(os.path.dirname(__file__))
+HERE = os.path.abspath(os.path.dirname(__file__))
+
 
 # set up logging to file - see previous section for more details
 logging_format = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 logging.basicConfig(level=logging.DEBUG,
                     format=logging_format,
                     datefmt='%m-%d %H:%M',
-                    filename=os.path.join(here, 'output', 'myapp.log'),
+                    filename=os.path.join(HERE, 'output', 'myapp.log'),
                     filemode='w')
 
 # define a Handler which writes INFO messages or higher to the sys.stderr
@@ -45,12 +46,12 @@ logging.info('Logger created in main()')
 # Now, define a couple of other loggers which might represent areas in your
 # application:
 
-logger1 = logging.getLogger(os.path.join(here, 'myapp.area1'))
-logger2 = logging.getLogger(os.path.join(here, 'myapp.area2'))
+logger1 = logging.getLogger(os.path.join(HERE, 'myapp.area1'))
+logger2 = logging.getLogger(os.path.join(HERE, 'myapp.area2'))
 
 # setting up the configparser
 config = configparser.ConfigParser()
-config.read(os.path.join(here, 'config.ini'))
+config.read(os.path.join(HERE, 'config.ini'))
 
 
 def random_select_and_update(network_of_agents):
@@ -68,16 +69,16 @@ def random_select_and_update(network_of_agents):
         print("updating: ",
               network_of_agents.G.nodes()[selected_agent.get_key()])
 
-        lens_in_file_dir = here + '/' + config.get('LENSParameters',
+        lens_in_file_dir = HERE + '/' + config.get('LENSParameters',
                                                    'UpdateFromInflInFile')
 
-        agent_ex_file_dir = here + '/' + config.get('LENSParameters',
+        agent_ex_file_dir = HERE + '/' + config.get('LENSParameters',
                                                     'AgentExFile')
 
-        infl_ex_file_dir = here + '/' + config.get('LENSParameters',
+        infl_ex_file_dir = HERE + '/' + config.get('LENSParameters',
                                                    'InflExFile')
 
-        agent_state_out_file_dir = here + '/' + config.get('LENSParameters',
+        agent_state_out_file_dir = HERE + '/' + config.get('LENSParameters',
                                                            'NewAgentStateFile')
 
         selected_agent.update_agent_state(
@@ -107,15 +108,15 @@ def update_simultaneous(network_of_agents, num_agents_update):
     for agent_update_key in agents_for_update:
         print(network_of_agents.G.nodes()[agent_update_key.get_key()])
 
-    lens_in_file_dir = os.path.join(here, config.get('LENSParameters',
+    lens_in_file_dir = os.path.join(HERE, config.get('LENSParameters',
                                                      'UpdateFromInflInFile'))
-    lens_in_file_dir = here + '/' + config.get('LENSParameters',
+    lens_in_file_dir = HERE + '/' + config.get('LENSParameters',
                                                'UpdateFromInflInFile')
 
-    infl_ex_file_dir = os.path.join(here, config.get('LENSParameters',
+    infl_ex_file_dir = os.path.join(HERE, config.get('LENSParameters',
                                                      'InflExFile'))
 
-    agent_state_out_file_dir = os.path.join(here,
+    agent_state_out_file_dir = os.path.join(HERE,
                                             config.get('LENSParameters',
                                                        'NewAgentStateFile'))
 
@@ -191,7 +192,7 @@ def step(time_tick, network_of_agents, agent_type):
     else:
         raise ValueError('Unknown simulation update type')
 
-    network_agent_step_time_dir = os.path.join(here, 'output',
+    network_agent_step_time_dir = os.path.join(HERE, 'output',
                                                'network_of_agents.pout')
 
     network_of_agents.write_network_agent_step_info(
@@ -223,12 +224,12 @@ def main():
 
     # print(my_network.G.edges_iter())
 
-    generated_graph_dir = os.path.join(here, 'output', 'nx-generated.png')
+    generated_graph_dir = os.path.join(HERE, 'output', 'nx-generated.png')
     my_network.show_graph(generated_graph_dir)
     logger1.info('Generated graph saved in %s', generated_graph_dir)
 
     network_of_agents = mann.network_agent.NetworkAgent()
-    fig_path = os.path.join(here, 'output', 'mann-generated.png')
+    fig_path = os.path.join(HERE, 'output', 'mann-generated.png')
 
     agent_type = {
         "network_agent_type": config.get('NetworkParameters', 'AgentType'),
@@ -255,7 +256,7 @@ def main():
 
     print(type(network_of_agents.G))
 
-    model_output = os.path.join(here, 'output',
+    model_output = os.path.join(HERE, 'output',
                                 config.get('General', 'ModelOutput'))
     # write all agent's init state (0's and None)
     network_of_agents.write_network_agent_step_info(
@@ -276,13 +277,13 @@ def main():
     # print("agents to seed: ", agents_to_seed)
     logger1.info('Agents seeded: %s', str(agents_to_seed))
 
-    lens_in_file_dir = here + '/' + config.get('LENSParameters',
+    lens_in_file_dir = HERE + '/' + config.get('LENSParameters',
                                                'UpdateFromInflInFile')
 
-    agent_self_ex_file = here + '/' + config.get('LENSParameters',
+    agent_self_ex_file = HERE + '/' + config.get('LENSParameters',
                                                  'InflExFile')
 
-    agent_self_out_file = here + '/' + config.get('LENSParameters',
+    agent_self_out_file = HERE + '/' + config.get('LENSParameters',
                                                   'NewAgentStateFile')
 
     new_state_values_dict = {}
@@ -341,7 +342,7 @@ def main():
 
     print(network_of_agents.G.nodes())
 
-    edge_list_file_dir = os.path.join(here, 'output', 'edge_list.gz')
+    edge_list_file_dir = os.path.join(HERE, 'output', 'edge_list.gz')
     print(edge_list_file_dir)
     # network_of_agents.export_edge_list(edge_list_file_dir)
     network_of_agents.export_edge_list(edge_list_file_dir)

@@ -205,7 +205,6 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
 
     logger1.debug('Begin random select and update network of agents')
 
-    update_type = config.get('ModelParameters', 'UpdateType')
 
     if update_type == 'sequential':
         random_select_and_update(network_of_agents)

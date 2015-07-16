@@ -97,7 +97,8 @@ def setup(agent_type, model_output_path):
         number_of_agents=n,
         edge_list=my_network.G.edges_iter(),
         fig_path=os.path.join(HERE, 'output', 'mann-generated.png'),
-        agent_type=[agent_type, 0.18, max_flips])
+        agent_type=[agent_type, agent_threshold, max_flips],
+        add_reverse_edge=add_reverse_edge)
 
     edgelist_path = os.path.join(HERE, 'output', 'mann-generated.csv')
     network_of_agents.export_edge_list(edgelist_path)

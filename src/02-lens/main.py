@@ -298,6 +298,7 @@ def main():
 
     network_of_agents = mann.network_agent.NetworkAgent()
     fig_path = os.path.join(HERE, 'output', 'mann-generated.png')
+    add_reverse_edge = config.getboolean('NetworkParameters', 'AddReverseEdge')
 
     agent_type = {
         "network_agent_type": config.get('ModelParameters', 'AgentType'),
@@ -312,7 +313,8 @@ def main():
             fig_path,
             agent_type=(agent_type.get("network_agent_type"),
                         agent_type.get("lens_num_processing_units"),
-                        agent_type.get("lens_agent_type"))
+                        agent_type.get("lens_agent_type")),
+            add_reverse_edge=add_reverse_edge
         )
 
     print('print network of agents:')

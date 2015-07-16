@@ -195,7 +195,7 @@ def main():
 
     model_output_path = os.path.join(
         HERE, 'output', config.get('General', 'ModelOutput'))
-    agent_type = config.get('NetworkParameters', 'AgentType')
+    agent_type = config.get('ModelParameters', 'AgentType')
     total_num_agents = config.getint('NetworkParameters', 'NumberOfAgents')
 
     # setup

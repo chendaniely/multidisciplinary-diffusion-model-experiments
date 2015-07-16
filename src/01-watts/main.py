@@ -73,14 +73,21 @@ def setup(agent_type, model_output_path):
     n = config.getint('NetworkParameters', 'NumberOfAgents')
     logger_mdme.debug('Number of agents to create: %s', str(n))
 
-    # probablity for edge creation [0, 1]
-    p = config.getfloat('NetworkParameters', 'ProbEdgeCreation')
-    logger_mdme.debug('Probablity for edge creation: %s', str(p))
+    network_type = config.get('NetworkParameters', 'GraphGenerator')
+    if network_type == 'barabasi_albert_graph':
+        m = config.getint('NetworkParameters', 'm')
+        logger_mdme.debug(
+            'Number of edges to attach from a new node to existing nodes: %s',
+            str(m))
+        my_network = mann.network.BidirectionalBarabasiAlbertGraph(n, m)
+    elif network_type == 'fast_gnp_random_graph':
+        p = config.getfloat('NetworkParameters', 'ProbEdgeCreation')
+        logger_mdme.debug('Probablity for edge creation: %s', str(p))
+        my_network = mann.network.DirectedFastGNPRandomGraph(n, p)
+    else:
+        raise ValueError('unknown network type')
 
-    # Create Erdos-Renyi graph
-    my_network = mann.network.DirectedFastGNPRandomGraph(n, p)
     logger_mdme.info('Network graph created')
-
     logger_mdme.debug('Network edge list to copy (first 20 max shown): %s',
                       str(my_network.G.edges()[:20]))
 

@@ -89,6 +89,8 @@ def setup(agent_type, model_output_path):
     logger_mdme.info('Generated graph saved as %s', generated_graph_path)
 
     max_flips = config.getfloat('ModelParameters', 'NumberOfAgentFlips')
+    agent_threshold = config.getfloat('ModelParameters', 'AgentThreshold')
+    add_reverse_edge = config.getboolean('NetworkParameters', 'AddReverseEdge')
 
     network_of_agents = mann.network_agent.NetworkAgent()
     network_of_agents.create_multidigraph_of_agents_from_edge_list(

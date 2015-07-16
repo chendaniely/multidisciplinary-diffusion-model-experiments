@@ -73,14 +73,21 @@ def setup(agent_type, model_output_path):
     n = config.getint('NetworkParameters', 'NumberOfAgents')
     logger_mdme.debug('Number of agents to create: %s', str(n))
 
-    # probablity for edge creation [0, 1]
-    p = config.getfloat('NetworkParameters', 'ProbEdgeCreation')
-    logger_mdme.debug('Probablity for edge creation: %s', str(p))
+    network_type = config.get('NetworkParameters', 'GraphGenerator')
+    if network_type == 'barabasi_albert_graph':
+        m = config.getint('NetworkParameters', 'm')
+        logger_mdme.debug(
+            'Number of edges to attach from a new node to existing nodes: %s',
+            str(m))
+        my_network = mann.network.BidirectionalBarabasiAlbertGraph(n, m)
+    elif network_type == 'fast_gnp_random_graph':
+        p = config.getfloat('NetworkParameters', 'ProbEdgeCreation')
+        logger_mdme.debug('Probablity for edge creation: %s', str(p))
+        my_network = mann.network.DirectedFastGNPRandomGraph(n, p)
+    else:
+        raise ValueError('unknown network type')
 
-    # Create Erdos-Renyi graph
-    my_network = mann.network.DirectedFastGNPRandomGraph(n, p)
     logger_mdme.info('Network graph created')
-
     logger_mdme.debug('Network edge list to copy (first 20 max shown): %s',
                       str(my_network.G.edges()[:20]))
 
@@ -89,13 +96,16 @@ def setup(agent_type, model_output_path):
     logger_mdme.info('Generated graph saved as %s', generated_graph_path)
 
     max_flips = config.getfloat('ModelParameters', 'NumberOfAgentFlips')
+    agent_threshold = config.getfloat('ModelParameters', 'AgentThreshold')
+    add_reverse_edge = config.getboolean('NetworkParameters', 'AddReverseEdge')
 
     network_of_agents = mann.network_agent.NetworkAgent()
     network_of_agents.create_multidigraph_of_agents_from_edge_list(
         number_of_agents=n,
         edge_list=my_network.G.edges_iter(),
         fig_path=os.path.join(HERE, 'output', 'mann-generated.png'),
-        agent_type=[agent_type, 0.18, max_flips])
+        agent_type=[agent_type, agent_threshold, max_flips],
+        add_reverse_edge=add_reverse_edge)
 
     edgelist_path = os.path.join(HERE, 'output', 'mann-generated.csv')
     network_of_agents.export_edge_list(edgelist_path)
@@ -193,7 +203,7 @@ def main():
 
     model_output_path = os.path.join(
         HERE, 'output', config.get('General', 'ModelOutput'))
-    agent_type = config.get('NetworkParameters', 'AgentType')
+    agent_type = config.get('ModelParameters', 'AgentType')
     total_num_agents = config.getint('NetworkParameters', 'NumberOfAgents')
 
     # setup

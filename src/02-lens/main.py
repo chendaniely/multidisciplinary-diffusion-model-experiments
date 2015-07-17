@@ -276,12 +276,16 @@ def main():
 
     network_type = config.get('NetworkParameters', 'GraphGenerator')
     if network_type == 'barabasi_albert_graph':
-        m = config.getint('NetworkParameters', 'm')
+        m = config.getint('BarabasiAlbertGraph', 'm')
         logger1.debug('Number of edges to attach from a new node to existing'
                       'nodes: %s', str(m))
         my_network = mann.network.BidirectionalBarabasiAlbertGraph(n, m)
+    elif network_type == 'watts_strogatz_graph':
+        k = config.getint('WattsStrogatzGraph', 'k')
+        p = config.getfloat('WattsStrogatzGraph', 'p')
+        my_network = mann.network.WattsStrogatzGraph(n, k, p)
     elif network_type == 'fast_gnp_random_graph':
-        p = config.getfloat('NetworkParameters', 'ProbEdgeCreation')
+        p = config.getfloat('DirectedFastGNPRandomGraph', 'ProbEdgeCreation')
         logger1.debug('Probablity for edge creation: %s', str(p))
         my_network = mann.network.DirectedFastGNPRandomGraph(n, p)
     else:

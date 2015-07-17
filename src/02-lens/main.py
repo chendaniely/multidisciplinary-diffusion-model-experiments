@@ -280,6 +280,10 @@ def main():
         logger1.debug('Number of edges to attach from a new node to existing'
                       'nodes: %s', str(m))
         my_network = mann.network.BidirectionalBarabasiAlbertGraph(n, m)
+    elif network_type == 'watts_strogatz_graph':
+        k = config.getint('WattsStrogatzGraph', 'k')
+        p = config.getfloat('WattsStrogatzGraph', 'p')
+        my_network = mann.network.WattsStrogatzGraph(n, k, p)
     elif network_type == 'fast_gnp_random_graph':
         p = config.getfloat('NetworkParameters', 'ProbEdgeCreation')
         logger1.debug('Probablity for edge creation: %s', str(p))

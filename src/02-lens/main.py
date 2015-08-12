@@ -50,8 +50,8 @@ config.read(os.path.join(HERE, 'config.ini'))
 
 
 def step(time_tick, network_of_agents, update_type, total_num_agents,
-         model_output_path, agent_type, update_algorithm,
-         lens_parameters):
+         model_output_path, agent_type, single_mann_mode, update_algorithm,
+         lens_parameters, manual_predecessor_inputs):
     """Step function
 
     kwargs are used to pass in the intermediate LENS files used to call LENS
@@ -82,6 +82,9 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
 
     :param lens_parameters: parameters used for LENS
     :type lens_parameters: dict
+
+    :param manual_predecessor_inputs=manual_predecessor_inputs: None or list
+    :type manual_predecessor_inputs=manual_predecessor_inputs: list or None
     """
     logger1.debug('STEP TIME TICK: %s', str(time_tick))
 
@@ -307,8 +310,10 @@ def main():
         step(i, network_of_agents, update_type, total_num_agents,
              model_output_path,
              agent_type=agent_type,
+             single_mann_mode=single_mann_mode,
              update_algorithm=update_algorithm,
-             lens_parameters=lens_parameters)
+             lens_parameters=lens_parameters,
+             manual_predecessor_inputs=manual_predecessor_inputs)
 
 if __name__ == "__main__":
     main()

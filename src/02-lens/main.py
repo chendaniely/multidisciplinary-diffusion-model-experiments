@@ -103,9 +103,11 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
 
     if update_type == 'sequential':
         # random_select_and_update(network_of_agents)
-        network_of_agents.update_sequential(num_agent_update,
-                                            update_algorithm,
-                                            lens_parameters=lens_parameters)
+        network_of_agents.update_sequential(
+            num_agent_update,
+            update_algorithm,
+            lens_parameters=lens_parameters,
+            manual_predecessor_inputs=manual_predecessor_inputs)
     elif update_type == 'simultaneous':
         # TODO needs to be re-impemented
         print("Performing a simultaneous update.")

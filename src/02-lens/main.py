@@ -3,32 +3,13 @@
 import os
 import logging
 import configparser
-import random
-import warnings
+# import random
+# import warnings
 
 import mann.network
 import mann.network_agent
 import mann.helper
 import mann.lens_in_writer
-
-# from mann import network
-# from mann import network_agent
-# from mann import helper
-# from mann import lens_in_writer
-
-
-# def deprecated(func):
-#     """This is a decorator which can be used to mark functions
-#     as deprecated. It will result in a warning being emmitted
-#     when the function is used."""
-#     def newFunc(*args, **kwargs):
-#         warnings.warn("Call to deprecated function %s." % func.__name__,
-#                       category=DeprecationWarning)
-#         return func(*args, **kwargs)
-#     newFunc.__name__ = func.__name__
-#     newFunc.__doc__ = func.__doc__
-#     newFunc.__dict__.update(func.__dict__)
-#     return newFunc
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 
@@ -68,131 +49,9 @@ config = configparser.ConfigParser()
 config.read(os.path.join(HERE, 'config.ini'))
 
 
-# @deprecated
-# def random_select_and_update(network_of_agents):
-#     # randomly select nodes from network_of_agents
-#     # select num_update number of the nodes for update
-#     num_update = config.getint('ModelParameters',
-#                                'NumberOfAgentsToUpdatePerTimeTick')
-#     agents_for_update = network_of_agents.sample_network(num_update)
-#     print('agents for update: ', agents_for_update)
-#     print('key of agent for update')
-#     print(network_of_agents.G.nodes()[agents_for_update[0].get_key()])
-
-#     # update agents who were selected
-#     for selected_agent in agents_for_update:
-#         print("updating: ",
-#               network_of_agents.G.nodes()[selected_agent.get_key()])
-
-#         lens_in_file_dir = HERE + '/' + config.get('LENSParameters',
-#                                                    'UpdateFromInflInFile')
-
-#         agent_ex_file_dir = HERE + '/' + config.get('LENSParameters',
-#                                                     'AgentExFile')
-
-#         infl_ex_file_dir = HERE + '/' + config.get('LENSParameters',
-#                                                    'InflExFile')
-
-#         agent_state_out_file_dir = HERE + '/' + config.get('LENSParameters',
-#                                                            'NewAgentStateFile')
-
-#         selected_agent.update_agent_state(
-#             'default',
-#             lens_in_file=lens_in_file_dir,
-#             agent_ex_file=agent_ex_file_dir,
-#             infl_ex_file=infl_ex_file_dir,
-#             agent_state_out_file=agent_state_out_file_dir)
-
-
-# @deprecated
-# def update_simultaneous(network_of_agents, num_agents_update):
-#     """Simultaneously updates agents
-
-#     :param network_of_agents: NetworkX graph of agents
-#     :type network_of_agents: NetworkX graph
-
-#     :parm num_agents_update: Number of agents that will be picked for update
-#     :type num_agents_update: int
-
-#     iterates through each node in the network and calculates a new state value
-#     that will be saved to a temp variable.  It will then iterate though the
-#     network again to update each node to the temp variable
-#     """
-#     agents_for_update = network_of_agents.sample_network(num_agents_update)
-#     print('agents for update: ', agents_for_update)
-#     print('key of agent for update')
-#     for agent_update_key in agents_for_update:
-#         print(network_of_agents.G.nodes()[agent_update_key.get_key()])
-
-#     lens_in_file_dir = os.path.join(HERE, config.get('LENSParameters',
-#                                                      'UpdateFromInflInFile'))
-#     lens_in_file_dir = HERE + '/' + config.get('LENSParameters',
-#                                                'UpdateFromInflInFile')
-
-#     infl_ex_file_dir = os.path.join(HERE, config.get('LENSParameters',
-#                                                      'InflExFile'))
-
-#     agent_state_out_file_dir = os.path.join(HERE,
-#                                             config.get('LENSParameters',
-#                                                        'NewAgentStateFile'))
-
-#     print('printing network_of_agents.G nodes')
-#     for node in network_of_agents.G:
-#         print(node)
-
-#     # save to temp state before looping to sim update
-#     lens_in_writer_helper = mann.lens_in_writer.LensInWriterHelper()
-#     for selected_agent in agents_for_update:
-#         print("updating: ",
-#               network_of_agents.G.nodes()[selected_agent.get_key()])
-#         print(selected_agent.temp_new_state)
-#         assert selected_agent.temp_new_state is None
-
-#         try:
-#             random_predecessor_id = random.sample(selected_agent.predecessors,
-#                                                   1)
-#         except ValueError:
-#             # if agent has no predecessor we skip it
-#             continue
-#         else:
-#             predecessor_picked = random_predecessor_id[0]
-
-#             print(type(predecessor_picked))
-
-#             print(predecessor_picked)
-
-#             write_str = lens_in_writer_helper.generate_lens_recurrent_attitude(
-#                 mann.helper.convert_list_to_delim_str(selected_agent.state,
-#                                                       delim=' '),
-#                 mann.helper.convert_list_to_delim_str(predecessor_picked.state,
-#                                                       delim=' '))
-#             lens_in_writer_helper.write_in_file(infl_ex_file_dir, write_str)
-
-#             print(lens_in_file_dir)
-#             selected_agent.call_lens(lens_in_file_dir)
-
-#             new_state_values = selected_agent.\
-#                 get_new_state_values_from_out_file(
-#                     agent_state_out_file_dir,
-#                     'agent_type param is not used ... yet')
-#             selected_agent.temp_new_state = new_state_values
-
-#     # simultaneous update
-#     for selected_agent in agents_for_update:
-#         if len(selected_agent.predecessors) > 0:
-#             assert (selected_agent.temp_new_state is not None)
-#             selected_agent.state = selected_agent.temp_new_state
-#             selected_agent.temp_new_state = None
-#         else:
-#             assert len(selected_agent.predecessors) == 0
-#             warnings_str = "Pedecessors for Agent {}: {}".format(
-#                 selected_agent.agent_id, selected_agent.predecessors)
-#             warnings.warn(warnings_str)
-
-
 def step(time_tick, network_of_agents, update_type, total_num_agents,
-         model_output_path, agent_type, update_algorithm,
-         lens_parameters):
+         model_output_path, agent_type, single_mann_mode, update_algorithm,
+         lens_parameters, manual_predecessor_inputs):
     """Step function
 
     kwargs are used to pass in the intermediate LENS files used to call LENS
@@ -223,6 +82,9 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
 
     :param lens_parameters: parameters used for LENS
     :type lens_parameters: dict
+
+    :param manual_predecessor_inputs=manual_predecessor_inputs: None or list
+    :type manual_predecessor_inputs=manual_predecessor_inputs: list or None
     """
     logger1.debug('STEP TIME TICK: %s', str(time_tick))
 
@@ -241,9 +103,11 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
 
     if update_type == 'sequential':
         # random_select_and_update(network_of_agents)
-        network_of_agents.update_sequential(num_agent_update,
-                                            update_algorithm,
-                                            lens_parameters=lens_parameters)
+        network_of_agents.update_sequential(
+            num_agent_update,
+            update_algorithm,
+            lens_parameters=lens_parameters,
+            manual_predecessor_inputs=manual_predecessor_inputs)
     elif update_type == 'simultaneous':
         # TODO needs to be re-impemented
         print("Performing a simultaneous update.")
@@ -432,6 +296,14 @@ def main():
 
     update_algorithm = config.get('ModelParameters', 'UpdateAlgorithm')
 
+    single_mann_mode = config.getboolean('ModelParameters', 'SingleMannMode')
+
+    if single_mann_mode:
+        manual_predecessor_inputs = mann.helper.convert_str_to_2d_int_array(
+            config.get('NetworkParameters', 'ManualPredecessorInputs'))
+    else:
+        manual_predecessor_inputs = None
+
     # these variables are copies from above... shouldn't be doing this
     lens_in_file_dir = lens_in_file_dir
     infl_ex_file_dir = agent_self_ex_file
@@ -448,8 +320,10 @@ def main():
         step(i, network_of_agents, update_type, total_num_agents,
              model_output_path,
              agent_type=agent_type,
+             single_mann_mode=single_mann_mode,
              update_algorithm=update_algorithm,
-             lens_parameters=lens_parameters)
+             lens_parameters=lens_parameters,
+             manual_predecessor_inputs=manual_predecessor_inputs)
 
 if __name__ == "__main__":
     main()

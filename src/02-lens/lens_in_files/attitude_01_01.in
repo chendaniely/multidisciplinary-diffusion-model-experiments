@@ -11,18 +11,10 @@ addGroup InputMirror 5 INPUT DOT_PRODUCT INCR_CLAMP INTERACT_INTEGR WRITE_OUTPUT
 
 #FIX INTERBANK UNITS (BETWEEN BANK)
 repeat u [getObj Input.numUnits] {
-   # connectUnits Input:$u InputMirror:$u -m -0.3 -r 0 -b
-   # connectUnits Input:$u InputMirror:$u -m -0.4 -r 0 -b
-   connectUnits Input:$u InputMirror:$u -m -0.45 -r 0 -b
-   # connectUnits Input:$u InputMirror:$u -m -0.20 -r 0 -b
-   # connectUnits Input:$u InputMirror:$u -m -0.50 -r 0 -b
+   connectUnits Input:$u InputMirror:$u -m -0.42 -r 0 -b
 }
 repeat u [getObj Input.numUnits] {
-   # connectUnits InputMirror:$u Input:$u -m -0.3 -r 0 -b
-   # connectUnits InputMirror:$u Input:$u -m -0.4 -r 0 -b
-   connectUnits InputMirror:$u Input:$u -m -0.45 -r 0 -b
-   # connectUnits InputMirror:$u Input:$u -m -0.20 -r 0 -b
-   # connectUnits InputMirror:$u Input:$u -m -0.50 -r 0 -b
+   connectUnits InputMirror:$u Input:$u -m -0.42 -r 0 -b
 }
 
 #Remove Input->Input self connections AND mirror
@@ -38,24 +30,14 @@ repeat u [getObj InputMirror.numUnits] {
 #FIRST BANK
 for {set i 0} {$i < 5} {incr i} {
    for {set j [expr $i+1]} {$j < 5} {incr j} {
-      # connectUnits Input:$i Input:$j -m 1 -r .1 -b
-      # connectUnits Input:$i Input:$j -m 0.8 -r .1 -b
       connectUnits Input:$i Input:$j -m 0.8 -r .2 -b
-      # connectUnits Input:$i Input:$j -m 0.8 -r 0 -b
-      # connectUnits Input:$i Input:$j -m 0.9 -r 0.3 -b
-      # connectUnits Input:$i Input:$j -m 0.7 -r 0.3 -b
    }
 }
 
 #SECOND BANK (MIRROR)
 for {set i 0} {$i < 5} {incr i} {
    for {set j [expr $i+1]} {$j < 5} {incr j} {
-      # connectUnits InputMirror:$i InputMirror:$j -m 1 -r .1 -b
-      # connectUnits InputMirror:$i InputMirror:$j -m 0.8 -r .1 -b
       connectUnits InputMirror:$i InputMirror:$j -m 0.8 -r .2 -b
-      # connectUnits InputMirror:$i InputMirror:$j -m 0.8 -r 0 -b
-      # connectUnits InputMirror:$i InputMirror:$j -m 0.9 -r 0.3 -b
-      # connectUnits InputMirror:$i InputMirror:$j -m 0.7 -r 0.3 -b
    }
 }
 
@@ -81,8 +63,6 @@ setObj train.maxTime    3.0
 
 setObj learningRate     0.01
 setObj momentum         0.8
-# setObj clampStrength 	1.0
-# setObj clampStrength 	0.5
 setObj clampStrength 	0.25
 setObj randRange        0.25
 

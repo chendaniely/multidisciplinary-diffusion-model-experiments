@@ -296,6 +296,14 @@ def main():
 
     update_algorithm = config.get('ModelParameters', 'UpdateAlgorithm')
 
+    single_mann_mode = config.getboolean('ModelParameters', 'SingleMannMode')
+
+    if single_mann_mode:
+        manual_predecessor_inputs = mann.helper.convert_str_to_2d_int_array(
+            config.get('NetworkParameters', 'ManualPredecessorInputs'))
+    else:
+        manual_predecessor_inputs = None
+
     # these variables are copies from above... shouldn't be doing this
     lens_in_file_dir = lens_in_file_dir
     infl_ex_file_dir = agent_self_ex_file

@@ -43,7 +43,7 @@ def main(configfile_path):
     # Cartesian product of paras to create sim folder with timestamp
     #
     now = datetime.datetime.now()
-    current_time = now.strftime("%Y-%m-%d_%H:%M:%S")
+    current_time = now.strftime("%Y-%m-%d_%H-%M-%S")
     print("current time: ", current_time)
 
     base_directory = sweep_batch_config.get('General', 'BaseDirectory')

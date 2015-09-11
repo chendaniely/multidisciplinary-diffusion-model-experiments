@@ -185,6 +185,9 @@ def main():
         "lens_agent_type": config.get('LENSParameters', 'AgentType')
     }
 
+    lens_in_file_wgt_path = os.path.join(HERE,
+                                         config.get('LENSParameters',
+                                                    'WeightInFile'))
     network_of_agents.\
         create_multidigraph_of_agents_from_edge_list(
             n, my_network.G.edges_iter(),

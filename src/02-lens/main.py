@@ -325,11 +325,13 @@ def main():
         manual_predecessor_inputs = None
 
     # these variables are copies from above... shouldn't be doing this
+    lens_in_file_wgt_dir = lens_in_file_wgt_path
     lens_in_file_dir = lens_in_file_dir
     infl_ex_file_dir = agent_self_ex_file
     agent_state_out_file_dir = agent_self_out_file
 
     lens_parameters = {
+        'in_file_wgt_path': lens_in_file_wgt_dir,
         'in_file_path': lens_in_file_dir,
         'ex_file_path': infl_ex_file_dir,
         'new_state_path': agent_state_out_file_dir

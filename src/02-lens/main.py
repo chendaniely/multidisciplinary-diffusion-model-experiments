@@ -131,6 +131,9 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
 
 
 def main():
+    ###########################################################################
+    #  get config variables
+    ###########################################################################
     logger1.info('In main.main()')
     logger1.info('Starting Mulit Agent Neural Network (MANN)')
 
@@ -160,6 +163,9 @@ def main():
 
     # print(my_network.G.edges_iter())
 
+    ###########################################################################
+    # Generate NetworkX graph
+    ###########################################################################
     generated_graph_dir = os.path.join(HERE, 'output', 'nx-generated.png')
     my_network.show_graph(generated_graph_dir)
     logger1.info('Generated graph saved in %s', generated_graph_dir)

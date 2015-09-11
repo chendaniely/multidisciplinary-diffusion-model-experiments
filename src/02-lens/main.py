@@ -199,7 +199,10 @@ def main():
             agent_type=(agent_type.get("network_agent_type"),
                         agent_type.get("lens_num_processing_units"),
                         agent_type.get("lens_agent_type")),
-            add_reverse_edge=add_reverse_edge
+            add_reverse_edge=add_reverse_edge,
+            weight_in_file=lens_in_file_wgt_path,
+            weight_dir=lens_in_file_wgt_dir,
+            weight_ex_path=ex_file_path
         )
 
     print('print network of agents:')

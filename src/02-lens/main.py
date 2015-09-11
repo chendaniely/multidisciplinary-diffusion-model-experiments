@@ -158,6 +158,10 @@ def main():
     else:
         raise ValueError('unknown network type')
 
+    ex_file_path = os.path.join(HERE,
+                                config.get('LENSParameters',
+                                           'InflExFile'))
+
     # print("network edge list to copy\n", my_network.G.edges())  # edge list
     logger1.info('Network edge list to copy: %s', str(my_network.G.edges()))
 

@@ -68,7 +68,7 @@ setObj randRange        0.25
 
 #THIS RESETS WEIGHTS AND OUTPUTS
 #resetNet
-saveWeights weights/AgentWgt$a.wt
+saveWeights ../weights/AgentWgt$a.wt
 
 #LOAD WEIGHTS
 #DAN USE ENV VARIABLE "a" for Agent ID

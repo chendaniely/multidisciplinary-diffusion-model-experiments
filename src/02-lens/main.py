@@ -131,6 +131,9 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
 
 
 def main():
+    ###########################################################################
+    #  get config variables
+    ###########################################################################
     logger1.info('In main.main()')
     logger1.info('Starting Mulit Agent Neural Network (MANN)')
 
@@ -155,11 +158,18 @@ def main():
     else:
         raise ValueError('unknown network type')
 
+    ex_file_path = os.path.join(HERE,
+                                config.get('LENSParameters',
+                                           'InflExFile'))
+
     # print("network edge list to copy\n", my_network.G.edges())  # edge list
     logger1.info('Network edge list to copy: %s', str(my_network.G.edges()))
 
     # print(my_network.G.edges_iter())
 
+    ###########################################################################
+    # Generate NetworkX graph
+    ###########################################################################
     generated_graph_dir = os.path.join(HERE, 'output', 'nx-generated.png')
     my_network.show_graph(generated_graph_dir)
     logger1.info('Generated graph saved in %s', generated_graph_dir)
@@ -175,6 +185,13 @@ def main():
         "lens_agent_type": config.get('LENSParameters', 'AgentType')
     }
 
+    lens_in_file_wgt_path = os.path.join(HERE,
+                                         config.get('LENSParameters',
+                                                    'WeightInFile'))
+    lens_in_file_wgt_dir = os.path.join(HERE,
+                                        config.get('LENSParameters',
+                                                   'WeightsDirectory'))
+
     network_of_agents.\
         create_multidigraph_of_agents_from_edge_list(
             n, my_network.G.edges_iter(),
@@ -182,7 +199,10 @@ def main():
             agent_type=(agent_type.get("network_agent_type"),
                         agent_type.get("lens_num_processing_units"),
                         agent_type.get("lens_agent_type")),
-            add_reverse_edge=add_reverse_edge
+            add_reverse_edge=add_reverse_edge,
+            weight_in_file=lens_in_file_wgt_path,
+            weight_dir=lens_in_file_wgt_dir,
+            weight_ex_path=ex_file_path
         )
 
     print('print network of agents:')
@@ -305,11 +325,13 @@ def main():
         manual_predecessor_inputs = None
 
     # these variables are copies from above... shouldn't be doing this
+    lens_in_file_wgt_dir = lens_in_file_wgt_path
     lens_in_file_dir = lens_in_file_dir
     infl_ex_file_dir = agent_self_ex_file
     agent_state_out_file_dir = agent_self_out_file
 
     lens_parameters = {
+        'in_file_wgt_path': lens_in_file_wgt_dir,
         'in_file_path': lens_in_file_dir,
         'ex_file_path': infl_ex_file_dir,
         'new_state_path': agent_state_out_file_dir

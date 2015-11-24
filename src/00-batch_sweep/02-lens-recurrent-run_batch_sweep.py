@@ -222,9 +222,6 @@ def main():
 
         list_of_sim_names.append(folder_created)
 
-        if model_number == 0:
-            break
-            # continue
     # print(list_of_sim_names)
     print("Number of simulations: ", len(list_of_sim_names))
     # return(1)

@@ -100,6 +100,7 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
             num_agent_update = total_num_agents
         else:
             raise ValueError("Unknown value passed for num agents to Update")
+    print("#"*160)
 
     if update_type == 'sequential':
         # random_select_and_update(network_of_agents)
@@ -110,6 +111,7 @@ def step(time_tick, network_of_agents, update_type, total_num_agents,
             manual_predecessor_inputs=manual_predecessor_inputs)
     elif update_type == 'simultaneous':
         # TODO needs to be re-impemented
+        assert False
         print("Performing a simultaneous update.")
         update_simultaneous(network_of_agents,
                             config.getint(
@@ -192,6 +194,14 @@ def main():
                                         config.get('LENSParameters',
                                                    'WeightsDirectory'))
 
+    between_mean = config.getfloat('LENSParameters', 'BetweenMean')
+    between_sd = config.getfloat('LENSParameters', 'BetweenSd')
+    within_mean = config.getfloat('LENSParameters', 'WithinMean')
+    within_sd = config.getfloat('LENSParameters', 'WithinSd')
+    clamp_strength = config.getfloat('LENSParameters', 'ClampStrength')
+
+    print(between_mean, between_sd, within_mean, within_sd, clamp_strength)
+
     network_of_agents.\
         create_multidigraph_of_agents_from_edge_list(
             n, my_network.G.edges_iter(),
@@ -202,7 +212,12 @@ def main():
             add_reverse_edge=add_reverse_edge,
             weight_in_file=lens_in_file_wgt_path,
             weight_dir=lens_in_file_wgt_dir,
-            weight_ex_path=ex_file_path
+            weight_ex_path=ex_file_path,
+            between_mean=between_mean,
+            between_sd=between_sd,
+            within_mean=within_mean,
+            within_sd=within_sd,
+            clamp_strength=clamp_strength
         )
 
     print('print network of agents:')
@@ -255,6 +270,7 @@ def main():
                        'amb_good': [1, 1, 0, 0, 0, 1, 1, 0, 0, 0]}
 
     # seed agents who were select
+    print('*' * 80, 'SEEDING')
     for selected_agent in agents_to_seed:
         logger1.info('Seeding agent  %s', str(selected_agent.get_key()))
 
@@ -274,7 +290,14 @@ def main():
                                                   delim=' '))
         lens_in_writer_helper.write_in_file(agent_self_ex_file, write_str)
 
-        selected_agent.call_lens(lens_in_file_dir)
+        selected_agent.call_lens(
+            lens_in_file_dir,
+            lens_env={'a': selected_agent.get_padded_agent_id(),
+                      'bm': between_mean,
+                      'bs': between_sd,
+                      'wm': within_mean,
+                      'ws': within_sd,
+                      'cs': clamp_strength})
 
         new_state_values = selected_agent.get_new_state_values_from_out_file(
             os.path.join(agent_self_out_file))
@@ -334,7 +357,12 @@ def main():
         'in_file_wgt_path': lens_in_file_wgt_dir,
         'in_file_path': lens_in_file_dir,
         'ex_file_path': infl_ex_file_dir,
-        'new_state_path': agent_state_out_file_dir
+        'new_state_path': agent_state_out_file_dir,
+        'between_mean': config.getfloat('LENSParameters', 'BetweenMean'),
+        'between_sd': config.getfloat('LENSParameters', 'BetweenSd'),
+        'within_mean': config.getfloat('LENSParameters', 'WithinMean'),
+        'within_sd': config.getfloat('LENSParameters', 'WithinSd'),
+        'clamp_strength': config.getfloat('LENSParameters', 'ClampStrength')
     }
 
     for i in range(config.getint('ModelParameters', 'NumberOfTimeTicks')):

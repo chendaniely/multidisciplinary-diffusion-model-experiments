@@ -267,7 +267,7 @@ def main():
 
     pool = mp.Pool(processes=use_cores)
     sleep(5)
-    return(1)
+
     pool.map(mann.batch_sweep.run_simulation, list_of_sim_names)
 
 

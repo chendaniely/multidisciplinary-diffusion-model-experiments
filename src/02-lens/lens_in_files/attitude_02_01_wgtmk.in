@@ -3,6 +3,18 @@
 deleteNets *
 
 set a $env(a)
+set bm $env(bm)
+set bs $env(bs)
+set wm $env(wm)
+set ws $env(ws)
+set cs $env(cs)
+
+echo $a
+echo $bm
+echo $bs
+echo $wm
+echo $ws
+echo $cs
 
 addNet "5X5-TRA DIFFUSION" -i 3.0 -t 3 CONTINUOUS
 
@@ -11,10 +23,10 @@ addGroup InputMirror 5 INPUT DOT_PRODUCT INCR_CLAMP INTERACT_INTEGR WRITE_OUTPUT
 
 #FIX INTERBANK UNITS (BETWEEN BANK)
 repeat u [getObj Input.numUnits] {
-   connectUnits Input:$u InputMirror:$u -m -0.34 -r 0.3 -b
+   connectUnits Input:$u InputMirror:$u -m $bm -r $bs -b
 }
 repeat u [getObj Input.numUnits] {
-   connectUnits InputMirror:$u Input:$u -m -0.34 -r 0.3 -b
+   connectUnits InputMirror:$u Input:$u -m $bm -r $bs -b
 }
 
 #Remove Input->Input self connections AND mirror
@@ -30,14 +42,14 @@ repeat u [getObj InputMirror.numUnits] {
 #FIRST BANK
 for {set i 0} {$i < 5} {incr i} {
    for {set j [expr $i+1]} {$j < 5} {incr j} {
-      connectUnits Input:$i Input:$j -m 0.76 -r 0.1 -b
+      connectUnits Input:$i Input:$j -m $wm -r $ws -b
    }
 }
 
 #SECOND BANK (MIRROR)
 for {set i 0} {$i < 5} {incr i} {
    for {set j [expr $i+1]} {$j < 5} {incr j} {
-      connectUnits InputMirror:$i InputMirror:$j -m 0.76 -r 0.1 -b
+      connectUnits InputMirror:$i InputMirror:$j -m $wm -r $ws -b
    }
 }
 
@@ -63,7 +75,7 @@ setObj train.maxTime    3.0
 
 setObj learningRate     0.01
 setObj momentum         0.8
-setObj clampStrength 	0.4
+setObj clampStrength 	$cs
 setObj randRange        0.25
 
 #THIS RESETS WEIGHTS AND OUTPUTS
@@ -89,7 +101,7 @@ proc printStuff {g1 u1 g2 u2 b l} {
               [getObj $u2.incoming($l).weight]
           }
 
-printLinkValues - printStuff {Input InputMirror} *
+# printLinkValues - printStuff {Input InputMirror} *
 
 exit
 #EOF

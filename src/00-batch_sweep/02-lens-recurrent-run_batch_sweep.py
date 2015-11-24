@@ -259,7 +259,8 @@ def main():
     #     #                                   run=run)
     num_cores = mann.batch_sweep.num_cores()
     use_cores = sweep_batch_config.getint('General', 'NumCoresToUse')
-    assert use_cores <= num_cores
+    print("Using {} cores".format(use_cores))
+    assert int(use_cores) <= int(num_cores)
     print("Number of cores for batch sweep simulation: ", use_cores)
 
     pool = mp.Pool(processes=use_cores)

@@ -198,7 +198,7 @@ def main():
             clamp_sweep_values=clamp_sweep_values,
             between_bank_mean_values=between_bank_mean_values,
             between_bank_sd_values=between_bank_sd_values,
-            within_bank_mean_values=within_bank_sd_values,
+            within_bank_mean_values=within_bank_mean_values,
             within_bank_sd_values=within_bank_sd_values,
             num_sims_per=num_sims_per)):
         print("*" * 80)
